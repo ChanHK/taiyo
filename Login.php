@@ -12,37 +12,60 @@
   <div class="limiter">
     <div class="loginContainer">
       <div class="loginFormContainer">
-        <form class="loginForm p-l-55 p-r-55 p-t-100" name="thisForm" method="post" onsubmit="return validateForm()">
+        <form class="loginForm p-l-55 p-r-55 p-t-100" method="post">
+
           <div class="m-b-16">
-            <input class="formInput" type="text" name="email" id="EMAIL" placeholder="Email" onkeyup="saveValue(this)" />
-            <a id="formInputEmail" style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'></a>
+            <input class="formInput" type="text" name="Email" id="email" placeholder="Email" onkeyup="saveValue(this)" />
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              $email = $_POST['Email'];
+              if ($email == "") {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please fill in your email address";
+                echo "</a>";
+              }
+            }
+
+            ?>
           </div>
 
           <div class="p-b-50">
-            <input class="formInput" type="password" name="password" id="PASSWORD" placeholder="Password" onkeyup="saveValue(this)" />
-            <a id="formInputPassword" style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'><br /></a>
+            <input class="formInput" type="password" name="Password" id="password" placeholder="Password" onkeyup="saveValue(this)" />
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              $email = $_POST['Password'];
+              if ($email == "") {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please fill in your password";
+                echo "</a>";
+                echo "<br />";
+              }
+            }
+            ?>
             <input type="checkbox" onclick="showOrHidePassword()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Show Password </input>
           </div>
 
           <div class="loginFormButtonContainer p-b-100">
-            <button class="loginFormButton">Login</button>
+            <button type="submit" class="loginFormButton" id="submitButton">Login</button>
           </div>
         </form>
+
         <?php
         $conn = mysqli_connect("localhost", "root", "", "taiyodb");
         $email = $password = "";
+        $continue = false;
         $userID = 0;
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-          $email = test_input($_POST["email"]);
-          $password = test_input($_POST["password"]);
+          $email = test_input($_POST["Email"]);
+          $password = test_input($_POST["Password"]);
 
           if ($conn) {
             $sql = "SELECT user_id FROM user WHERE user_email = '$email' AND user_password = '$password'";
             $result = mysqli_query($conn, $sql);
             if (!$result || mysqli_num_rows($result) == 0) {
-              echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold; margin-left: 20px;'>";
-              echo "*The email or password does not exist, please check again";
+              echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold; margin-left: 28px;'>";
+              echo "*This email or password does not exist, please check again";
               echo "</a>";
             } else {
               while ($a = mysqli_fetch_assoc($result)) {
@@ -61,52 +84,43 @@
           $data = htmlspecialchars($data);
           return $data;
         }
-
         ?>
       </div>
     </div>
   </div>
-  <script type='text/javascript'>
-    document.getElementById("EMAIL").value = getSavedValue("EMAIL");
-    document.getElementById("PASSWORD").value = getSavedValue("PASSWORD");
+  <script>
+    // if (window.history.replaceState) {
+    //   window.history.replaceState(null, null, window.location.href);
+    // }
+
+    document.getElementById("email").value = getSavedValue("email");
+    document.getElementById("password").value = getSavedValue("password");
 
     function saveValue(e) {
       var id = e.id;
       var val = e.value;
-      localStorage.setItem(id, val);
+      sessionStorage.setItem(id, val);
     }
 
     function getSavedValue(v) {
-      if (!localStorage.getItem(v)) {
+      if (!sessionStorage.getItem(v)) {
         return "";
       }
-      return localStorage.getItem(v);
+      return sessionStorage.getItem(v);
     }
 
+
     function showOrHidePassword() {
-      var x = document.getElementById("PASSWORD");
+      console.log("aaaa");
+      var x = document.getElementById("password");
       if (x.type === "password") {
         x.type = "text";
       } else {
         x.type = "password";
       }
     }
-
-    function validateForm() {
-      var emailInput = document.forms["thisForm"]["email"].value;
-      var passwordInput = document.forms["thisForm"]["password"].value;
-      console.log('this' + '"' + emailInput + '"');
-      if (emailInput == "") {
-        document.getElementById("formInputEmail").innerHTML = "*Please fill in your email address";
-        return false;
-      }
-      if (passwordInput == "") {
-        document.getElementById("formInputPassword").innerHTML = "*Please fill in your password <br />";
-        return false;
-      }
-
-    }
   </script>
+
 </body>
 
 </html>
