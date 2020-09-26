@@ -1,0 +1,108 @@
+@font-face {
+  font-family: Ubuntu-Regular;
+  src: url("../fonts/ubuntu/Ubuntu-Regular.ttf");
+}
+
+@font-face {
+  font-family: Ubuntu-Bold;
+  src: url("../fonts/ubuntu/Ubuntu-Bold.ttf");
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  font-family: Ubuntu-Regular, sans-serif;
+}
+
+.limiter {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.signupContainer {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background-color: #e0e0e0;
+}
+
+.signupFormContainer {
+  /* min-width: 470px; */
+  width:500px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.signupForm {
+  width: 100%;
+  position: relative;
+}
+
+input {
+  outline: none;
+  border: none;
+}
+
+.formInput {
+  font-family: Ubuntu-Bold;
+  font-size: 15px;
+  color: #000000;
+  line-height: 1.2;
+
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 55px;
+  background: #ebebeb;
+  /* border-radius: 27px; */
+  padding: 0 35px 0 35px;
+}
+
+.signupFormButtonContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+button {
+  outline: none !important;
+  border: none;
+  background: transparent;
+}
+
+.signupFormButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  width: 100%;
+  height: 50px;
+  background-color: #57b846;
+  /* border-radius: 25px; */
+
+  font-family: Ubuntu-Bold;
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.signupFormButton:hover {
+  background-color: #1b3815;
+}

@@ -1,0 +1,302 @@
+@font-face {
+  font-family: Ubuntu-Regular;
+  src: url("../fonts/ubuntu/Ubuntu-Regular.ttf");
+}
+
+@font-face {
+  font-family: Ubuntu-Bold;
+  src: url("../fonts/ubuntu/Ubuntu-Bold.ttf");
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  font-family: Ubuntu-Regular, sans-serif;
+}
+
+.limiter {
+  width: 100%;
+  margin: 0 auto; /* tb lr*/
+}
+
+.checkoutContainer {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+  padding: 0 8%;
+  background-color: #e0e0e0;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: row;
+  vertical-align: text-top;
+}
+
+.placeOrderContainer {
+  background-color: white;
+  display: flex;
+  float: left;
+  width: 40%;
+  box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  /* height: 500px; */
+  /* border: 1px solid black; */
+  /* left: 10%; */
+}
+
+h3,
+h4 {
+  font-family: Ubuntu-Regular;
+  font-weight: normal;
+  padding: 10px 0;
+}
+
+.selectedProductsContainer {
+  background-color: white;
+  float: left;
+  margin-right: 20px;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.shippingInfoContainer {
+  float: left;
+  padding: 15px;
+}
+
+.f-w-b {
+  font-weight: bold;
+}
+
+.shippingInfoContainer a,
+p {
+  font-family: Ubuntu-Regular;
+}
+
+.edit {
+  color: #1a75ff;
+  text-decoration: none;
+}
+
+.placeOrderButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  width: 100%;
+  height: 50px;
+  background-color: #57b846;
+  /* border-radius: 25px; */
+  cursor: pointer;
+  font-family: Ubuntu-Bold;
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+button {
+  outline: none !important;
+  border: none;
+  background: transparent;
+}
+
+.placeOrderButton:hover {
+  background-color: #1b3815;
+}
+
+.productRowBackgroundContainer {
+  background-color: #e0e0e0;
+  width: 100%;
+  height: 215px;
+  display: flex;
+}
+
+.productRow {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  height: 200px;
+  box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  flex-direction: column;
+}
+
+.discount {
+  /* background-color: lightblue; */
+  width: 30%;
+  height: 80px;
+  padding: 12px;
+  display: flex;
+  border-radius: 10px;
+  border: 1px solid #1a75ff;
+  flex-direction: column;
+}
+
+.discount a {
+  font-family: Ubuntu-Regular;
+}
+
+.productInfoContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  /* padding: 15px 0px 15px 15px; */
+  /* border: 1px solid black; */
+}
+
+.pictureSize {
+  width: 80px;
+  height: 90px;
+  /* border: 1px solid black; */
+}
+
+.productName {
+  float: left;
+  margin-left: 10px;
+  /* border: 1px solid black; */
+  width: 50%;
+}
+
+.productPrice {
+  float: left;
+  margin-left: 10px;
+  /* border: 1px solid black; */
+  width: 15%;
+}
+
+.productQty {
+  float: right;
+  margin-left: 10px;
+  /* border: 1px solid black; */
+  width: 10%;
+}
+
+.modalContainer {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.modalContentContainer {
+  background-color: white;
+  margin: 15% auto;
+  width: 60%;
+  height: 50vh;
+  box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+  color: grey;
+  float: right;
+  font-size: 30px;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.editShippingForm {
+  width: 100%;
+  padding: 20px;
+}
+
+input {
+  outline: none;
+  border: none;
+}
+
+.formInput {
+  font-family: Ubuntu-Bold;
+  font-size: 13px;
+  color: #000000;
+  line-height: 1.2;
+
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 30px;
+  background: #ebebeb;
+  /* border-radius: 27px; */
+  padding: 0 10px 0 10px;
+}
+
+.buttonContainer {
+  width: 100%;
+  display: flex;
+}
+
+.formButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  width: 20%;
+  height: 40px;
+  background-color: #57b846;
+  /* border-radius: 25px; */
+
+  font-family: Ubuntu-Regular;
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.formButton:hover {
+  background-color: #1b3815;
+  cursor: pointer;
+}
+
+.paymentMethodContainer {
+  display: flex;
+  width: 100%;
+  height: 300px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.pointer{
+  cursor:pointer;
+}
+
+.paymentMethodImg {
+  width: 200px;
+  height: 120px;
+
+  -khtml-user-select: none;
+  -o-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}

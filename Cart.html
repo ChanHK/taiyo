@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>cart</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="css/util.css" />
+    <link rel="stylesheet" type="text/css" href="css/cart.css" />
+  </head>
+  <body>
+    <div class="limiter">
+      <div class="cartContainer">
+        <div class="cartButtonContainer">
+          <label class="selectAllCheckBoxContainer">
+            <input class="checkBox" type="checkbox" onClick="toggle(this)" />
+            <a>Select All</a>
+          </label>
+
+          <div class="float-r p-t-15 p-b-15 p-r-20">
+            <button class="removeCheckOutButton">Remove</button>
+          </div>
+
+          <div class="float-r p-t-15 p-b-15 p-l-20 p-r-20">
+            <button class="removeCheckOutButton">Check Out</button>
+          </div>
+        </div>
+
+        <form class="form">
+          <div class="cartRowContainer">
+            <div class="rowBar">
+              <div class="checkBoxContainer">
+                <input class="checkBox" type="checkbox" name="cb" />
+              </div>
+              <div class="imageContainer">
+                <img src="pictures/ps5-controller.jpg" alt="product" />
+              </div>
+              <div class="productInfoContainer">
+                <div class="productInfo">
+                  <h3>magna etiam tempor orci eu</h3>
+                  <h4>Seller: egestas congue quisque</h4>
+                  <h4>Price: RM 10000</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </form>
+
+        <div class="cartRowContainer">
+          <div class="rowBar">
+            <div class="productInfoContainer">
+              <div class="productInfo text-right">
+                <h3>There are no items in this cart</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function toggle(source) {
+        checkboxes = document.getElementsByName("cb");
+        for (var i = 0, n = checkboxes.length; i < n; i++) {
+          checkboxes[i].checked = source.checked;
+        }
+      }
+    </script>
+  </body>
+</html>

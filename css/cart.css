@@ -1,0 +1,179 @@
+@font-face {
+  font-family: Ubuntu-Regular;
+  src: url("../fonts/ubuntu/Ubuntu-Regular.ttf");
+}
+
+@font-face {
+  font-family: Ubuntu-Bold;
+  src: url("../fonts/ubuntu/Ubuntu-Bold.ttf");
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.limiter {
+  width: 100%;
+  margin: 0 auto; /* tb lr*/
+}
+
+.cartContainer {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  /* position: sticky; */
+  flex-direction: column;
+  justify-content: top;
+  align-items: center;
+  background-color: #e0e0e0;
+}
+
+button {
+  outline: none !important;
+  border: none;
+  background: transparent;
+}
+
+.cartButtonContainer {
+  width: 100%;
+  background-color: #e0e0e0;
+  height: 70px;
+  top: 0; /* + header height*/
+  /* position: sticky; */
+}
+
+.selectAllCheckBoxContainer {
+  padding: 20px 20px;
+  float: left;
+}
+
+.checkBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  float: left;
+}
+
+.selectAllCheckBoxContainer a {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-family: Ubuntu-Bold;
+  text-transform: uppercase;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.removeCheckOutButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 115px;
+  padding: 0 20px;
+  height: 40px;
+  background-color: #57b846;
+
+  font-family: Ubuntu-Bold;
+  border-radius: 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.removeCheckOutButton:hover {
+  background-color: #1b3815;
+}
+
+.cartRowContainer {
+  width: 80%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.rowBar {
+  background-color: lightyellow;
+  width: 100%;
+  height: 200px;
+  border-radius: 20px;
+  box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+  flex-direction: row;
+}
+
+.checkBoxContainer {
+  float: left;
+  padding: 85px 50px;
+  width: 12%;
+}
+
+.imageContainer {
+  float: left;
+  width: 20%;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.imageContainer img {
+  width: 80%;
+  height: 80%;
+  border: 1px solid black;
+}
+
+.productInfoContainer {
+  width: 60%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: plum; */
+}
+
+.productInfo {
+  width: 90%;
+  height: 80%;
+  padding: 20px;
+  /* background-color: aqua; */
+}
+
+h3 {
+  font-family: Ubuntu-Bold;
+}
+
+h4 {
+  font-family: Ubuntu-Regular;
+  padding: 10px 0px 0px 0px;
+}
+
+.form {
+  width: 100%;
+  min-height: 100vh;
+  justify-content: flex-start;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
