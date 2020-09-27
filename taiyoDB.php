@@ -12,7 +12,7 @@ if ($conn) {
     //     echo "database creation fail";
     // } 
 
-    //$sql = "CREATE TABLE User (user_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, user_email VARCHAR(50), user_password VARCHAR(15), username VARCHAR(30), user_description VARCHAR(255), gender INT(1), phone_number VARCHAR(15), user_address VARCHAR(255), age INT(3), profile_photo VARCHAR(255), PRIMARY KEY (user_id))";
+    //$sql = "CREATE TABLE User (user_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, user_email VARCHAR(50), user_password VARCHAR(15), username VARCHAR(20), user_description VARCHAR(255), gender INT(1), phone_number VARCHAR(15), user_address VARCHAR(255), age INT(3), profile_photo VARCHAR(255), PRIMARY KEY (user_id))";
     // gender is INT(1)
     // 1 = MALE
     // 2 = FEMALE
@@ -43,11 +43,17 @@ if ($conn) {
 
     // $sql = "INSERT INTO user (user_email, user_password, username, user_description, gender, phone_number, user_address, age) VALUES ('hk@gmail.com', 'abc123','CHANHK','this is user description',1,'012-3456789','this is user address',21)";
 
-    $sql = "INSERT INTO cart (quantity, product_id, user_id) VALUES (7, 2, 1)";
+    // $sql = "INSERT INTO cart (quantity, product_id, user_id) VALUES (7, 2, 1)";
 
     // $sql = "INSERT INTO product (product_name, product_price, product_description, product_state, category, quantity, user_id) VALUES ('ps5 console', 2500.00,'This is a brand new ps5 controller','new','gaming products',1,1)";
 
     // $sql = "INSERT INTO productimage (product_id, product_image) values (2,'pictures/ps5.jpg')";
+
+    //$sql = "INSERT INTO wishlist (product_id, user_id) VALUES (2,1)";
+
+    // $sql = "INSERT INTO user (user_email, user_password, username, gender, phone_number) VALUES ('JJ@gmail.com', '123456789', 'james', 1,'012-2345678')";
+
+    // $sql = "DELETE FROM user WHERE user_email = 'hkk@gmail.com'";
 
     if(mysqli_query($conn, $sql)) {
         echo "insert data success";

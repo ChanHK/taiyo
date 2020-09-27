@@ -1,8 +1,11 @@
 <?php
 $conn = mysqli_connect("localhost", "root", "", "taiyodb");
 
+session_start();
+$userID = $_SESSION["userID"]; // get user ID 
+
 if ($conn) {
-  $sql = "Select * from wishlist";
+  $sql = "SELECT * FROM wishlist WHERE user_id = $userID";
   $result = mysqli_query($conn, $sql);
 }
 ?>

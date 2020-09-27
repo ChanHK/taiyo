@@ -1,8 +1,11 @@
 <?php
 $conn = mysqli_connect("localhost", "root", "", "taiyodb");
 
+session_start();
+$userID = $_SESSION["userID"]; // get user ID 
+// echo $userID;
 if ($conn) {
-  $sql = "Select * from cart";
+  $sql = "SELECT * FROM cart WHERE user_id = $userID";
   $result = mysqli_query($conn, $sql);
 }
 ?>
@@ -154,6 +157,7 @@ if ($conn) {
     </div>
   </div>
   <script>
+    
     let checkboxes = document.getElementsByName("cb[]");
 
     function toggle(source) {

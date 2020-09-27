@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,20 +50,17 @@
           </div>
 
           <div class="loginFormButtonContainer p-b-100">
-            <button type="submit" class="loginFormButton" id="submitButton">Login</button>
+            <button class="loginFormButton">Login</button>
           </div>
-        </form>
 
+        </form>
         <?php
         $conn = mysqli_connect("localhost", "root", "", "taiyodb");
         $email = $password = "";
-        $continue = false;
-        $userID = 0;
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $email = test_input($_POST["Email"]);
           $password = test_input($_POST["Password"]);
-
           if ($conn) {
             $sql = "SELECT user_id FROM user WHERE user_email = '$email' AND user_password = '$password'";
             $result = mysqli_query($conn, $sql);
@@ -71,12 +72,12 @@
               while ($a = mysqli_fetch_assoc($result)) {
                 $user_id = $a['user_id'];
                 $userID = intval($user_id);
+                $_SESSION["userID"] = $userID; // store userID to session so all page can use this user ID
                 header("Location: Cart.php");
               }
             }
           }
         }
-
         function test_input($data)
         {
           $data = trim($data);
@@ -99,19 +100,17 @@
     function saveValue(e) {
       var id = e.id;
       var val = e.value;
-      sessionStorage.setItem(id, val);
+      localStorage.setItem(id, val);
     }
 
     function getSavedValue(v) {
-      if (!sessionStorage.getItem(v)) {
+      if (!localStorage.getItem(v)) {
         return "";
       }
-      return sessionStorage.getItem(v);
+      return localStorage.getItem(v);
     }
 
-
     function showOrHidePassword() {
-      console.log("aaaa");
       var x = document.getElementById("password");
       if (x.type === "password") {
         x.type = "text";
