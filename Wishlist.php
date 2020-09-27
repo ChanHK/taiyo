@@ -1,16 +1,20 @@
 <?php
 $conn = mysqli_connect("localhost", "root", "", "taiyodb");
-
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 session_start();
 $userID = $_SESSION["userID"]; // get user ID 
+$noID = false;
 
-if ($conn) {
+if ($userID == null) {
+  $noID = false;
+  $sql = "SELECT * FROM wishlist WHERE user_id = '0'";
+  $result = mysqli_query($conn, $sql);
+} else if ($conn) {
+  $noID = true;
   $sql = "SELECT * FROM wishlist WHERE user_id = $userID";
   $result = mysqli_query($conn, $sql);
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,9 +49,18 @@ if ($conn) {
         <?php
         // print_r($result);
         $count = $result->num_rows;
-        // echo $count;
-        // echo gettype($count);
-        if ($count == 0) {
+
+        if (!$noID) {
+          echo "<div class='cartRowContainer'>";
+          echo "<div class='rowBar'>";
+          echo "<div class='productInfoContainer'>";
+          echo "<div class='productInfo text-right'>";
+          echo "<h3>Please sign in or register to view wishlist</h3>";
+          echo "</div>";
+          echo "</div>";
+          echo "</div>";
+          echo "</div>";
+        } else if ($count == 0) {
           echo "<div class='cartRowContainer'>";
           echo "<div class='rowBar'>";
           echo "<div class='productInfoContainer'>";
@@ -59,7 +72,6 @@ if ($conn) {
           echo "</div>";
         }
         ?>
-
 
         <?php
         while ($rows = mysqli_fetch_assoc($result)) {
@@ -73,7 +85,6 @@ if ($conn) {
               ?>
 
               <?php
-              // print_r ($rows);
               $imageSQL = "SELECT product_image FROM productimage, product, wishlist WHERE productimage.product_id=product.product_id AND {$rows['product_id']}=product.product_id limit 1";
               $image = mysqli_query($conn, $imageSQL);
               echo "<div class='imageContainer'>";
@@ -83,10 +94,8 @@ if ($conn) {
               echo "</div>";
               ?>
 
-
               <div class="productInfoContainer">
                 <div class="productInfo">
-
                   <?php
                   $productNameSQL = "SELECT product_name FROM product WHERE product.product_id = {$rows['product_id']}";
                   $productName = mysqli_query($conn, $productNameSQL);
@@ -121,30 +130,23 @@ if ($conn) {
         if (!empty($_POST['cb'])) {
           $wishlistID = [];
           foreach ($_POST['cb'] as $check) {
-            // echo $check;
             array_push($wishlistID, $check);
           }
-          // print_r($wishlistID);
           $productID = [];
           $userID = [];
           foreach ($wishlistID as $wl) {
             $productSQL = "SELECT product_id FROM wishlist WHERE wishlist_item_id = $wl";
             $product = mysqli_query($conn, $productSQL);
-            // print_r($product);
             while ($a = mysqli_fetch_assoc($product)) {
-              // echo "<h3>{$a['product_id']}</h3>";
               array_push($productID, $a['product_id']);
             }
 
             $userSQL = "SELECT user_id FROM wishlist WHERE wishlist_item_id = $wl";
             $user = mysqli_query($conn, $userSQL);
-            // print_r($user);
             while ($a = mysqli_fetch_assoc($user)) {
-              // echo "<h3>{$a['user_id']}</h3>";
               array_push($userID, $a['user_id']);
             }
           }
-          // print_r($productID);
 
           $i = 0;
           while ($i < count($productID)) {
@@ -161,7 +163,6 @@ if ($conn) {
       } else if (array_key_exists('remove', $_POST)) {
         if (!empty($_POST['cb'])) {
           foreach ($_POST['cb'] as $check) {
-            // echo $check;
             $deleteSQL = "DELETE FROM wishlist WHERE wishlist_item_id = $check";
             if (mysqli_query($conn, $deleteSQL)) {
               echo "<meta http-equiv='refresh' content='0'>";
@@ -169,10 +170,7 @@ if ($conn) {
           }
         }
       }
-
-      // print_r($_POST['cb']);
       ?>
-
     </div>
   </div>
 

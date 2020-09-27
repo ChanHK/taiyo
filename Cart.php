@@ -1,15 +1,21 @@
 <?php
 $conn = mysqli_connect("localhost", "root", "", "taiyodb");
-
+error_reporting(E_ERROR | E_WARNING | E_PARSE); // remove notice
 session_start();
 $userID = $_SESSION["userID"]; // get user ID 
+$noID = false;
 // echo $userID;
-if ($conn) {
+if ($userID == null) {
+  $noID = false;
+  $sql = "SELECT * FROM cart WHERE user_id = '0'";
+  $result = mysqli_query($conn, $sql);
+}
+else if ($conn) {
+  $noID = true;
   $sql = "SELECT * FROM cart WHERE user_id = $userID";
   $result = mysqli_query($conn, $sql);
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,8 +36,6 @@ if ($conn) {
           <a>Select All</a>
         </label>
 
-
-
         <div class="float-r p-t-15 p-b-15 p-r-20">
           <button class="removeCheckOutButton" form="form">remove</button>
         </div>
@@ -39,16 +43,23 @@ if ($conn) {
         <div class="float-r p-t-15 p-b-15 p-l-20 p-r-20">
           <button onclick="checkOut()" class="removeCheckOutButton">check out</button>
         </div>
-
       </div>
 
       <form id="form" method="post" class="form">
         <?php
-        // print_r($result);
         $count = $result->num_rows;
-        // echo $count;
-        // echo gettype($count);
-        if ($count == 0) {
+        if (!$noID) {
+          echo "<div class='cartRowContainer'>";
+          echo "<div class='rowBar'>";
+          echo "<div class='productInfoContainer'>";
+          echo "<div class='productInfo text-right'>";
+          echo "<h3>Please sign in or register to view cart</h3>";
+          echo "</div>";
+          echo "</div>";
+          echo "</div>";
+          echo "</div>";
+        }
+        else if ($count == 0) {
           echo "<div class='cartRowContainer'>";
           echo "<div class='rowBar'>";
           echo "<div class='productInfoContainer'>";
@@ -60,7 +71,6 @@ if ($conn) {
           echo "</div>";
         }
         ?>
-
 
         <?php
         while ($rows = mysqli_fetch_assoc($result)) {
@@ -74,7 +84,6 @@ if ($conn) {
               ?>
 
               <?php
-              // print_r ($rows);
               $imageSQL = "SELECT product_image FROM productimage, product, cart WHERE productimage.product_id=product.product_id AND {$rows['product_id']}=product.product_id limit 1";
               $image = mysqli_query($conn, $imageSQL);
               echo "<div class='imageContainer'>";
@@ -84,10 +93,8 @@ if ($conn) {
               echo "</div>";
               ?>
 
-
               <div class="productInfoContainer">
                 <div class="productInfo">
-
                   <?php
                   $productNameSQL = "SELECT product_name FROM product WHERE product.product_id = {$rows['product_id']}";
                   $productName = mysqli_query($conn, $productNameSQL);
@@ -124,7 +131,6 @@ if ($conn) {
       <?php
       $conn = mysqli_connect("localhost", "root", "", "taiyodb");
 
-
       if (!empty($_POST['cb'])) {
         foreach ($_POST['cb'] as $check) {
           echo $check;
@@ -134,26 +140,7 @@ if ($conn) {
           }
         }
       }
-      // print_r($_POST['cb']);
       ?>
-
-      <!-- <div class="cartRowContainer">
-        <div class="rowBar">
-          <div class="checkBoxContainer">
-            <input class="checkBox" type="checkbox" checked="checked" />
-          </div>
-          <div class="imageContainer">
-            <img src="pictures/ps5-controller.jpg" alt="product" />
-          </div>
-          <div class="productInfoContainer">
-            <div class="productInfo">
-              <h3>magna etiam tempor orci eu</h3>
-              <h4>Seller: egestas congue quisque</h4>
-              <h4>Price: RM 10000</h4>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
   <script>
