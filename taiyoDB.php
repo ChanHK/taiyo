@@ -43,7 +43,7 @@ if ($conn) {
 
     // $sql = "INSERT INTO user (user_email, user_password, username, user_description, gender, phone_number, user_address, age) VALUES ('hk@gmail.com', 'abc123','CHANHK','this is user description',1,'012-3456789','this is user address',21)";
 
-    // $sql = "INSERT INTO cart (quantity, product_id, user_id) VALUES (7, 2, 1)";
+    $sql = "INSERT INTO cart (quantity, product_id, user_id) VALUES (7, 2, 113631)";
 
     // $sql = "INSERT INTO product (product_name, product_price, product_description, product_state, category, quantity, user_id) VALUES ('ps5 console', 2500.00,'This is a brand new ps5 controller','new','gaming products',1,1)";
 

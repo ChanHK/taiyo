@@ -9,8 +9,7 @@ if ($userID == null) {
   $noID = false;
   $sql = "SELECT * FROM cart WHERE user_id = '0'";
   $result = mysqli_query($conn, $sql);
-}
-else if ($conn) {
+} else if ($conn) {
   $noID = true;
   $sql = "SELECT * FROM cart WHERE user_id = $userID";
   $result = mysqli_query($conn, $sql);
@@ -40,9 +39,9 @@ else if ($conn) {
           <button class="removeCheckOutButton" form="form">remove</button>
         </div>
 
-        <div class="float-r p-t-15 p-b-15 p-l-20 p-r-20">
-          <button onclick="checkOut()" class="removeCheckOutButton">check out</button>
-        </div>
+        <form class="float-r p-t-15 p-b-15 p-l-20 p-r-20">
+          <button type="submit" class="removeCheckOutButton" form="form" name="co">check out</button>
+        </form>
       </div>
 
       <form id="form" method="post" class="form">
@@ -58,8 +57,7 @@ else if ($conn) {
           echo "</div>";
           echo "</div>";
           echo "</div>";
-        }
-        else if ($count == 0) {
+        } else if ($count == 0) {
           echo "<div class='cartRowContainer'>";
           echo "<div class='rowBar'>";
           echo "<div class='productInfoContainer'>";
@@ -130,13 +128,24 @@ else if ($conn) {
       </form>
       <?php
       $conn = mysqli_connect("localhost", "root", "", "taiyodb");
-
-      if (!empty($_POST['cb'])) {
-        foreach ($_POST['cb'] as $check) {
-          echo $check;
-          $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $check";
-          if (mysqli_query($conn, $deleteSQL)) {
-            echo "<meta http-equiv='refresh' content='0'>";
+      if (isset($_POST["co"])) {
+        if (isset($_POST['cb']) && is_array($_POST['cb'])) {
+          $cartIDArray = [];
+          foreach ($_POST['cb'] as $value) {
+            // echo "I have a {$value}!";
+            array_push($cartIDArray, $value);
+          }
+          $_SESSION['cartIDArray'] = $cartIDArray;
+          header("Location: Checkout.php");
+        }
+      } else {
+        if (!empty($_POST['cb'])) {
+          foreach ($_POST['cb'] as $check) {
+            echo $check;
+            $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $check";
+            if (mysqli_query($conn, $deleteSQL)) {
+              echo "<meta http-equiv='refresh' content='0'>";
+            }
           }
         }
       }
@@ -144,7 +153,6 @@ else if ($conn) {
     </div>
   </div>
   <script>
-    
     let checkboxes = document.getElementsByName("cb[]");
 
     function toggle(source) {

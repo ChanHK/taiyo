@@ -71,6 +71,7 @@ h4 {
 .shippingInfoContainer {
   float: left;
   padding: 15px;
+  width: 100%;
 }
 
 .f-w-b {
