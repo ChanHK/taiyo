@@ -220,6 +220,44 @@
           <br />
           <hr class="m-l-20 m-r-20" />
           <br />
+          <h3 class="p-t-20 p-l-20 p-r-20">
+            Confirm to purchase this products?
+          </h3>
+          <br /><br /><br /><br /><br /><br />
+          <div class="buttonContainer">
+            <button
+              class="formButton m-l-auto m-r-15"
+              onclick="closeConfirmationModal()"
+            >
+              No
+            </button>
+            <button class="formButton m-r-20" onclick="openNoticeModal()">
+              Yes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="checkOutNoticeModal" class="modalContainer">
+        <div class="modalContentContainer">
+          <h3 class="p-t-20 p-l-20 p-r-20">
+            Notice
+            <span class="close" onclick="closeNoticeModal(),closeConfirmationModal()"
+              >&times;</span
+            >
+          </h3>
+          <br />
+          <hr class="m-l-20 m-r-20" />
+          <br />
+          <h3 class="p-t-20 p-l-20 p-r-20">
+            Your order is confirmed ! It is on its way.
+          </h3>
+          <br /><br />
+          <img src="https://media.giphy.com/media/8mpR0LykCqObF8t7Y5/giphy.gif" alt="delivery incoming !!!"  width=250 class="m-l-290"/>
+          <br /><br />
+          <div class="buttonContainer">
+            <button class="formButton m-l-auto m-r-15">Okay</button>
+          </div>
         </div>
       </div>
     </div>
@@ -253,6 +291,14 @@
 
       function closeConfirmationModal() {
         checkOutConfirmationModal.style.display = "none";
+      }
+
+      function openNoticeModal() {
+        checkOutNoticeModal.style.display = "block";
+      }
+
+      function closeNoticeModal() {
+        checkOutNoticeModal.style.display = "none";
       }
 
       window.onclick = function (event) {
