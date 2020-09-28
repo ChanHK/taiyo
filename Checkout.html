@@ -226,12 +226,12 @@
           <br /><br /><br /><br /><br /><br />
           <div class="buttonContainer">
             <button
-              class="formButton m-l-auto m-r-15"
+              class="formButton m-l-auto m-r-15 m-b-20"
               onclick="closeConfirmationModal()"
             >
               No
             </button>
-            <button class="formButton m-r-20" onclick="openNoticeModal()">
+            <button class="formButton m-r-20 m-b-20" onclick="openNoticeModal(),closeConfirmationModal()">
               Yes
             </button>
           </div>
@@ -242,9 +242,6 @@
         <div class="modalContentContainer">
           <h3 class="p-t-20 p-l-20 p-r-20">
             Notice
-            <span class="close" onclick="closeNoticeModal(),closeConfirmationModal()"
-              >&times;</span
-            >
           </h3>
           <br />
           <hr class="m-l-20 m-r-20" />
@@ -256,8 +253,56 @@
           <img src="https://media.giphy.com/media/8mpR0LykCqObF8t7Y5/giphy.gif" alt="delivery incoming !!!"  width=250 class="m-l-290"/>
           <br /><br />
           <div class="buttonContainer">
-            <button class="formButton m-l-auto m-r-15">Okay</button>
+            <button
+              class="formButton m-l-auto m-r-15 m-b-20"
+              onclick ="closeNoticeModal(),openReviewModal()"
+            >
+              Review Seller
+            </button>
+            <button class="formButton m-r-20 m-b-20">Continue Shopping</button>
           </div>
+        </div>
+      </div>
+
+      <div id="reviewSellerModal" class="modalContainer">
+        <div class="modalContentContainer">
+          <h3 class="p-t-20 p-l-20 p-r-20">
+            Review Seller
+          </h3>
+          <br />
+          <hr class="m-l-20 m-r-20" />
+
+          <form class="editShippingForm">
+            <i class="fa fa-users p-b-10"
+              ><a class="f-w-b p-l-18 fs-18">Seller Info (Seller 1)</a></i
+            >
+            <div class="m-b-16 m-l-20 m-r-20">
+              <h4>Seller name: dasdassda</h4>
+              <h4>Sold: sadadad</h4>
+              <h4>Price: dasdassda</h4> 
+            </div>
+
+            <i class="fa fa-certificate p-b-10"
+              ><a class="p-l-13 fs-18 f-w-b">Review</a></i
+            >
+            <div class="m-b-50 m-l-20 m-r-20">
+              <input
+                class="formInput"
+                type="text"
+                name="review"
+                placeholder= "Enter your review here"
+              />
+            </div>
+
+            <div class="buttonContainer">
+              <button
+                class="formButton m-l-auto m-r-15"
+              >
+                Cancel
+              </button>
+              <button class="formButton m-r-20">Save</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -301,6 +346,9 @@
         checkOutNoticeModal.style.display = "none";
       }
 
+      function openReviewModal() {
+        reviewSellerModal.style.display = "block";
+      }
       window.onclick = function (event) {
         if (event.target == shippingInfoModal) {
           shippingInfoModal.style.display = "none";
