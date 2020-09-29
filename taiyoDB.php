@@ -12,7 +12,7 @@ if ($conn) {
     //     echo "database creation fail";
     // } 
 
-    //$sql = "CREATE TABLE User (user_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, user_email VARCHAR(50), user_password VARCHAR(15), username VARCHAR(20), user_description VARCHAR(255), gender INT(1), phone_number VARCHAR(15), user_address VARCHAR(255), age INT(3), profile_photo VARCHAR(255), PRIMARY KEY (user_id))";
+    //$sql = "CREATE TABLE User (user_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, user_email VARCHAR(50), user_password VARCHAR(15), username VARCHAR(20), user_description VARCHAR(255), gender VARCHAR(6), phone_number VARCHAR(15), user_address VARCHAR(255), age INT(3), profile_photo VARCHAR(255), PRIMARY KEY (user_id))";
     // gender is INT(1)
     // 1 = MALE
     // 2 = FEMALE
@@ -41,7 +41,7 @@ if ($conn) {
     // } 
 
 
-    // $sql = "INSERT INTO user (user_email, user_password, username, user_description, gender, phone_number, user_address, age) VALUES ('hk@gmail.com', 'abc123','CHANHK','this is user description',1,'012-3456789','this is user address',21)";
+    // $sql = "INSERT INTO user (user_email, user_password, username, user_description, gender, phone_number, user_address, age) VALUES ('hk@gmail.com', 'abc123','CHANHK','this is user description','Male','012-3456789','this is user address',21)";
 
     $sql = "INSERT INTO cart (quantity, product_id, user_id) VALUES (7, 2, 113631)";
 

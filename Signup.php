@@ -90,9 +90,9 @@ session_start();
               <option id="defaultOption" value="0" selected='selected' hidden>
                 Gender
               </option>
-              <option id="genderOption1" value="1">Male</option>
-              <option id="genderOption2" value="2">Female</option>
-              <option id="genderOption3" value="3">Others</option>
+              <option id="genderOption1" value="Male">Male</option>
+              <option id="genderOption2" value="Female">Female</option>
+              <option id="genderOption3" value="Others">Others</option>
             </select>
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -142,7 +142,8 @@ session_start();
           $username = test_input($_POST["username"]);
           $email = test_input($_POST["email"]);
           $password = test_input($_POST["password"]);
-          $gender = intval($_POST["gender"]);
+          // $gender = intval($_POST["gender"]);
+          $gender = $_POST["gender"];
           $mobile = test_input($_POST["phonenumber"]);
         }
 
@@ -150,7 +151,7 @@ session_start();
           if ($conn) {
             $usernameCheckSQL = "SELECT username FROM user WHERE username = '$username'";
             $emailCheckSQL = "SELECT user_email FROM user WHERE user_email = '$email'";
-            $sql = "INSERT INTO user (user_email, user_password, username, gender, phone_number) VALUES ('$email', '$password', '$username', $gender, '$mobile')";
+            $sql = "INSERT INTO user (user_email, user_password, username, gender, phone_number) VALUES ('$email', '$password', '$username', '$gender', '$mobile')";
             $usernameResult = mysqli_query($conn, $usernameCheckSQL);
             $emailResult = mysqli_query($conn, $emailCheckSQL);
             // print_r($usernameResult);
@@ -223,7 +224,7 @@ session_start();
     document.getElementById("GENDER").onchange = function() {
       document.getElementById("GENDER").style.color = "black";
       if (document.getElementById("GENDER").value) {
-        console.log("thisss" + document.getElementById("GENDER").value);
+        // console.log("thisss" + document.getElementById("GENDER").value);
         localStorage["item"] = document.getElementById("GENDER").value;
       }
     }
