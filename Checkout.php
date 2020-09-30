@@ -4,8 +4,22 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE); // remove notice
 session_start();
 $userID = $_SESSION["userID"]; // get user ID 
 $noID = false;
-echo $userID;
-print_r($_SESSION['cartIDArray']);
+$cartIDArray = [];
+$productID = $_SESSION["productID"]; //get from product page
+$quantity = $_SESSION["quantity"]; // get from product page
+// $productID = 1;
+// echo $userID;
+// print_r($_SESSION['cartIDArray']);
+
+if ($_SESSION['cartIDArray'] != null) {
+  foreach ($_SESSION['cartIDArray'] as $a) {
+    array_push($cartIDArray, $a);
+  }
+}
+// print_r($cartIDArray);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 ?>
 
 
@@ -25,9 +39,49 @@ print_r($_SESSION['cartIDArray']);
     <div class="checkoutContainer">
       <div class="selectedProductsContainer">
         <?php
-        foreach ($_SESSION['cartIDArray'] as $cartID) {
-          $cartProductUserIDSQL = "SELECT product_id, user_id, quantity FROM cart WHERE cart_item_id = $cartID";
-          $cartProductUseResult = mysqli_query($conn, $cartProductUserIDSQL);
+        if ($productID == null) {
+          foreach ($cartIDArray as $cartID) {
+            $cartProductUserIDSQL = "SELECT product_id, user_id, quantity FROM cart WHERE cart_item_id = $cartID";
+            $cartProductUseResult = mysqli_query($conn, $cartProductUserIDSQL);
+            echo "<div class='productRowBackgroundContainer'>";
+            echo "<div class='productRow'>";
+            echo "<div class='discount'>";
+            echo "<i class='fa fa-check-circle p-l-15'><a class='p-l-13'>RM 4.00</a></i>";
+            echo "<br />";
+            echo "<a class='p-l-41 fs-12'>Standard Delivery</a>";
+            echo "</div>";
+            while ($a = mysqli_fetch_assoc($cartProductUseResult)) {
+              // print_r($a);
+              $imageSQL = "SELECT product_image FROM productimage WHERE product_id = $a[product_id]";
+              $imageResult = mysqli_query($conn, $imageSQL);
+              while ($b = mysqli_fetch_assoc($imageResult)) {
+                // print_r($b);
+                echo "<div class='productInfoContainer'>";
+                echo "<div class='float-l p-t-5'>";
+                echo "<img class='pictureSize' src='{$b['product_image']}' alt='product' />";
+                echo "</div>";
+              }
+              $productNameSQL = "SELECT product_name, product_price FROM product WHERE product_id = $a[product_id]";
+              $productNameResult = mysqli_query($conn, $productNameSQL);
+              while ($c = mysqli_fetch_assoc($productNameResult)) {
+                // print_r($c);
+                echo "<div class='productName p-t-10'>";
+                echo "<a class='fs-15 f-w-b'>$c[product_name]</a>";
+                echo "</div>";
+
+                echo "<div class='productPrice p-t-10'>";
+                echo "<a class='fs-15'>RM $c[product_price]</a>";
+                echo "</div>";
+              }
+              echo "<div class='productQty p-t-10'>";
+              echo "<a class='fs-15'>Qty: $a[quantity]</a>";
+              echo "</div>";
+              echo "</div>";
+              echo "</div>";
+              echo "</div>";
+            }
+          }
+        } else {
           echo "<div class='productRowBackgroundContainer'>";
           echo "<div class='productRow'>";
           echo "<div class='discount'>";
@@ -35,43 +89,38 @@ print_r($_SESSION['cartIDArray']);
           echo "<br />";
           echo "<a class='p-l-41 fs-12'>Standard Delivery</a>";
           echo "</div>";
-          while ($a = mysqli_fetch_assoc($cartProductUseResult)) {
-            // print_r($a);
-            $imageSQL = "SELECT product_image FROM productimage WHERE product_id = $a[product_id]";
-            $imageResult = mysqli_query($conn, $imageSQL);
-            while ($b = mysqli_fetch_assoc($imageResult)) {
-              // print_r($b);
-              echo "<div class='productInfoContainer'>";
-              echo "<div class='float-l p-t-5'>";
-              echo "<img class='pictureSize' src='{$b['product_image']}' alt='product' />";
-              echo "</div>";
-            }
-            $productNameSQL = "SELECT product_name, product_price FROM product WHERE product_id = $a[product_id]";
-            $productNameResult = mysqli_query($conn, $productNameSQL);
-            while ($c = mysqli_fetch_assoc($productNameResult)) {
-              // print_r($c);
-              echo "<div class='productName p-t-10'>";
-              echo "<a class='fs-15 f-w-b'>$c[product_name]</a>";
-              echo "</div>";
 
-              echo "<div class='productPrice p-t-10'>";
-              echo "<a class='fs-15'>RM $c[product_price]</a>";
-              echo "</div>";
-            }
-
-            echo "<div class='productQty p-t-10'>";
-            echo "<a class='fs-15'>Qty: $a[quantity]</a>";
-            echo "</div>";
-            echo "</div>";
-            echo "</div>";
+          $imageSQL = "SELECT product_image FROM productimage WHERE product_id = '$productID'";
+          $imageResult = mysqli_query($conn, $imageSQL);
+          while ($i = mysqli_fetch_assoc($imageResult)) {
+            echo "<div class='productInfoContainer'>";
+            echo "<div class='float-l p-t-5'>";
+            echo "<img class='pictureSize' src='{$i['product_image']}' alt='product' />";
             echo "</div>";
           }
+          $productNameSQL = "SELECT product_name, product_price FROM product WHERE product_id = '$productID'";
+          $productNameResult = mysqli_query($conn, $productNameSQL);
+          while ($j = mysqli_fetch_assoc($productNameResult)) {
+            echo "<div class='productName p-t-10'>";
+            echo "<a class='fs-15 f-w-b'>$j[product_name]</a>";
+            echo "</div>";
+
+            echo "<div class='productPrice p-t-10'>";
+            echo "<a class='fs-15'>RM $j[product_price]</a>";
+            echo "</div>";
+          }
+          echo "<div class='productQty p-t-10'>";
+          echo "<a class='fs-15'>Qty: $j[quantity]</a>";
+          echo "</div>";
+          echo "</div>";
+          echo "</div>";
+          echo "</div>";
         }
         ?>
       </div>
 
       <div class="placeOrderContainer">
-        <div class="shippingInfoContainer">
+        <div class="shippingInfoContainer" style="width: 100%;">
           <h3>
             Shipping & Billing
             <span class="float-r"><a class="edit fs-15" href="#" onclick="openshippingInfoModal()">Edit</a></span>
@@ -143,11 +192,19 @@ print_r($_SESSION['cartIDArray']);
 
           <?php
           $totalPrice = $totalDeliveryFee = 0.00;
-          foreach ($_SESSION['cartIDArray'] as $cartID) {
-            $priceSQL = "SELECT product_price FROM product,cart WHERE cart.product_id = product.product_id AND cart_item_id = $cartID";
+          if ($productID == null) {
+            foreach ($cartIDArray as $cartID) {
+              $priceSQL = "SELECT product_price FROM product,cart WHERE cart.product_id = product.product_id AND cart_item_id = $cartID";
+              $priceResult = mysqli_query($conn, $priceSQL);
+              while ($d = mysqli_fetch_assoc($priceResult)) {
+                $totalPrice = $totalPrice + $d['product_price'];
+                $totalDeliveryFee = $totalDeliveryFee + 4.00;
+              }
+            }
+          } else {
+            $priceSQL = "SELECT product_price FROM product WHERE product_id = '$productID'";
             $priceResult = mysqli_query($conn, $priceSQL);
             while ($d = mysqli_fetch_assoc($priceResult)) {
-              // print_r($d);
               $totalPrice = $totalPrice + $d['product_price'];
               $totalDeliveryFee = $totalDeliveryFee + 4.00;
             }
@@ -224,7 +281,7 @@ print_r($_SESSION['cartIDArray']);
           $address = test_input($_POST["address"]);
           $phone = test_input(strval($_POST["phoneNumber"]));
         }
-        if($address !=="" and $phone !=="") {
+        if ($address !== "" and $phone !== "") {
           $updateSQL = "UPDATE user SET user_address = '$address', phone_number = '$phone' WHERE user_id = $userID";
           $updateResult = mysqli_query($conn, $updateSQL);
           header("Refresh:0");
@@ -297,48 +354,201 @@ print_r($_SESSION['cartIDArray']);
         <br /><br />
         <img src="https://media.giphy.com/media/8mpR0LykCqObF8t7Y5/giphy.gif" alt="delivery incoming !!!" width=250 class="m-l-290" />
         <br /><br />
-        <div class="buttonContainer">
-          <button class="formButton m-l-auto m-r-15 m-b-20" onclick="closeNoticeModal(),openReviewModal()">
+        <form class="buttonContainer" method="post">
+          <button type="button" class="formButton m-l-auto m-r-15 m-b-20" onclick="closeNoticeModal(),openReviewModal()">
             Review Seller
           </button>
-          <button class="formButton m-r-20 m-b-20">Continue Shopping</button>
-        </div>
+          <button class="formButton m-r-20 m-b-20" type="submit" name="shop">Continue Shopping</button>
+        </form>
+        <?php
+        $done = false;
+        if (isset($_POST['shop'])) {
+          if ($productID == null) {
+            foreach ($cartIDArray as $x) {
+              $dataSQL = "SELECT quantity, product_id, user_id FROM cart WHERE cart_item_id = $x";
+              $dataResult = mysqli_query($conn, $dataSQL);
+              while ($y = mysqli_fetch_assoc($dataResult)) {
+                $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, user_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$y['user_id']}' )";
+                mysqli_query($conn, $storeTransSQL);
+              }
+              $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $x";
+              mysqli_query($conn, $deleteSQL);
+            }
+            unset($_SESSION['cartIDArray']);
+            $done = true;
+          } else {
+            $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, user_id) VALUES ('Buy', $quantity, $productID, $userID)";
+            mysqli_query($conn, $storeTransSQL);
+            $done = true;
+          }
+        }
+        if ($done) {
+          // header("Location: Wishlist.php",  true,  301 );
+          echo "<script type='text/javascript'>window.top.location='Wishlist.php';</script>";
+          // echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
+          exit;
+        }
+        ?>
       </div>
     </div>
 
     <div id="reviewSellerModal" class="modalContainer">
-      <div class="modalContentContainer">
+      <div class="modalContentContainerTheSec">
         <h3 class="p-t-20 p-l-20 p-r-20">
           Review Seller
         </h3>
         <br />
         <hr class="m-l-20 m-r-20" />
 
-        <form class="editShippingForm">
-          <i class="fa fa-users p-b-10"><a class="f-w-b p-l-18 fs-18">Seller Info (Seller 1)</a></i>
-          <div class="m-b-16 m-l-20 m-r-20">
-            <h4>Seller name: dasdassda</h4>
-            <h4>Sold: sadadad</h4>
-            <h4>Price: dasdassda</h4>
-          </div>
+        <?php
+        $sellerCount = 1;
+        if ($productID != null) {
+          $sellerNameSQL = "SELECT username FROM user, product WHERE product.user_id = user.user_id AND product_id = $productID";
+          $sellerNameResult = mysqli_query($conn, $sellerNameSQL);
+          while ($o = mysqli_fetch_assoc($sellerNameResult)) {
+            echo "<form class='editShippingForm' method='post'>";
+            echo "<i class='fa fa-users p-b-10'>";
+            echo "<a class='f-w-b p-l-18 fs-18'>";
+            echo "Seller Info (Seller ";
+            echo $sellerCount;
+            echo ")";
+            echo "</a></i>";
+            echo "<div class='m-b-16 m-l-20 m-r-20'>";
+            echo "<h4>Seller name: {$o['username']}</h4>";
+          }
+          $sellerDataSQL = "SELECT product_name, product_price FROM product WHERE product_id = $productID";
+          $sellerDataResult = mysqli_query($conn, $sellerDataSQL);
+          while ($u = mysqli_fetch_assoc($sellerDataResult)) {
+            echo "<h4>Sold: {$u['product_name']}</h4>";
+            echo "<h4>Price: RM {$u['product_price']}</h4></div>";
+          }
 
-          <i class="fa fa-certificate p-b-10"><a class="p-l-13 fs-18 f-w-b">Review</a></i>
-          <div class="m-b-50 m-l-20 m-r-20">
-            <input class="formInput" type="text" name="review" placeholder="Enter your review here" />
-          </div>
+          echo "<i class='fa fa-certificate p-b-10'><a class='p-l-13 fs-18 f-w-b'>Review</a></i>";
+          echo "<div class='m-b-50 m-l-20 m-r-20'>";
+          echo "<input class='formInput' type='text' name='review[]' placeholder='Enter your review here' />";
+          echo "</div>";
 
-          <div class="buttonContainer">
-            <button class="formButton m-l-auto m-r-15">
-              Cancel
-            </button>
-            <button class="formButton m-r-20">Save</button>
-          </div>
-        </form>
+          echo "<div class='buttonContainer'>";
+          echo "<button type='submit' class='formButton m-l-auto m-r-15' name='cancelReview'>";
+          echo "Cancel";
+          echo "</button>";
+          echo "<button class='formButton m-r-20' name='saveReview' type='submit'>Save</button>";
+          echo "</div>";
+          echo "</form>";
+        } else {
+          foreach ($cartIDArray as $h) {
+            $getUsernameSQL = "SELECT username FROM user, cart WHERE user.user_id = cart.user_id AND cart_item_id = $h";
+            $getUsernameResult = mysqli_query($conn, $getUsernameSQL);
+            while ($k = mysqli_fetch_assoc($getUsernameResult)) {
+              echo "<form class='editShippingForm' method='post'>";
+              echo "<i class='fa fa-users p-b-10'>";
+              echo "<a class='f-w-b p-l-18 fs-18'>";
+              echo "Seller Info (Seller ";
+              echo $sellerCount;
+              echo ")";
+              echo "</a></i>";
+              echo "<div class='m-b-16 m-l-20 m-r-20'>";
+              echo "<h4>Seller name: {$k['username']}</h4>";
+            }
+            $getProductIDSQL = "SELECT product_id FROM cart where cart_item_id = $h";
+            $getProductIDResult = mysqli_query($conn, $getProductIDSQL);
+            while ($u = mysqli_fetch_assoc($getProductIDResult)) {
+              $sellerDataSQL = "SELECT product_name, product_price FROM product WHERE product_id = {$u['product_id']}";
+              $sellerDataResult = mysqli_query($conn, $sellerDataSQL);
+              while ($k = mysqli_fetch_assoc($sellerDataResult)) {
+                echo "<h4>Sold: {$k['product_name']}</h4>";
+                echo "<h4>Price: RM {$k['product_price']}</h4></div>";
+              }
+            }
+            echo "<i class='fa fa-certificate p-b-10'><a class='p-l-13 fs-18 f-w-b'>Review</a></i>";
+            echo "<div class='m-b-50 m-l-20 m-r-20'>";
+            echo "<input class='formInput' type='text' name='review[]' placeholder='Enter your review here' />";
+            echo "</div>";
+            $sellerCount++;
+          }
+          echo "<div class='buttonContainer'>";
+          echo "<button type='submit' class='formButton m-l-auto m-r-15' name='cancelReview'>";
+          echo "Cancel";
+          echo "</button>";
+          echo "<button class='formButton m-r-20' name='saveReview' type='submit'>Save</button>";
+          echo "</div>";
+          echo "</form>";
+        }
+        ?>
       </div>
     </div>
   </div>
+  <?php
+  $conn = mysqli_connect("localhost", "root", "", "taiyodb");
+  if (isset($_POST['cancelReview'])) {
+    echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
+    exit;
+  }
+  if (isset($_POST['saveReview'])) {
+    if (!empty($_POST['review'])) {
+      $reviewSQL = "";
+      $goToCart = false;
+      $reviewArray = [];
+      foreach ($_POST['review'] as $review) {
+        // echo $review;
+        if ($productID != null) {
+          $getSellerIDSQL = "SELECT user.user_id FROM user, product WHERE product.product_id = $productID AND product.user_id = user.user_id";
+          $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
+          // print_r($getSellerIDResult);
+          while ($m = mysqli_fetch_assoc($getSellerIDResult)) {
+            $reviewSQL = "INSERT INTO review (review_message, reviewer_id, reviewee_id) VALUES ('$review', $userID, {$m['user_id']})";
+            mysqli_query($conn, $reviewSQL);
+          }
 
+          $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, user_id) VALUES ('Buy', $quantity, $productID, $userID)";
+          mysqli_query($conn, $storeTransSQL);
+          echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
+          exit;
+        } else {
+          array_push($reviewArray, $review);
+          $goToCart = true;
+        }
+      }
+      if ($goToCart) {
+        $countReview = 0;
+        foreach ($cartIDArray as $n) {
+          $getProductIDSQL = "SELECT product_id FROM cart WHERE cart_item_id = $n";
+          $getProductIDResult = mysqli_query($conn, $getProductIDSQL);
+          while ($p = mysqli_fetch_assoc($getProductIDResult)) {
+            print_r($p);
+            $getSellerIDSQL = "SELECT user.user_id FROM user, product WHERE user.user_id = product.user_id AND product.product_id = {$p['product_id']}";
+            $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
+            // print_r($getSellerIDResult);
+            // echo $reviewArray[$countReview];
+            // print_r($reviewArray);
+            while ($m = mysqli_fetch_assoc($getSellerIDResult)) {
+              // print_r($m);
+              $reviewSQL = "INSERT INTO review (review_message, reviewer_id, reviewee_id) VALUES ('$reviewArray[$countReview]', $userID, {$m['user_id']})";
+              mysqli_query($conn, $reviewSQL);
+            }
+          }
+          $countReview++;
+        }
+        foreach ($cartIDArray as $x) {
+          $dataSQL = "SELECT quantity, product_id, user_id FROM cart WHERE cart_item_id = $x";
+          $dataResult = mysqli_query($conn, $dataSQL);
+          while ($y = mysqli_fetch_assoc($dataResult)) {
+            $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, user_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$y['user_id']}' )";
+            mysqli_query($conn, $storeTransSQL);
+          }
+          $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $x";
+          mysqli_query($conn, $deleteSQL);
+        }
+        unset($_SESSION['cartIDArray']);
+        echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
+        exit;
+      }
+    }
+  }
+  ?>
   <script>
+    // window.onbeforeunload = function () {return false;} 
+
     var shippingInfoModal = document.getElementById("shippingInfoModal");
     var paymentMethodModal = document.getElementById("paymentMethodModal");
     var checkOutConfirmationModal = document.getElementById(
@@ -347,38 +557,56 @@ print_r($_SESSION['cartIDArray']);
 
     function openshippingInfoModal() {
       shippingInfoModal.style.display = "block";
+      document.documentElement.style.overflow = "hidden";
+      document.body.scroll = "no";
     }
 
     function closeshippingInfoModal() {
       shippingInfoModal.style.display = "none";
+      document.documentElement.style.overflow = "scroll";
+      document.body.scroll = "yes";
     }
 
     function openpaymentMethodModal() {
       paymentMethodModal.style.display = "block";
+      document.documentElement.style.overflow = "hidden";
+      document.body.scroll = "no";
     }
 
     function closepaymentMethodModal() {
       paymentMethodModal.style.display = "none";
+      document.documentElement.style.overflow = "scroll";
+      document.body.scroll = "yes";
     }
 
     function openConfirmationModal() {
       checkOutConfirmationModal.style.display = "block";
+      document.documentElement.style.overflow = "hidden";
+      document.body.scroll = "no";
     }
 
     function closeConfirmationModal() {
       checkOutConfirmationModal.style.display = "none";
+      document.documentElement.style.overflow = "scroll";
+      document.body.scroll = "yes";
     }
 
     function openNoticeModal() {
       checkOutNoticeModal.style.display = "block";
+      document.documentElement.style.overflow = "hidden";
+      document.body.scroll = "no";
     }
 
     function closeNoticeModal() {
       checkOutNoticeModal.style.display = "none";
+      document.documentElement.style.overflow = "scroll";
+      document.body.scroll = "yes";
     }
 
     function openReviewModal() {
       reviewSellerModal.style.display = "block";
+      document.documentElement.style.overflow = "hidden";
+      document.body.scroll = "no";
     }
     // window.onclick = function(event) {
     //   if (event.target == shippingInfoModal) {
