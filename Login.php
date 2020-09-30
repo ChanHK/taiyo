@@ -73,11 +73,15 @@ session_start();
                 $user_id = $a['user_id'];
                 $userID = intval($user_id);
                 $_SESSION["userID"] = $userID; // store userID to session so all page can use this user ID
+                
                 header("Location: Cart.php");
+                // echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
+                // exit;
               }
             }
           }
         }
+
         function test_input($data)
         {
           $data = trim($data);
@@ -86,6 +90,8 @@ session_start();
           return $data;
         }
         ?>
+
+
       </div>
     </div>
   </div>
@@ -100,14 +106,14 @@ session_start();
     function saveValue(e) {
       var id = e.id;
       var val = e.value;
-      localStorage.setItem(id, val);
+      sessionStorage.setItem(id, val);
     }
 
     function getSavedValue(v) {
-      if (!localStorage.getItem(v)) {
+      if (!sessionStorage.getItem(v)) {
         return "";
       }
-      return localStorage.getItem(v);
+      return sessionStorage.getItem(v);
     }
 
     function showOrHidePassword() {

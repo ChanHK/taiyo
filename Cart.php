@@ -1,6 +1,6 @@
 <?php
 $conn = mysqli_connect("localhost", "root", "", "taiyodb");
-error_reporting(E_ERROR | E_WARNING | E_PARSE); // remove notice
+// error_reporting(E_ERROR | E_WARNING | E_PARSE); // remove notice
 session_start();
 $userID = $_SESSION["userID"]; // get user ID 
 $noID = false;
@@ -15,7 +15,6 @@ if ($userID == null) {
   $result = mysqli_query($conn, $sql);
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,7 +68,6 @@ if ($userID == null) {
           echo "</div>";
         }
         ?>
-
         <?php
         while ($rows = mysqli_fetch_assoc($result)) {
         ?>
@@ -99,19 +97,16 @@ if ($userID == null) {
                   while ($a = mysqli_fetch_assoc($productName)) {
                     echo "<h3>{$a['product_name']}</h3>";
                   }
-
                   $productSellerSQL = "SELECT username FROM user WHERE user.user_id = {$rows['user_id']}";
                   $productSeller = mysqli_query($conn, $productSellerSQL);
                   while ($b = mysqli_fetch_assoc($productSeller)) {
                     echo "<h4>Seller: {$b['username']}</h4>";
                   }
-
                   $productPriceSQL = "SELECT product_price FROM product WHERE product.product_id = {$rows['product_id']}";
                   $productPrice = mysqli_query($conn, $productPriceSQL);
                   while ($c = mysqli_fetch_assoc($productPrice)) {
                     echo "<h4>Price: RM{$c['product_price']}</h4>";
                   }
-
                   $productQtySQL = "SELECT quantity FROM cart WHERE cart.product_id = {$rows['product_id']} AND cart.cart_item_id = {$rows['cart_item_id']}";
                   $productQty = mysqli_query($conn, $productQtySQL);
                   while ($d = mysqli_fetch_assoc($productQty)) {
@@ -136,12 +131,13 @@ if ($userID == null) {
             array_push($cartIDArray, $value);
           }
           $_SESSION['cartIDArray'] = $cartIDArray;
-          header("Location: Checkout.php");
+          echo "<script type='text/javascript'>window.top.location='Checkout.php';</script>";
+          exit;
         }
       } else {
         if (!empty($_POST['cb'])) {
           foreach ($_POST['cb'] as $check) {
-            echo $check;
+            // echo $check;
             $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $check";
             if (mysqli_query($conn, $deleteSQL)) {
               echo "<meta http-equiv='refresh' content='0'>";
@@ -161,28 +157,28 @@ if ($userID == null) {
       }
     }
 
-    function validateChecked() {
-      let checkBoxValues = [];
-      for (i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-          checkBoxValues.push(checkboxes[i].value);
-        }
-      }
-      return checkBoxValues;
-    }
+    // function validateChecked() {
+    //   let checkBoxValues = [];
+    //   for (i = 0; i < checkboxes.length; i++) {
+    //     if (checkboxes[i].checked) {
+    //       checkBoxValues.push(checkboxes[i].value);
+    //     }
+    //   }
+    //   return checkBoxValues;
+    // }
 
-    function checkOut() {
-      var checkBoxValues = validateChecked();
+    // function checkOut() {
+    //   var checkBoxValues = validateChecked();
 
-      if (checkBoxValues.length === 0) {
-        console.log("please select at least a products")
-      } else {
-        sessionStorage.setItem('checkBoxValues', checkBoxValues);
-      }
-      // for (let i = 0; i < checkBoxValues.length; i++) {
-      //   console.log(checkBoxValues[i]);
-      // }
-    }
+    //   if (checkBoxValues.length === 0) {
+    //     console.log("please select at least a products")
+    //   } else {
+    //     sessionStorage.setItem('checkBoxValues', checkBoxValues);
+    //   }
+    //   // for (let i = 0; i < checkBoxValues.length; i++) {
+    //   //   console.log(checkBoxValues[i]);
+    //   // }
+    // }
     if (window.history.replaceState) {
       window.history.replaceState(null, null, window.location.href);
     }

@@ -46,6 +46,9 @@ html {
   width: 40%;
   box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
   /* height: 500px; */
   /* border: 1px solid black; */
   /* left: 10%; */
@@ -71,7 +74,6 @@ h4 {
 .shippingInfoContainer {
   float: left;
   padding: 15px;
-  width: 100%;
 }
 
 .f-w-b {
@@ -195,7 +197,7 @@ button {
   top: 0;
   width: 100%;
   min-height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
@@ -308,4 +310,13 @@ img {
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+}
+
+.modalContentContainerTheSec {
+  background-color: white;
+  margin: 15% auto;
+  width: 60%;
+  height: 50vh;
+  box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+  overflow: scroll;
 }
