@@ -8,6 +8,7 @@ $cartIDArray = [];
 $productID = $_SESSION["productID"]; //get from product page
 $quantity = $_SESSION["quantity"]; // get from product page
 // $productID = 1;
+// $quantity = 2;
 // echo $userID;
 // print_r($_SESSION['cartIDArray']);
 
@@ -196,16 +197,20 @@ if ($_SESSION['cartIDArray'] != null) {
             foreach ($cartIDArray as $cartID) {
               $priceSQL = "SELECT product_price FROM product,cart WHERE cart.product_id = product.product_id AND cart_item_id = $cartID";
               $priceResult = mysqli_query($conn, $priceSQL);
-              while ($d = mysqli_fetch_assoc($priceResult)) {
-                $totalPrice = $totalPrice + $d['product_price'];
-                $totalDeliveryFee = $totalDeliveryFee + 4.00;
+              $quantitySQL = "SELECT quantity FROM cart WHERE cart_item_id = $cartID";
+              $quantityResult = mysqli_query($conn, $quantitySQL);
+              while ($e = mysqli_fetch_assoc($quantityResult)) {
+                while ($d = mysqli_fetch_assoc($priceResult)) {
+                  $totalPrice = $totalPrice + ($d['product_price'] * $e['quantity']);
+                  $totalDeliveryFee = $totalDeliveryFee + 4.00;
+                }
               }
             }
           } else {
             $priceSQL = "SELECT product_price FROM product WHERE product_id = '$productID'";
             $priceResult = mysqli_query($conn, $priceSQL);
             while ($d = mysqli_fetch_assoc($priceResult)) {
-              $totalPrice = $totalPrice + $d['product_price'];
+              $totalPrice = $totalPrice + ($d['product_price'] * $quantity);
               $totalDeliveryFee = $totalDeliveryFee + 4.00;
             }
           }
