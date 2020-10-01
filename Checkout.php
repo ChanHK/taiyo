@@ -3,13 +3,14 @@ $conn = mysqli_connect("localhost", "root", "", "taiyodb");
 error_reporting(E_ERROR | E_WARNING | E_PARSE); // remove notice
 session_start();
 $userID = $_SESSION["userID"]; // get user ID 
-$noID = false;
 $cartIDArray = [];
 $productID = $_SESSION["productID"]; //get from product page
 $quantity = $_SESSION["quantity"]; // get from product page
 // $productID = 1;
 // $quantity = 2;
 // echo $userID;
+// echo "product $productID";
+// echo "quantity $quantity";
 // print_r($_SESSION['cartIDArray']);
 
 if ($_SESSION['cartIDArray'] != null) {
@@ -111,7 +112,7 @@ if ($_SESSION['cartIDArray'] != null) {
             echo "</div>";
           }
           echo "<div class='productQty p-t-10'>";
-          echo "<a class='fs-15'>Qty: $j[quantity]</a>";
+          echo "<a class='fs-15'>Qty: $quantity</a>";
           echo "</div>";
           echo "</div>";
           echo "</div>";
@@ -127,13 +128,14 @@ if ($_SESSION['cartIDArray'] != null) {
             <span class="float-r"><a class="edit fs-15" href="#" onclick="openshippingInfoModal()">Edit</a></span>
           </h3>
 
-          <i class="fa fa-map-marker p-b-10"><a class="f-w-b p-l-18">Chan Hao Kang</a></i>
-          <br />
+
 
           <?php
-          $userAddressSQL = "SELECT user_address FROM user WHERE user_id = $userID";
+          $userAddressSQL = "SELECT user_address, username FROM user WHERE user_id = $userID";
           $userIDResult = mysqli_query($conn, $userAddressSQL);
           while ($a = mysqli_fetch_assoc($userIDResult)) {
+            echo "<i class='fa fa-map-marker p-b-10'><a class='f-w-b p-l-18'>{$a['username']}</a></i>";
+            echo "<br />";
             if ($a['user_address'] == null) {
               echo "<p class='p-l-27 fs-14'>";
               echo "Please add your own address";
