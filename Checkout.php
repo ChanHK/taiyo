@@ -8,7 +8,7 @@ $productID = $_SESSION["productID"]; //get from product page
 // $quantity = $_SESSION["quantity"]; // get from product page
 // $productID = 1;
 // $quantity = 2;
-// echo $userID;
+echo $userID;
 // echo "product $productID";
 // echo "quantity $quantity";
 // print_r($_SESSION['cartIDArray']);
@@ -56,7 +56,7 @@ if ($_SESSION['cartIDArray'] != null) {
             echo "</div>";
             while ($a = mysqli_fetch_assoc($cartProductUseResult)) {
               // print_r($a);
-              $imageSQL = "SELECT product_image FROM productimage WHERE product_id = $a[product_id]";
+              $imageSQL = "SELECT product_image FROM productimage WHERE product_id = $a[product_id] limit 1";
               $imageResult = mysqli_query($conn, $imageSQL);
               while ($b = mysqli_fetch_assoc($imageResult)) {
                 // print_r($b);
@@ -94,12 +94,12 @@ if ($_SESSION['cartIDArray'] != null) {
           echo "<a class='p-l-41 fs-12'>Standard Delivery</a>";
           echo "</div>";
 
-          $imageSQL = "SELECT product_image FROM productimage WHERE product_id = '$productID'";
+          $imageSQL = "SELECT product_image FROM productimage WHERE product_id = '$productID' limit 1";
           $imageResult = mysqli_query($conn, $imageSQL);
           while ($i = mysqli_fetch_assoc($imageResult)) {
             echo "<div class='productInfoContainer'>";
             echo "<div class='float-l p-t-5'>";
-            echo "<img class='pictureSize' src='{$i['product_image']}' alt='product' />";
+            echo "<img class='pictureSize' src='{$i['product_image']}' alt='product'/>";
             echo "</div>";
           }
           $productNameSQL = "SELECT product_name, product_price FROM product WHERE product_id = '$productID'";
@@ -133,7 +133,7 @@ if ($_SESSION['cartIDArray'] != null) {
 
 
           <?php
-          $userAddressSQL = "SELECT user_address, username FROM enduser WHERE enduser_id = $userID";
+          $userAddressSQL = "SELECT username FROM enduser WHERE enduser_id = $userID";
           $userIDResult = mysqli_query($conn, $userAddressSQL);
           while ($a = mysqli_fetch_assoc($userIDResult)) {
             echo "<i class='fa fa-map-marker p-b-10'><a class='f-w-b p-l-18'>{$a['username']}</a></i>";
@@ -144,7 +144,7 @@ if ($_SESSION['cartIDArray'] != null) {
               echo "</p>";
             } else {
               echo "<p class='p-l-27 fs-14'>";
-              echo "{$a['user_address']}";
+              // echo "{$a['user_address']}"; // need to add address
               echo "</p>";
             }
           }
@@ -189,7 +189,7 @@ if ($_SESSION['cartIDArray'] != null) {
           <br />
           <h3>Payment Method</h3>
           <div id="showMethod">
-            <img id="visa" class="pointer" src="pictures/visa.png" alt="visa" onclick="openpaymentMethodModal()" />
+            <img id="visa" class="pointer" src="pictures/main/visa.png" alt="visa" onclick="openpaymentMethodModal()" />
           </div>
 
           <br />
@@ -318,9 +318,9 @@ if ($_SESSION['cartIDArray'] != null) {
         <br />
         <a class="m-l-20">Select a payment method</a>
         <div class="paymentMethodContainer">
-          <img src="pictures/mastercardbig.png" alt="mastercard" class="paymentMethodImg m-r-40 pointer" onclick="selectMastercard()" />
-          <img src="pictures/paypalbig.png" alt="paypal" class="paymentMethodImg m-r-40 pointer" onclick="selectPaypal()" />
-          <img src="pictures/visabig.png" alt="visa" class="paymentMethodImg pointer" onclick="selectVisa()" />
+          <img src="pictures/main/mastercardbig.png" alt="mastercard" class="paymentMethodImg m-r-40 pointer" onclick="selectMastercard()" />
+          <img src="pictures/main/paypalbig.png" alt="paypal" class="paymentMethodImg m-r-40 pointer" onclick="selectPaypal()" />
+          <img src="pictures/main/visabig.png" alt="visa" class="paymentMethodImg pointer" onclick="selectVisa()" />
         </div>
       </div>
     </div>
@@ -649,16 +649,16 @@ if ($_SESSION['cartIDArray'] != null) {
 
       if (method === 1) {
         showMethod.innerHTML =
-          '<img src="pictures/mastercard.png" alt="mastercard" class="pointer" onclick="openpaymentMethodModal()"/>';
+          '<img src="pictures/main/mastercard.png" alt="mastercard" class="pointer" onclick="openpaymentMethodModal()"/>';
       } else if (method === 2) {
         showMethod.innerHTML =
-          '<img src="pictures/paypal.png" alt="paypal" class="pointer" onclick="openpaymentMethodModal()"/>';
+          '<img src="pictures/main/paypal.png" alt="paypal" class="pointer" onclick="openpaymentMethodModal()"/>';
       } else if (method === 3) {
         showMethod.innerHTML =
-          '<img src="pictures/visa.png" alt="visa" class="pointer" onclick="openpaymentMethodModal()"/>';
+          '<img src="pictures/main/visa.png" alt="visa" class="pointer" onclick="openpaymentMethodModal()"/>';
       } else {
         showMethod.innerHTML =
-          '<img src="pictures/visa.png" alt="visa" class="pointer" onclick="openpaymentMethodModal()"/>';
+          '<img src="pictures/main/visa.png" alt="visa" class="pointer" onclick="openpaymentMethodModal()"/>';
       }
     }
   </script>
