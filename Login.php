@@ -70,7 +70,7 @@ session_start();
               echo "</a>";
             } else {
               while ($a = mysqli_fetch_assoc($result)) {
-                $_SESSION["user_id"] = intval($a['enduser_id']); // store userID to session so all page can use this user ID
+                $_SESSION["userID"] = intval($a['enduser_id']); // store userID to session so all page can use this user ID
                 echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
                 exit;
               }

@@ -2,16 +2,16 @@
 $conn = mysqli_connect("localhost", "root", "", "taiyodb");
 // error_reporting(E_ERROR | E_WARNING | E_PARSE); // remove notice
 session_start();
-$userID = $_SESSION["userID"]; // get user ID 
+$userID = $_SESSION['userID']; // get user ID 
 $noID = false;
-// echo $userID;
+echo $userID;
 if ($userID == null) {
-  $noID = false;
-  $sql = "SELECT * FROM cart WHERE user_id = '0'";
+  $noID = true;
+  $sql = "SELECT * FROM cart WHERE enduser_id = '0'";
   $result = mysqli_query($conn, $sql);
 } else if ($conn) {
-  $noID = true;
-  $sql = "SELECT * FROM cart WHERE user_id = $userID";
+  $noID = false;
+  $sql = "SELECT * FROM cart WHERE enduser_id = $userID";
   $result = mysqli_query($conn, $sql);
 }
 ?>
@@ -46,7 +46,7 @@ if ($userID == null) {
       <form id="form" method="post" class="form">
         <?php
         $count = $result->num_rows;
-        if (!$noID) {
+        if ($noID) {
           echo "<div class='cartRowContainer'>";
           echo "<div class='rowBar'>";
           echo "<div class='productInfoContainer'>";
@@ -97,7 +97,7 @@ if ($userID == null) {
                   while ($a = mysqli_fetch_assoc($productName)) {
                     echo "<h3>{$a['product_name']}</h3>";
                   }
-                  $productSellerSQL = "SELECT username FROM user WHERE user.user_id = {$rows['user_id']}";
+                  $productSellerSQL = "SELECT username FROM enduser WHERE enduser_id = {$rows['enduser_id']}";
                   $productSeller = mysqli_query($conn, $productSellerSQL);
                   while ($b = mysqli_fetch_assoc($productSeller)) {
                     echo "<h4>Seller: {$b['username']}</h4>";
@@ -127,7 +127,6 @@ if ($userID == null) {
         if (isset($_POST['cb']) && is_array($_POST['cb'])) {
           $cartIDArray = [];
           foreach ($_POST['cb'] as $value) {
-            // echo "I have a {$value}!";
             array_push($cartIDArray, $value);
           }
           $_SESSION['cartIDArray'] = $cartIDArray;
@@ -137,7 +136,6 @@ if ($userID == null) {
       } else {
         if (!empty($_POST['cb'])) {
           foreach ($_POST['cb'] as $check) {
-            // echo $check;
             $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $check";
             if (mysqli_query($conn, $deleteSQL)) {
               echo "<meta http-equiv='refresh' content='0'>";
@@ -157,28 +155,6 @@ if ($userID == null) {
       }
     }
 
-    // function validateChecked() {
-    //   let checkBoxValues = [];
-    //   for (i = 0; i < checkboxes.length; i++) {
-    //     if (checkboxes[i].checked) {
-    //       checkBoxValues.push(checkboxes[i].value);
-    //     }
-    //   }
-    //   return checkBoxValues;
-    // }
-
-    // function checkOut() {
-    //   var checkBoxValues = validateChecked();
-
-    //   if (checkBoxValues.length === 0) {
-    //     console.log("please select at least a products")
-    //   } else {
-    //     sessionStorage.setItem('checkBoxValues', checkBoxValues);
-    //   }
-    //   // for (let i = 0; i < checkBoxValues.length; i++) {
-    //   //   console.log(checkBoxValues[i]);
-    //   // }
-    // }
     if (window.history.replaceState) {
       window.history.replaceState(null, null, window.location.href);
     }

@@ -6,12 +6,12 @@ $userID = $_SESSION["userID"]; // get user ID
 $noID = false;
 
 if ($userID == null) {
-  $noID = false;
-  $sql = "SELECT * FROM wishlist WHERE user_id = '0'";
+  $noID = true;
+  $sql = "SELECT * FROM wishlist WHERE enduser_id = '0'";
   $result = mysqli_query($conn, $sql);
 } else if ($conn) {
-  $noID = true;
-  $sql = "SELECT * FROM wishlist WHERE user_id = $userID";
+  $noID = false;
+  $sql = "SELECT * FROM wishlist WHERE enduser_id = $userID";
   $result = mysqli_query($conn, $sql);
 }
 ?>
@@ -50,7 +50,7 @@ if ($userID == null) {
         // print_r($result);
         $count = $result->num_rows;
 
-        if (!$noID) {
+        if ($noID) {
           echo "<div class='cartRowContainer'>";
           echo "<div class='rowBar'>";
           echo "<div class='productInfoContainer'>";
@@ -103,7 +103,7 @@ if ($userID == null) {
                     echo "<h3>{$a['product_name']}</h3>";
                   }
 
-                  $productSellerSQL = "SELECT username FROM user WHERE user.user_id = {$rows['user_id']}";
+                  $productSellerSQL = "SELECT username FROM enduser WHERE enduser.enduser_id = {$rows['enduser_id']}";
                   $productSeller = mysqli_query($conn, $productSellerSQL);
                   while ($b = mysqli_fetch_assoc($productSeller)) {
                     echo "<h4>Seller: {$b['username']}</h4>";
@@ -141,16 +141,16 @@ if ($userID == null) {
               array_push($productID, $a['product_id']);
             }
 
-            $userSQL = "SELECT user_id FROM wishlist WHERE wishlist_item_id = $wl";
+            $userSQL = "SELECT enduser_id FROM wishlist WHERE wishlist_item_id = $wl";
             $user = mysqli_query($conn, $userSQL);
             while ($a = mysqli_fetch_assoc($user)) {
-              array_push($userID, $a['user_id']);
+              array_push($userID, $a['enduser_id']);
             }
           }
 
           $i = 0;
           while ($i < count($productID)) {
-            $addToCartSQL = "INSERT INTO cart (quantity, product_id, user_id) VALUES (1,$productID[$i], $userID[$i])";
+            $addToCartSQL = "INSERT INTO cart (quantity, product_id, enduser_id) VALUES (1,$productID[$i], $userID[$i])";
             if (mysqli_query($conn, $addToCartSQL)) {
               $deleteWishListSQL = "DELETE FROM wishlist WHERE wishlist_item_id = $wishlistID[$i]";
               if (mysqli_query($conn, $deleteWishListSQL)) {

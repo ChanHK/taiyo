@@ -149,9 +149,9 @@ session_start();
 
         if ($username !== "" and $email !== "" and $password !== "" and $gender !== "" and $mobile !== "") {
           if ($conn) {
-            $usernameCheckSQL = "SELECT username FROM user WHERE username = '$username'";
-            $emailCheckSQL = "SELECT user_email FROM user WHERE user_email = '$email'";
-            $sql = "INSERT INTO user (user_email, user_password, username, gender, phone_number) VALUES ('$email', '$password', '$username', '$gender', '$mobile')";
+            $usernameCheckSQL = "SELECT username FROM enduser WHERE username = '$username'";
+            $emailCheckSQL = "SELECT user_email FROM enduser WHERE user_email = '$email'";
+            $sql = "INSERT INTO enduser (user_email, user_password, username, gender, phone_number) VALUES ('$email', '$password', '$username', '$gender', '$mobile')";
             $usernameResult = mysqli_query($conn, $usernameCheckSQL);
             $emailResult = mysqli_query($conn, $emailCheckSQL);
             // print_r($usernameResult);
@@ -178,14 +178,14 @@ session_start();
             echo $boolemail and $booluser;
             if ($boolemail and $booluser) {
               if (mysqli_query($conn, $sql)) {
-                $userIDSQL = "SELECT user_id FROM user WHERE user_email = '$email' AND username = '$username'";
+                $userIDSQL = "SELECT enduser_id FROM enduser WHERE user_email = '$email' AND username = '$username'";
                 $userIDResult = mysqli_query($conn, $userIDSQL);
                 print_r($userIDResult);
                 while ($a = mysqli_fetch_assoc($userIDResult)) {
-                  $user_id = $a['user_id'];
-                  $userID = intval($user_id);
-                  $_SESSION["userID"] = $userID; // store userID to session so all page can use this user ID
-                  header("Location: Cart.php");
+                  $_SESSION["userID"] = intval($a['enduser_id']);; // store userID to session so all page can use this user ID
+                  // header("Location: Cart.php");
+                  echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
+                  exit;
                 }
               }
             }

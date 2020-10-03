@@ -5,13 +5,15 @@ session_start();
 $userID = $_SESSION["userID"]; // get user ID 
 $cartIDArray = [];
 $productID = $_SESSION["productID"]; //get from product page
-$quantity = $_SESSION["quantity"]; // get from product page
+// $quantity = $_SESSION["quantity"]; // get from product page
 // $productID = 1;
 // $quantity = 2;
 // echo $userID;
 // echo "product $productID";
 // echo "quantity $quantity";
 // print_r($_SESSION['cartIDArray']);
+$quantity = $_GET['productQuantity'] ? $_GET['productQuantity']:null;
+echo $quantity;
 
 if ($_SESSION['cartIDArray'] != null) {
   foreach ($_SESSION['cartIDArray'] as $a) {
@@ -43,7 +45,7 @@ if ($_SESSION['cartIDArray'] != null) {
         <?php
         if ($productID == null) {
           foreach ($cartIDArray as $cartID) {
-            $cartProductUserIDSQL = "SELECT product_id, user_id, quantity FROM cart WHERE cart_item_id = $cartID";
+            $cartProductUserIDSQL = "SELECT product_id, enduser_id, quantity FROM cart WHERE cart_item_id = $cartID";
             $cartProductUseResult = mysqli_query($conn, $cartProductUserIDSQL);
             echo "<div class='productRowBackgroundContainer'>";
             echo "<div class='productRow'>";
@@ -131,7 +133,7 @@ if ($_SESSION['cartIDArray'] != null) {
 
 
           <?php
-          $userAddressSQL = "SELECT user_address, username FROM user WHERE user_id = $userID";
+          $userAddressSQL = "SELECT user_address, username FROM enduser WHERE enduser_id = $userID";
           $userIDResult = mysqli_query($conn, $userAddressSQL);
           while ($a = mysqli_fetch_assoc($userIDResult)) {
             echo "<i class='fa fa-map-marker p-b-10'><a class='f-w-b p-l-18'>{$a['username']}</a></i>";
@@ -150,7 +152,7 @@ if ($_SESSION['cartIDArray'] != null) {
           <br />
 
           <?php
-          $phoneNumberSQL = "SELECT phone_number FROM user WHERE user_id = $userID";
+          $phoneNumberSQL = "SELECT phone_number FROM enduser WHERE enduser_id = $userID";
           $phoneNumberResult = mysqli_query($conn, $phoneNumberSQL);
           while ($a = mysqli_fetch_assoc($phoneNumberResult)) {
             // print_r($a);
@@ -172,7 +174,7 @@ if ($_SESSION['cartIDArray'] != null) {
           <br />
 
           <?php
-          $emailSQL = "SELECT user_email FROM user WHERE user_id = $userID";
+          $emailSQL = "SELECT user_email FROM enduser WHERE enduser_id = $userID";
           $emailResult = mysqli_query($conn, $emailSQL);
           while ($a = mysqli_fetch_assoc($emailResult)) {
             // print_r($a);
@@ -260,7 +262,7 @@ if ($_SESSION['cartIDArray'] != null) {
         <form class="editShippingForm" method="post">
           <i class="fa fa-map-marker p-b-10"><a class="f-w-b p-l-18 fs-18">Address</a></i>
           <?php
-          $addressSQL = "SELECT user_address, phone_number FROM user WHERE user_id = $userID";
+          $addressSQL = "SELECT user_address, phone_number FROM enduser WHERE enduser_id = $userID";
           $addressResult = mysqli_query($conn, $addressSQL);
           while ($e = mysqli_fetch_assoc($addressResult)) {
             echo "<div class='m-b-16 m-l-20 m-r-20'>";
@@ -289,7 +291,7 @@ if ($_SESSION['cartIDArray'] != null) {
           $phone = test_input(strval($_POST["phoneNumber"]));
         }
         if ($address !== "" and $phone !== "") {
-          $updateSQL = "UPDATE user SET user_address = '$address', phone_number = '$phone' WHERE user_id = $userID";
+          $updateSQL = "UPDATE enduser SET user_address = '$address', phone_number = '$phone' WHERE enduser_id = $userID";
           $updateResult = mysqli_query($conn, $updateSQL);
           header("Refresh:0");
         }
@@ -372,10 +374,10 @@ if ($_SESSION['cartIDArray'] != null) {
         if (isset($_POST['shop'])) {
           if ($productID == null) {
             foreach ($cartIDArray as $x) {
-              $dataSQL = "SELECT quantity, product_id, user_id FROM cart WHERE cart_item_id = $x";
+              $dataSQL = "SELECT quantity, product_id, enduser_id FROM cart WHERE cart_item_id = $x";
               $dataResult = mysqli_query($conn, $dataSQL);
               while ($y = mysqli_fetch_assoc($dataResult)) {
-                $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, user_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$y['user_id']}' )";
+                $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, enduser_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$y['enduser_id']}' )";
                 mysqli_query($conn, $storeTransSQL);
               }
               $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $x";
@@ -384,7 +386,7 @@ if ($_SESSION['cartIDArray'] != null) {
             unset($_SESSION['cartIDArray']);
             $done = true;
           } else {
-            $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, user_id) VALUES ('Buy', $quantity, $productID, $userID)";
+            $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, enduser_id) VALUES ('Buy', $quantity, $productID, $userID)";
             mysqli_query($conn, $storeTransSQL);
             $done = true;
           }
@@ -410,7 +412,7 @@ if ($_SESSION['cartIDArray'] != null) {
         <?php
         $sellerCount = 1;
         if ($productID != null) {
-          $sellerNameSQL = "SELECT username FROM user, product WHERE product.user_id = user.user_id AND product_id = $productID";
+          $sellerNameSQL = "SELECT username FROM enduser, product WHERE product.enduser_id = enduser.enduser_id AND product_id = $productID";
           $sellerNameResult = mysqli_query($conn, $sellerNameSQL);
           while ($o = mysqli_fetch_assoc($sellerNameResult)) {
             echo "<form class='editShippingForm' method='post'>";
@@ -444,7 +446,7 @@ if ($_SESSION['cartIDArray'] != null) {
           echo "</form>";
         } else {
           foreach ($cartIDArray as $h) {
-            $getUsernameSQL = "SELECT username FROM user, cart WHERE user.user_id = cart.user_id AND cart_item_id = $h";
+            $getUsernameSQL = "SELECT username FROM enduser, cart WHERE enduser.enduser_id = cart.enduser_id AND cart_item_id = $h";
             $getUsernameResult = mysqli_query($conn, $getUsernameSQL);
             while ($k = mysqli_fetch_assoc($getUsernameResult)) {
               echo "<form class='editShippingForm' method='post'>";
@@ -499,11 +501,11 @@ if ($_SESSION['cartIDArray'] != null) {
       foreach ($_POST['review'] as $review) {
         // echo $review;
         if ($productID != null) {
-          $getSellerIDSQL = "SELECT user.user_id FROM user, product WHERE product.product_id = $productID AND product.user_id = user.user_id";
+          $getSellerIDSQL = "SELECT enduser_id FROM enduser, product WHERE product.product_id = $productID AND product.enduser_id = enduser.enduser_id";
           $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
           // print_r($getSellerIDResult);
           while ($m = mysqli_fetch_assoc($getSellerIDResult)) {
-            $reviewSQL = "INSERT INTO review (review_message, reviewer_id, reviewee_id) VALUES ('$review', $userID, {$m['user_id']})";
+            $reviewSQL = "INSERT INTO review (review_message, reviewer_id, reviewee_id) VALUES ('$review', $userID, {$m['enduser_id']})";
             mysqli_query($conn, $reviewSQL);
           }
 
@@ -523,24 +525,24 @@ if ($_SESSION['cartIDArray'] != null) {
           $getProductIDResult = mysqli_query($conn, $getProductIDSQL);
           while ($p = mysqli_fetch_assoc($getProductIDResult)) {
             print_r($p);
-            $getSellerIDSQL = "SELECT user.user_id FROM user, product WHERE user.user_id = product.user_id AND product.product_id = {$p['product_id']}";
+            $getSellerIDSQL = "SELECT enduser.enduser_id FROM enduser, product WHERE enduser.enduser_id = product.enduser_id AND product.product_id = {$p['product_id']}";
             $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
             // print_r($getSellerIDResult);
             // echo $reviewArray[$countReview];
             // print_r($reviewArray);
             while ($m = mysqli_fetch_assoc($getSellerIDResult)) {
               // print_r($m);
-              $reviewSQL = "INSERT INTO review (review_message, reviewer_id, reviewee_id) VALUES ('$reviewArray[$countReview]', $userID, {$m['user_id']})";
+              $reviewSQL = "INSERT INTO review (review_message, reviewer_id, reviewee_id) VALUES ('$reviewArray[$countReview]', $userID, {$m['enduser_id']})";
               mysqli_query($conn, $reviewSQL);
             }
           }
           $countReview++;
         }
         foreach ($cartIDArray as $x) {
-          $dataSQL = "SELECT quantity, product_id, user_id FROM cart WHERE cart_item_id = $x";
+          $dataSQL = "SELECT quantity, product_id, enduser_id FROM cart WHERE cart_item_id = $x";
           $dataResult = mysqli_query($conn, $dataSQL);
           while ($y = mysqli_fetch_assoc($dataResult)) {
-            $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, user_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$y['user_id']}' )";
+            $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, enduser_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$y['enduser_id']}' )";
             mysqli_query($conn, $storeTransSQL);
           }
           $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $x";
