@@ -70,13 +70,9 @@ session_start();
               echo "</a>";
             } else {
               while ($a = mysqli_fetch_assoc($result)) {
-                $user_id = $a['enduser_id'];
-                $userID = intval($user_id);
-                $_SESSION["enduser_id"] = $userID; // store userID to session so all page can use this user ID
-                
-                header("Location: Cart.php");
-                // echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
-                // exit;
+                $_SESSION["user_id"] = intval($a['enduser_id']); // store userID to session so all page can use this user ID
+                echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
+                exit;
               }
             }
           }
@@ -90,16 +86,10 @@ session_start();
           return $data;
         }
         ?>
-
-
       </div>
     </div>
   </div>
   <script>
-    // if (window.history.replaceState) {
-    //   window.history.replaceState(null, null, window.location.href);
-    // }
-
     document.getElementById("email").value = getSavedValue("email");
     document.getElementById("password").value = getSavedValue("password");
 
