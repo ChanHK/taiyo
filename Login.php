@@ -62,7 +62,7 @@ session_start();
           $email = test_input($_POST["Email"]);
           $password = test_input($_POST["Password"]);
           if ($conn) {
-            $sql = "SELECT user_id FROM user WHERE user_email = '$email' AND user_password = '$password'";
+            $sql = "SELECT enduser_id FROM enduser WHERE user_email = '$email' AND user_password = '$password'";
             $result = mysqli_query($conn, $sql);
             if (!$result || mysqli_num_rows($result) == 0) {
               echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold; margin-left: 28px;'>";
@@ -70,9 +70,9 @@ session_start();
               echo "</a>";
             } else {
               while ($a = mysqli_fetch_assoc($result)) {
-                $user_id = $a['user_id'];
+                $user_id = $a['enduser_id'];
                 $userID = intval($user_id);
-                $_SESSION["userID"] = $userID; // store userID to session so all page can use this user ID
+                $_SESSION["enduser_id"] = $userID; // store userID to session so all page can use this user ID
                 
                 header("Location: Cart.php");
                 // echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
