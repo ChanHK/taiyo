@@ -8,22 +8,17 @@ $productID = $_SESSION["productID"]; //get from product page
 // $quantity = $_SESSION["quantity"]; // get from product page
 // $productID = 1;
 // $quantity = 2;
-echo $userID;
+// echo $userID;
 // echo "product $productID";
 // echo "quantity $quantity";
 // print_r($_SESSION['cartIDArray']);
-$quantity = $_GET['productQuantity'] ? $_GET['productQuantity']:null;
-echo $quantity;
-
+$quantity = $_GET['productQuantity'] ? $_GET['productQuantity'] : null;
+// echo $quantity;
 if ($_SESSION['cartIDArray'] != null) {
   foreach ($_SESSION['cartIDArray'] as $a) {
     array_push($cartIDArray, $a);
   }
 }
-// print_r($cartIDArray);
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
 ?>
 
 
@@ -133,20 +128,14 @@ if ($_SESSION['cartIDArray'] != null) {
 
 
           <?php
-          $userAddressSQL = "SELECT username FROM enduser WHERE enduser_id = $userID";
+          $userAddressSQL = "SELECT username, street_1, street_2, city, c_state, postcode FROM enduser WHERE enduser_id = $userID";
           $userIDResult = mysqli_query($conn, $userAddressSQL);
           while ($a = mysqli_fetch_assoc($userIDResult)) {
             echo "<i class='fa fa-map-marker p-b-10'><a class='f-w-b p-l-18'>{$a['username']}</a></i>";
             echo "<br />";
-            if ($a['user_address'] == null) {
-              echo "<p class='p-l-27 fs-14'>";
-              echo "Please add your own address";
-              echo "</p>";
-            } else {
-              echo "<p class='p-l-27 fs-14'>";
-              // echo "{$a['user_address']}"; // need to add address
-              echo "</p>";
-            }
+            echo "<p class='p-l-27 fs-14'>";
+            echo "{$a['street_1']}, {$a['street_2']}, {$a['postcode']}  {$a['city']},  {$a['c_state']}"; // need to add address
+            echo "</p>";
           }
           ?>
           <br />
@@ -251,7 +240,7 @@ if ($_SESSION['cartIDArray'] != null) {
     </div>
 
     <div id="shippingInfoModal" class="modalContainer">
-      <div class="modalContentContainer">
+      <div class="modalContentContainerTheSec">
         <h3 class="p-t-20 p-l-20 p-r-20">
           Shipping Info
           <span class="close" onclick="closeshippingInfoModal()">&times;</span>
@@ -262,11 +251,33 @@ if ($_SESSION['cartIDArray'] != null) {
         <form class="editShippingForm" method="post">
           <i class="fa fa-map-marker p-b-10"><a class="f-w-b p-l-18 fs-18">Address</a></i>
           <?php
-          $addressSQL = "SELECT user_address, phone_number FROM enduser WHERE enduser_id = $userID";
+          $addressSQL = "SELECT street_1, street_2, postcode, city, c_state, phone_number FROM enduser WHERE enduser_id = $userID";
           $addressResult = mysqli_query($conn, $addressSQL);
           while ($e = mysqli_fetch_assoc($addressResult)) {
+            echo "<br />";
+            echo "<a class='p-l-25 fs-14 p-b-5'>Street 1</a>";
             echo "<div class='m-b-16 m-l-20 m-r-20'>";
-            echo "<input class='formInput' type='text' name='address' placeholder='Insert your address here' value='{$e['user_address']}' required/>";
+            echo "<input class='formInput' type='text' name='streetOne' placeholder='Insert your street name here' value='{$e['street_1']}' pattern='^\s*\S+(?:\s+\S+){2,}' required/>";
+            echo "</div>";
+
+            echo "<a class='p-l-25 fs-14 p-b-5'>Street 2</a>";
+            echo "<div class='m-b-16 m-l-20 m-r-20'>";
+            echo "<input class='formInput' type='text' name='streetTwo' placeholder='Insert your street name here' value='{$e['street_2']}'/>";
+            echo "</div>";
+
+            echo "<a class='p-l-25 fs-14 p-b-5'>Postcode</a>";
+            echo "<div class='m-b-16 m-l-20 m-r-20'>";
+            echo "<input class='formInput' type='text' name='postcode' placeholder='Insert your postcode here' value='{$e['postcode']}'/>";
+            echo "</div>";
+
+            echo "<a class='p-l-25 fs-14 p-b-5'>City</a>";
+            echo "<div class='m-b-16 m-l-20 m-r-20'>";
+            echo "<input class='formInput' type='text' name='city' placeholder='Insert your city here' value='{$e['city']}'/>";
+            echo "</div>";
+
+            echo "<a class='p-l-25 fs-14 p-b-5'>State</a>";
+            echo "<div class='m-b-16 m-l-20 m-r-20'>";
+            echo "<input class='formInput' type='text' name='c_state' placeholder='Insert your state here' value='{$e['c_state']}'/>";
             echo "</div>";
 
             echo "<i class='fa fa-phone p-b-10'><a class='p-l-13 fs-18 f-w-b'>Phone Number</a></i>";
@@ -285,13 +296,18 @@ if ($_SESSION['cartIDArray'] != null) {
         </form>
 
         <?php
-        $address = $phone = "";
+        $street_1= $street_2 = $postcode = $city = $c_state = $phone ="";
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-          $address = test_input($_POST["address"]);
+          $street_1 = test_input($_POST["streetOne"]);
+          echo $street_1;
+          $street_2 = test_input($_POST["streetTwo"]);
+          $postcode = intval(test_input($_POST["postcode"]));
+          $city = test_input($_POST["city"]);
+          $c_state = test_input($_POST["c_state"]);
           $phone = test_input(strval($_POST["phoneNumber"]));
         }
-        if ($address !== "" and $phone !== "") {
-          $updateSQL = "UPDATE enduser SET user_address = '$address', phone_number = '$phone' WHERE enduser_id = $userID";
+        if ($street_1 !== "" and $street_2 !== "" and $postcode !== "" and $city !=="" and $c_state !== "" and $phone !== "") {
+          $updateSQL = "UPDATE enduser SET street_1 = '$street_1', street_2 = '$street_2',  postcode = '$postcode', city = '$city', c_state = '$c_state', phone_number = '$phone' WHERE enduser_id = $userID";
           $updateResult = mysqli_query($conn, $updateSQL);
           header("Refresh:0");
         }
