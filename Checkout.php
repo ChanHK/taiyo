@@ -262,22 +262,22 @@ if ($_SESSION['cartIDArray'] != null) {
 
             echo "<a class='p-l-25 fs-14 p-b-5'>Street 2</a>";
             echo "<div class='m-b-16 m-l-20 m-r-20'>";
-            echo "<input class='formInput' type='text' name='streetTwo' placeholder='Insert your street name here' value='{$e['street_2']}'/>";
+            echo "<input class='formInput' type='text' name='streetTwo' placeholder='Insert your street name here' value='{$e['street_2']}' pattern='^\s*\S+(?:\s+\S+){2,}' required/>";
             echo "</div>";
 
             echo "<a class='p-l-25 fs-14 p-b-5'>Postcode</a>";
             echo "<div class='m-b-16 m-l-20 m-r-20'>";
-            echo "<input class='formInput' type='text' name='postcode' placeholder='Insert your postcode here' value='{$e['postcode']}'/>";
+            echo "<input class='formInput' type='text' name='postcode' placeholder='Insert your postcode here' value='{$e['postcode']}' pattern='\b\d{5}\b' required/>";
             echo "</div>";
 
             echo "<a class='p-l-25 fs-14 p-b-5'>City</a>";
             echo "<div class='m-b-16 m-l-20 m-r-20'>";
-            echo "<input class='formInput' type='text' name='city' placeholder='Insert your city here' value='{$e['city']}'/>";
+            echo "<input class='formInput' type='text' name='city' placeholder='Insert your city here' value='{$e['city']}' pattern='^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$' required/>";
             echo "</div>";
 
             echo "<a class='p-l-25 fs-14 p-b-5'>State</a>";
             echo "<div class='m-b-16 m-l-20 m-r-20'>";
-            echo "<input class='formInput' type='text' name='c_state' placeholder='Insert your state here' value='{$e['c_state']}'/>";
+            echo "<input class='formInput' type='text' name='c_state' placeholder='Insert your state here' value='{$e['c_state']}' pattern='^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$' required/>";
             echo "</div>";
 
             echo "<i class='fa fa-phone p-b-10'><a class='p-l-13 fs-18 f-w-b'>Phone Number</a></i>";

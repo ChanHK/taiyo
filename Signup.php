@@ -107,7 +107,7 @@ session_start();
           </div>
 
 
-          <div class="p-b-50">
+          <div class="p-b-16">
             <input class="formInput" type="text" name="phonenumber" id="PHONENUMBER" placeholder="Mobile Number" onkeyup="saveValue(this)" />
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -129,6 +129,114 @@ session_start();
             ?>
           </div>
 
+          <div class="p-b-16">
+            <input class="formInput" type="number" min='1' max='110' name="age" id="AGE" placeholder="Age" onkeyup="saveValue(this)" />
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              $age = $_POST['age'];
+              if ($age == "") {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please fill in your age";
+                echo "</a>";
+              } else if ($age < 0 || $age > 110) {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please enter valid age";
+                echo "</a>";
+              }
+            }
+            ?>
+          </div>
+
+          <div class="p-b-16">
+            <input class="formInput" type="text" name="streetOne" id="STREETONE" placeholder="Street Address 1" onkeyup="saveValue(this)" />
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              $street_1 = $_POST['streetOne'];
+              if ($street_1 == "") {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please fill in street address";
+                echo "</a>";
+              } else if (preg_match("/^\s*\S+(?:\s+\S+){2,}/", $street_1) == 0) {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please enter valid street address";
+                echo "</a>";
+              }
+            }
+            ?>
+          </div>
+
+          <div class="p-b-16">
+            <input class="formInput" type="text" name="streetTwo" id="STREETTWO" placeholder="Street Address 2" onkeyup="saveValue(this)" />
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              $street_2 = $_POST['streetTwo'];
+              if ($street_2 == "") {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please fill in street address";
+                echo "</a>";
+              } else if (preg_match("/^\s*\S+(?:\s+\S+){2,}/", $street_2) == 0) {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please enter valid street address";
+                echo "</a>";
+              }
+            }
+            ?>
+          </div>
+
+          <div class="p-b-16">
+            <input class="formInput" type="text" name="postcode" id="POSTCODE" placeholder="Postcode" onkeyup="saveValue(this)" />
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              $postcode = $_POST['postcode'];
+              if ($postcode == "") {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please fill in postcode";
+                echo "</a>";
+              } else if (preg_match("/\b\d{5}\b/", $postcode) == 0) {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please enter valid postcode";
+                echo "</a>";
+              }
+            }
+            ?>
+          </div>
+
+          <div class="p-b-16">
+            <input class="formInput" type="text" name="city" id="CITY" placeholder="City" onkeyup="saveValue(this)" />
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              $city = $_POST['city'];
+              if ($city == "") {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please fill in city name";
+                echo "</a>";
+              } else if (preg_match("/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/", $city) == 0) {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please enter valid city name";
+                echo "</a>";
+              }
+            }
+            ?>
+          </div>
+
+          <div class="p-b-50">
+            <input class="formInput" type="text" name="state" id="STATE" placeholder="State" onkeyup="saveValue(this)" />
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              $state = $_POST['state'];
+              if ($state == "") {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please fill in state name";
+                echo "</a>";
+              } else if (preg_match("/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/", $state) == 0) {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please enter valid state name";
+                echo "</a>";
+              }
+            }
+            ?>
+          </div>
+
           <div class="signupFormButtonContainer p-b-100">
             <button type="submit" class="signupFormButton" onclick="rerun()">Sign Up</button>
           </div>
@@ -136,7 +244,7 @@ session_start();
 
         <?php
         $conn = mysqli_connect("localhost", "root", "", "taiyodb");
-        $username = $email = $password = $gender = $mobile = "";
+        $username = $email = $password = $gender = $mobile = $street_1 = $street_2 = $postcode = $city = $state = "";
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $username = test_input($_POST["username"]);
@@ -145,13 +253,19 @@ session_start();
           // $gender = intval($_POST["gender"]);
           $gender = $_POST["gender"];
           $mobile = test_input($_POST["phonenumber"]);
+          $age = test_input($_POST["age"]);
+          $street_1 = test_input($_POST["streetOne"]);
+          $street_2 = test_input($_POST["streetTwo"]);
+          $postcode = test_input($_POST["postcode"]);
+          $city = test_input($_POST["city"]);
+          $state = test_input($_POST["state"]);
         }
 
-        if ($username !== "" and $email !== "" and $password !== "" and $gender !== "" and $mobile !== "") {
+        if ($username !== "" and $email !== "" and $password !== "" and $gender !== "" and $mobile !== "" and $age !== "" and $street_1 !== "" and $street_2 !== "" and $postcode !== "" and $city !== "" and $state !== "") {
           if ($conn) {
             $usernameCheckSQL = "SELECT username FROM enduser WHERE username = '$username'";
             $emailCheckSQL = "SELECT user_email FROM enduser WHERE user_email = '$email'";
-            $sql = "INSERT INTO enduser (user_email, user_password, username, gender, phone_number) VALUES ('$email', '$password', '$username', '$gender', '$mobile')";
+            $sql = "INSERT INTO enduser (user_email, user_password, username, gender, phone_number, age, street_1, street_2, postcode, city, c_state) VALUES ('$email', '$password', '$username', '$gender', '$mobile', '$age', '$street_1', '$street_2', '$postcode', '$city', '$state')";
             $usernameResult = mysqli_query($conn, $usernameCheckSQL);
             $emailResult = mysqli_query($conn, $emailCheckSQL);
             // print_r($usernameResult);
@@ -243,6 +357,14 @@ session_start();
     document.getElementById("PASSWORD").value = getSavedValue("PASSWORD");
     document.getElementById("GENDER").value = getSavedValue("item");
     document.getElementById("PHONENUMBER").value = getSavedValue("PHONENUMBER");
+    document.getElementById("AGE").value = getSavedValue("AGE");
+    document.getElementById("STREETONE").value = getSavedValue("STREETONE");
+    document.getElementById("STREETTWO").value = getSavedValue("STREETTWO");
+    document.getElementById("POSTCODE").value = getSavedValue("POSTCODE");
+    document.getElementById("CITY").value = getSavedValue("CITY");
+    document.getElementById("STATE").value = getSavedValue("STATE");
+
+
 
     function saveValue(e) {
       var id = e.id;
