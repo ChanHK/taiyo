@@ -1,43 +1,39 @@
 <?php
-// $conn = mysqli_connect("localhost", "root", "");
+//$conn = mysqli_connect("localhost", "root", "");
 $conn = mysqli_connect("localhost", "root", "", "taiyodb");
 
 if ($conn) {
-    // $sql = "CREATE DATABASE taiyoDB";
+    //$sql = "CREATE DATABASE taiyoDB";
 
-    // if(mysqli_query($conn, $sql)) {
+     //if(mysqli_query($conn, $sql)) {
     //     echo "database created";
     // }
-    // else {
+    //else {
     //     echo "database creation fail";
     // } 
 
-    // $sql = "CREATE TABLE EndUser (
-    //     enduser_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-    //     user_email VARCHAR(50),
-    //     user_password VARCHAR(15),
-    //     username VARCHAR(30),
-    //     user_description VARCHAR(255),
-    //     gender VARCHAR(6),
-    //     phone_number VARCHAR(15),
-    //     street_1 VARCHAR(255),
-    //     street_2 VARCHAR(255),
-    //     city VARCHAR(120),
-    //     c_state VARCHAR(15),
-    //     postcode VARCHAR(5),
-    //     age INT(3),
-    //     profile_photo VARCHAR(255),
-    //     PRIMARY KEY (enduser_id)
-    //   )
-    //   ";
-    // gender is INT(1)
-    // 1 = MALE
-    // 2 = FEMALE
-    // 3 = OTHERS
+    /*$sql = "CREATE TABLE EndUser (
+			enduser_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
+			user_email VARCHAR(50),
+			user_password VARCHAR(15),
+			username VARCHAR(30),
+			user_description VARCHAR(255),
+			gender VARCHAR(6),
+			phone_number VARCHAR(15),
+			street_1 VARCHAR(255),
+			street_2 VARCHAR(255),
+			city VARCHAR(120),
+			c_state VARCHAR(15),
+			postcode VARCHAR(5),
+			age INT(3),
+			profile_photo VARCHAR(255),
+			PRIMARY KEY (enduser_id)
+		)
+		";*/
     // profile_photo
     // stores the direction to get the picture in string   ("pictures/dummy_profile_pic.png")
 
-    // $sql = "CREATE TABLE Review (review_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, review_message VARCHAR(255), reviewer_id INT(6) REFERENCES EndUser(enduser_id), reviewee_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (review_id))";
+    //$sql = "CREATE TABLE Review (review_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, review_message VARCHAR(255), reviewer_id INT(6) REFERENCES EndUser(enduser_id), reviewee_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (review_id))";
 
     // $sql = "CREATE TABLE Product (product_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, product_name VARCHAR(30), product_price FLOAT(7,2), product_description VARCHAR(255), product_state VARCHAR(50), category VARCHAR(50), quantity INT(2), enduser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (product_id))";
 
@@ -47,14 +43,14 @@ if ($conn) {
 
     // $sql = "CREATE TABLE Wishlist (wishlist_item_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, product_id INT(6) REFERENCES product(product_id), enduser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (wishlist_item_id))";
 
-    // $sql = "CREATE TABLE TransactionHistory (transaction_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, transaction_type VARCHAR(10), quantity INT(2), product_id INT(6) REFERENCES product(product_id), enduser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (transaction_id))";
+    // $sql = "CREATE TABLE TransactionHistory (transaction_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, transaction_type VARCHAR(10), quantity INT(2), product_id INT(6) REFERENCES product(product_id), belonginguser_id INT(6) REFERENCES EndUser(enduser_id), boughtuser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (transaction_id))";
 
 
-    // if (mysqli_query($conn, $sql)) {
+    //if (mysqli_query($conn, $sql)) {
     //     echo "table created";
-    // } else {
+    //} else {
     //     echo "fail to create table";
-    // }
+    //}
 
 
 
@@ -73,9 +69,9 @@ if ($conn) {
 
 
     /********************************Users***************************************/
-    // $sql = "INSERT INTO EndUser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('starLightuser1@gmail.com', 'starlightuser1','starlightuser1','Likes to buy stuff','Male','012-3456789','No. 70, Jalan A', 'Lampu Merah', 'Batu Caves', 'Terengganu', '50000',21, 'pictures/profile/profile.1.png')";
-    // $sql = "INSERT INTO EndUser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('Hatiuser2@gmail.com', 'hatiuser1','hatiuser1','Likes to scam people','Female','017-1103490','No. 701, Jalan B', 'Kearny', 'George Town', 'Pinang', '90000',36, 'pictures/profile/profile2.jpg')";
-    // $sql = "INSERT INTO EndUser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('Blakeuser3@gmail.com', 'blakeuser1','blakeuser1','You cant see me hehehe','Male','018-2312313','No. 34, Jalan C', 'Jupiter', 'Kuching', 'Sarawak', '54500', 28, 'pictures/profile/profile3.png')";
+    // $sql = "INSERT INTO EndUser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('starLightuser1@gmail.com', 'starlightuser1','starlightuser1','Likes to buy stuff','Male','012-3456789','No. 70, Jalan A', 'Lampu Merah', 'Batu Caves', 'Terengganu', '50000',21, 'profile1.png')";
+    // $sql = "INSERT INTO EndUser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('Hatiuser2@gmail.com', 'hatiuser1','hatiuser1','Likes to scam people','Female','017-1103490','No. 701, Jalan B', 'Kearny', 'George Town', 'Pinang', '90000',36, 'profile2.jpg')";
+    // $sql = "INSERT INTO EndUser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('Blakeuser3@gmail.com', 'blakeuser1','blakeuser1','You cant see me hehehe','Male','018-2312313','No. 34, Jalan C', 'Jupiter', 'Kuching', 'Sarawak', '54500', 28, 'profile3.png')";
     /********************************Users***************************************/
 
     /********************************Product*************************************/
@@ -93,24 +89,31 @@ if ($conn) {
     // $sql = "INSERT INTO product (product_name, product_price, product_description, product_state, category, quantity, enduser_id) VALUES ('Applce MacBook Pro 2019', 10000.00, 'Apple MacBook Pro is a macOS laptop with a 13.30-inch display that has a resolution of 2560x1600 pixels. It is powered by a Core i5 processor and it comes with 12GB of RAM. The Apple MacBook Pro packs 512GB of SSD storage.', 'new','Computers',6,3)";
     /********************************Product*************************************/
 
+	/*************************Transaction History********************************/
+	// $sql = INSERT INTO transactionhistory (transaction_id, transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES (NULL, 'Bought', '2', '1', '1', NULL);
+	// $sql = INSERT INTO transactionhistory (transaction_id, transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES(NULL, 'Sold', '2', '4', '2', '1');
+	// $sql = INSERT INTO transactionhistory(transaction_id, transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES (NULL, 'Bought', '2', '4', '1', NULL);
+	// $sql = INSERT INTO transactionhistory (transaction_id, transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES (NULL, 'Sold', '2', '1', '2', '1');
+	/*************************Transaction History********************************/
+	
     /*****************************Product Image**********************************/
-    // $sql = "INSERT INTO productimage (product_id, product_image) values (1,'pictures/product/product1a.jpg')";
-    // $sql = "INSERT INTO productimage (product_id, product_image) values (1,'pictures/product/product1b.jpg')";
-    // $sql = "INSERT INTO productimage (product_id, product_image) values (1,'pictures/product/product1c.jpg')";
-    // $sql = "INSERT INTO productimage (product_id, product_image) values (1,'pictures/product/product1d.jpg')";
-    // $sql = "INSERT INTO productimage (product_id, product_image) values (1,'pictures/product/product1e.jpg')";
-    // $sql = "INSERT INTO productimage (product_id, product_image) values (2,'pictures/product/product2a.jpg')";
-    // $sql = "INSERT INTO productimage (product_id, product_image) values (3,'pictures/product/product3a.jpg')";
-    // $sql = "INSERT INTO productimage (product_id, product_image) values (3,'pictures/product/product3b.jpg')";
-    // $sql = "INSERT INTO productimage (product_id, product_image) values (4,'pictures/product/product4a.png')";
-    // $sql = "INSERT INTO productimage (product_id, product_image) values (4,'pictures/product/product4b.jpg')";
+    // $sql = "INSERT INTO productimage (product_id, product_image) values (1,'product1a.jpg')";
+    // $sql = "INSERT INTO productimage (product_id, product_image) values (1,'product1b.jpg')";
+    // $sql = "INSERT INTO productimage (product_id, product_image) values (1,'product1c.jpg')";
+    // $sql = "INSERT INTO productimage (product_id, product_image) values (1,'product1d.jpg')";
+    // $sql = "INSERT INTO productimage (product_id, product_image) values (1,'product1e.jpg')";
+    // $sql = "INSERT INTO productimage (product_id, product_image) values (2,'product2a.jpg')";
+    // $sql = "INSERT INTO productimage (product_id, product_image) values (3,'product3a.jpg')";
+    // $sql = "INSERT INTO productimage (product_id, product_image) values (3,'product3b.jpg')";
+    // $sql = "INSERT INTO productimage (product_id, product_image) values (4,'product4a.png')";
+    // $sql = "INSERT INTO productimage (product_id, product_image) values (4,'product4b.jpg')";
     /*****************************Product Image**********************************/
 
-    if (mysqli_query($conn, $sql)) {
-        echo "insert data success";
-    } else {
-        echo "fail to insert data";
-    }
+    //if (mysqli_query($conn, $sql)) {
+    //    echo "insert data success";
+    //} else {
+    //    echo "fail to insert data";
+    //}
 } else {
     die("Connection failed: " . mysqli_connect_error());
 }

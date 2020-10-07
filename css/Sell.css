@@ -1,0 +1,224 @@
+@font-face
+{
+	font-family: "JosefinSans-Regular";
+	src: url(JosefinSans-Regular.ttf);
+}
+
+form
+{
+	margin-bottom: 0;
+}
+
+body
+{
+	font-family: JosefinSans-Regular;
+}
+
+.flex-row {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	flex-wrap: wrap
+}
+
+.flex-column{
+	display: flex;
+	flex-direction: column;
+}
+
+.bgblack{background-color: black}
+.bggrey {background-color: #8c9191;}
+.bgred {background-color: #c75d5d;}
+
+ul
+{
+	display:flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 0.5em;
+}
+
+li
+{
+	display: inline;
+	padding: 1em;
+}
+
+li a
+{
+	color: #c75d5d;
+	text-decoration: initial;
+}
+
+hr
+{
+	color: black;
+}
+
+.inputsize
+{
+	width: 15em;
+	height: 4em;
+	border-radius: 5px;
+}
+
+select
+{
+	padding: 1em;
+	border-radius: 5px;
+	font-family: JosefinSans-Regular;
+}
+
+.fileerror
+{
+	margin-top: 1em;
+	color: red;
+	display: none;
+}
+
+.inputerror
+{
+	margin-top: 1em;
+	color: red;
+	display: none;
+}
+
+.submitbutton
+{
+	cursor: pointer;
+	font-family: JosefinSans-Regular;
+	color: white;
+	margin-right: 2em;
+	margin-left: auto;
+	width: 8em;
+	height: 4em;
+	border: 0;
+	border-radius: 5px;
+	transition: 0.6s background-color;
+}
+
+.taiyou
+{
+	float: left;
+	padding: 1em;
+	width: 10em;
+}
+
+.aligni
+{
+	align-items: center;
+}
+
+.searchbar
+{
+	float: left;
+	width: 40em;
+	height: 4em;
+	border-radius: 5px 0 0 5px;
+	border: 0;
+}
+
+.searchbutton
+{
+	float: left;
+	cursor: pointer;
+	width: 4em;
+	height: 4em;
+	background-image: url(Mag.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 0 5px 5px 0;	
+	border: 0;
+}
+
+.marginup
+{
+	margin-top:1em;
+}
+
+.marginleft
+{
+	margin-left:1em;
+}
+
+.productdetails
+{
+	margin: auto;
+	margin-top: 3em;
+	margin-bottom: 3em;
+	border: 1px solid black;
+	border-radius: 5px;
+	width: 70%;
+}
+
+
+.productform
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
+}
+
+.loginprofile
+{
+	width: 30px;
+	height: 30px;
+	border-radius:50%;
+}
+
+
+.submitbutton:hover
+{
+	background-color: #a05050;
+}
+
+
+@media only screen and (max-width: 935px)
+{
+	.searchbar
+	{
+		width: 10em;
+	}
+	
+
+	
+}
+
+@media only screen and (max-width: 1260px)
+{
+	.asidediv
+	{
+		font-size: 10px;
+	}
+	
+	.profile
+	{
+		width: 50px;
+		height: 50px;
+	}
+	
+	.payment
+	{
+		width: 100px;
+	}
+	
+}
+
+@media only screen and (max-width: 1100px)
+{
+	.description
+	{
+		width:50%;
+		height: 50%;
+	}
+}
+

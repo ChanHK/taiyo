@@ -21,12 +21,22 @@
   background-color: #c75d5d;
 }
 
+@font-face
+{
+	font-family: "JosefinSans-Regular";
+	src: url(../fonts/JosefinSans/JosefinSans-Regular.ttf);
+}
+
 form {
   margin-bottom: 0;
 }
 
 ul {
-  padding: 0.5em;
+  	display:flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5em;
 }
 
 li {
@@ -58,16 +68,16 @@ li a {
 }
 
 .searchbutton {
-  float: left;
-  cursor: pointer;
-  width: 4em;
-  height: 4em;
-  background-image: url(../pictures/main/Mag.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  border-radius: 0 5px 5px 0;
-  border: 0;
-  border: 1px solid black;
+	float: left;
+	cursor: pointer;
+	width: 4em;
+	height: 4em;
+	background-color: #e7e7e7;
+	background-image: url(../pictures/main/Mag.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 0 5px 5px 0;	
+	border: 0;
 }
 
 .sellbutton {
@@ -102,6 +112,13 @@ aside div {
   padding: 1em;
 }
 
+.loginprofile
+{
+	width: 30px;
+	height: 30px;
+	border-radius:50%;
+}
+
 .sectiondesc {
   float: left;
   width: 70%;
@@ -123,10 +140,7 @@ section.sectiondesc div {
   text-transform:uppercase;
 }
 
-@font-face {
-  font-family: "JosefinSans-Regular";
-  src: url(JosefinSans-Regular.ttf);
-}
+
 
 .purchasebutton {
   cursor: pointer;

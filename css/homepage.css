@@ -1,0 +1,301 @@
+@font-face
+{
+	font-family: "JosefinSans-Regular";
+	src: url(../fonts/JosefinSans/JosefinSans-Regular.ttf);
+}
+
+form
+{
+	margin-bottom: 0;
+}
+
+body
+{
+	font-family: JosefinSans-Regular;
+}
+
+.flex-row {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+}
+
+.bgblack{background-color: black}
+.bggrey {background-color: #8c9191;}
+.bgred {background-color: #c75d5d;}
+
+ul
+{
+	display:flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5em;
+}
+
+li
+{
+	display: inline;
+	padding: 1em;
+}
+
+li a
+{
+	color: #c75d5d;
+	text-decoration: initial;
+}
+
+.taiyou
+{
+	float: left;
+	padding: 1em;
+	width: 10em;
+}
+
+.aligni
+{
+	align-items: center;
+}
+
+.searchbar
+{
+	float: left;
+	width: 40em;
+	height: 4em;
+	border-radius: 5px 0 0 5px;
+	border: 0;
+}
+
+.searchbutton
+{
+	float: left;
+	cursor: pointer;
+	width: 4em;
+	height: 4em;
+	background-color: #e7e7e7;
+	background-image: url(../pictures/main/Mag.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 0 5px 5px 0;	
+	border: 0;
+}
+
+.loginprofile
+{
+	width: 30px;
+	height: 30px;
+	border-radius:50%;
+}
+
+.sellbutton
+{
+	cursor: pointer;
+	font-family: JosefinSans-Regular;
+	color: white;
+	margin-right: 2em;
+	margin-left: auto;
+	width: 8em;
+	height: 4em;
+	border: 0;
+	border-radius: 5px;
+	transition: 0.6s background-color;
+}
+
+
+.filter
+{
+	display: flex;
+	flex-direction: column;
+	color: white;
+	margin: 1em 0;
+	width: 100%;
+}
+
+.filterform
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	width: 100%;
+}
+
+.filter select
+{
+	margin: 1em 0 1em 0;
+	padding: 1em;
+	border-radius: 5px;
+	font-family: JosefinSans-Regular;
+}
+
+.filter input 
+{
+	font-family: JosefinSans-Regular;
+	padding: 1em;
+	border-radius: 5px;
+	background-color: white;
+	color: #c75d5d;
+	border: 0;
+	margin: 1em 1em;
+	transition: 0.6s background-color;
+}
+
+.filter input:hover
+{
+	background-color: #c4c4c4;
+}
+
+.filter label 
+{
+	margin: 1em 0.5em;
+}
+
+.whitespace
+{
+	width: 100%;
+	background-color:white;
+}
+
+.category
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	border: 1px black solid;
+	margin: 1em 5em;
+	padding: 1em;
+	border-radius: 5px;
+}
+
+.category div label
+{
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.itemname
+{
+	color: black;
+	text-align: center;
+}
+
+.item
+{
+	padding: 1em;
+	border-radius: 5px;
+	transition: 0.6s background-color;
+}
+
+.checkbox
+{
+	display: none;
+}
+
+.checkbox:checked ~ div
+{
+	background-color: #c4c4c4;
+}
+
+.productsect
+{
+	padding: 1em 6em;
+	background-color: #8c9191;
+	color: white;
+}
+
+.products
+{
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+.productimg
+{
+	width:200px;
+	height:100px;
+}
+
+.productdesc
+{
+	text-align:left;
+	color: black;
+}
+
+.productitem
+{
+	margin-top: 1em;
+	padding: 1em;
+	background-color: white;
+	border-radius: 5px;
+	position: relative;
+	margin-left:1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.profileicon
+{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+
+.linkspanner
+{
+	width:100%;
+	height:100%;
+	position: absolute;
+	top:0;
+	left:0;
+}
+
+.sellbutton:hover
+{
+	background-color: #a05050;
+}
+
+label:hover > .item > .categoryanim
+{
+	animation: bounce 1s;
+}
+
+@keyframes bounce {
+	0%, 100%, 20%, 50%, 80% {
+		-webkit-transform: translateY(0);
+		-ms-transform:     translateY(0);
+		transform:         translateY(0)
+	}
+	40% {
+		-webkit-transform: translateY(-30px);
+		-ms-transform:     translateY(-30px);
+		transform:         translateY(-30px)
+	}
+	60% {
+		-webkit-transform: translateY(-15px);
+		-ms-transform:     translateY(-15px);
+		transform:         translateY(-15px)
+	}
+}
+
+@media only screen and (max-width: 935px)
+{
+	.searchbar
+	{
+		width: 10em;
+	}
+}
