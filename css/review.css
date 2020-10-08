@@ -1,0 +1,337 @@
+@font-face
+{
+	font-family: "JosefinSans-Regular";
+	src: url(JosefinSans-Regular.ttf);
+}
+
+form
+{
+	margin-bottom: 0;
+}
+
+body
+{
+	font-family: JosefinSans-Regular;
+}
+
+.flex-row {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+}
+
+.bgblack{background-color: black}
+.bggrey {background-color: #8c9191;}
+.bgred {background-color: #c75d5d;}
+
+ul
+{
+	display:flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 0.5em;
+}
+
+li
+{
+	display: inline;
+	padding: 1em;
+}
+
+li a
+{
+	color: #c75d5d;
+	text-decoration: initial;
+}
+
+hr
+{
+	color: black;
+}
+
+.taiyou
+{
+	float: left;
+	padding: 1em;
+	width: 10em;
+}
+
+.aligni
+{
+	align-items: center;
+}
+
+.searchbar
+{
+	float: left;
+	width: 40em;
+	height: 4em;
+	border-radius: 5px 0 0 5px;
+	border: 0;
+}
+
+.searchbutton
+{
+	float: left;
+	cursor: pointer;
+	width: 4em;
+	height: 4em;
+	background-image: url(Mag.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 0 5px 5px 0;	
+	border: 0;
+}
+
+.asidediv
+{
+	padding: 1em;
+	position: relative;
+	flex-grow: 1;
+	overflow-wrap: break-word;
+}
+
+.sellbutton
+{
+	cursor: pointer;
+	font-family: JosefinSans-Regular;
+	color: white;
+	position: absolute;
+	left: 30%;
+	bottom: 20px;
+	width: 8em;
+	height: 4em;
+	border: 0;
+	border-radius: 5px;
+	transition: 0.6s background-color;
+}
+
+.loginprofile
+{
+	width: 30px;
+	height: 30px;
+	border-radius:50%;
+}
+
+.profile
+{
+	display: block;
+	margin: auto;
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+	border: 0;
+	padding: 1em;
+}
+
+
+
+.payment
+{
+	display: block;
+	width: 200px;
+}
+
+aside
+{
+	display:flex;
+	flex-direction: column;
+	background-color: black;
+	color: white;
+	float: left;
+	height: 110%;
+	width: 20%;
+}
+
+section
+{
+	display:flex;
+	height:110%;
+	flex-direction:column;
+	overflow:hidden;
+}
+
+.navigation
+{
+	display:flex;
+	flex-direction:row;
+	
+}
+
+.navbutton
+{
+	cursor: pointer;
+	background-color: Transparent;
+	font-family: JosefinSans-Regular;
+	font-size: 1em;
+	margin: 1em 0 1em 2em;
+	border: 0;
+}
+
+.active
+{
+	background-color: #c75d5d;
+	width: 7em;
+	height: 3em;
+	color: white;
+	font-size: 1em;
+	font-family: JosefinSans-Regular;
+	margin: 1em 0 1em 2em;
+	border: 0;
+	border-radius:5px;
+}
+
+.coverdiv
+{
+	width: 100%;
+	height: 200px;
+	overflow:hidden;
+	background-image: url(Taiyou-repeat.png);
+	background-repeat: repeat;
+}
+
+.nospace
+{
+	margin: 0;
+
+}
+
+.scroll
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width:75%;
+	overflow: auto;
+	height:50%;
+	clear: right;
+}
+
+.reviewtitle
+{
+	padding: 1em;
+	text-decoration: underline
+}
+
+.reviewdiv
+{
+	display: flex;
+	flex-direction: column;
+	height:60%;
+	width:100%;
+}
+
+.reviewscroll
+{
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+	overflow-y: scroll;
+	overflow-wrap: break-word;
+}
+
+.newreview
+{
+	margin: 1em;
+	
+}
+
+.reviewform
+{
+	display: flex;
+	flex-direction: column;
+}
+
+.reviewitem
+{
+	flex-shrink: 0;
+	margin-left: 1em;
+}
+
+.revprofile
+{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+
+.reviewbutton
+{
+	cursor: pointer;
+	font-family: JosefinSans-Regular;
+	color: white;
+	width: 8em;
+	height: 4em;
+	border: 0;
+	border-radius: 5px;
+	margin-top: 1em;
+	align-self: flex-end;
+	transition: 0.6s background-color;
+}
+
+.reviewbutton:hover
+{
+	background-color: #a05050;
+}
+
+.sellbutton:hover
+{
+	background-color: #a05050;
+}
+
+@media only screen and (max-width: 935px)
+{
+	.searchbar
+	{
+		width: 10em;
+	}
+}
+
+@media only screen and (max-width: 1260px)
+{
+	.asidediv
+	{
+		font-size: 10px;
+	}
+	
+	.profile
+	{
+		width: 50px;
+		height: 50px;
+	}
+	
+	.payment
+	{
+		width: 100px;
+	}
+	
+	.sellbutton
+	{
+		font-size:10px;
+		width: 7em;
+		height: 3em;
+	}
+}
+
+@media only screen and (max-width: 840px)
+{
+	.asidediv
+	{
+		font-size: 6px;
+	}
+	.sellbutton
+	{
+		font-size:6px;
+		width: 6em;
+		height: 3em;
+	}
+}
+

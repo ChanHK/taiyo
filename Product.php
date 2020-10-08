@@ -2,43 +2,39 @@
 $conn = mysqli_connect("localhost", "root", "", "taiyodb");
 // error_reporting(E_ERROR | E_WARNING | E_PARSE); // remove notice
 session_start();
-$userID = $_SESSION['userID']; // get user ID 
+if(isset($_SESSION['userID']))
+{
+	$user_ID = $_SESSION['userID'];
+	$sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $user_ID";
+	$userResult = mysqli_query($conn, $sql);
+}
+else
+{
+	$user_ID = null;
+}
 // $productID = $_SESSION['productID']; //get from home page (1)
 $_SESSION['cartIDArray'] = null;
-// $productID = $_GET['product_id']; //get from home page (2)
+$productID = $_GET['product_id']; //get from home page (2)
 $dotCount = 0; // slide dots count
 ?>
 
 <html>
 
-<head lang="en">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
-  <link rel="stylesheet" type="text/css" href="css/reset.css" />
-  <link rel="stylesheet" type="text/css" href="css/product.css" />
-  <link rel="stylesheet" type="text/css" href="css/util.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-</head>
+	<head lang="en">
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
+	  <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+	  <link rel="stylesheet" type="text/css" href="css/product.css"/>
+	  <link rel="stylesheet" type="text/css" href="css/util.css" />
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	</head>
 
 <body onLoad="showSlides(1)">
-  <header class="w-full bggrey">
-    <div class="bgblack" style="text-align: right">
-      <ul>
-        <li><a href="#">Register</a></li>
-        <li><a href="#">Login</a></li>
-      </ul>
-    </div>
-    <div class="flex-row aligni">
-      <a href="#"><img class="taiyou" src="pictures/main/Taiyou.png" alt="Logo" title="Logo" /></a>
-      <form>
-        <input class="searchbar" type="search" name="searchbar" id="searchbar" placeholder=" Search..." />
-        <button class="searchbutton" type="submit" name="search" id="search"></button>
-      </form>
-      <button class="sellbutton bgred" name="sell" id="sell">Sell</button>
-    </div>
-  </header>
 
+<?php
 
+	include "header.php";
+?>
 
   <section>
     <!-- Slideshow container -->
@@ -50,7 +46,7 @@ $dotCount = 0; // slide dots count
       $getPicResult = mysqli_query($conn, $getPicSQL);
       while ($a = mysqli_fetch_assoc($getPicResult)) {
         echo "<div class='mySlides fade'>";
-        echo "<img src='{$a['product_image']}' class='w-full' />";
+        echo "<img src='pictures/product/" . $a['product_image'] . "' class='w-full' />";
         echo "</div>";
         $dotCount++;
       }
@@ -71,7 +67,7 @@ $dotCount = 0; // slide dots count
     <div style="text-align: center">
       <?php
       for ($i = 0; $i < $dotCount; $i++) {
-        echo "<span class='dot' onclick='currentSlide($i)'></span>";
+        echo "<span class='dot' onclick='currentSlide($i+1)'></span>";
       }
       ?>
     </div>
@@ -83,11 +79,11 @@ $dotCount = 0; // slide dots count
   <aside class="m-b-40">
     <div>
       <?php
-      $getProfilePicSQL = "SELECT profile_photo, username FROM enduser WHERE enduser_id = $userID";
+      $getProfilePicSQL = "SELECT profile_photo, username FROM product LEFT JOIN enduser ON product.enduser_id = enduser.enduser_id WHERE product_id = $productID";
       $getProfilePicResult = mysqli_query($conn, $getProfilePicSQL);
       while ($b = mysqli_fetch_assoc($getProfilePicResult)) {
         echo "<a href='#'>";
-        echo "<img class='profile' src='{$b['profile_photo']}' alt='Profile Pic' title='Profile Pic' />";
+        echo "<img class='profile' src='pictures/profile/". $b['profile_photo'] . "' alt='Profile Pic' title='Profile Pic' />";
         echo "</a>";
         echo "<p class='text-center'><b>{$b['username']}</b></p>";
         echo "<br />";
@@ -95,7 +91,7 @@ $dotCount = 0; // slide dots count
 
       echo "<div class='w-full'>";
       echo "<p class='m-l-100 m-r-100'>";
-      $getAddressDataSQL = "SELECT street_1, street_2, city, c_state, postcode, phone_number, user_email FROM enduser WHERE enduser_id = $userID";
+      $getAddressDataSQL = "SELECT street_1, street_2, city, c_state, postcode, phone_number, user_email FROM product LEFT JOIN enduser ON product.enduser_id = enduser.enduser_id WHERE product_id = $productID";
       $getAddressDataResult = mysqli_query($conn, $getAddressDataSQL);
       while ($c = mysqli_fetch_assoc($getAddressDataResult)) {
         echo "<i class='fa fa-map-marker'> &nbsp; </i> {$c['street_1']} {$c['street_2']}, {$c['postcode']} {$c['city']}, {$c['c_state']}";
@@ -190,7 +186,7 @@ $dotCount = 0; // slide dots count
             Cancel
           </button>
           <button class="formButton m-r-40" type="submit" name="addToCart" onclick="openCartModal(),closeQuantityCartModal()">
-            add to cart
+            Add to cart
           </button>
         </div>
         <?php
