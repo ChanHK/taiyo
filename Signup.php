@@ -11,10 +11,14 @@ session_start();
   <meta charset="UTF-8" />
   <link rel="stylesheet" type="text/css" href="css/util.css" />
   <link rel="stylesheet" type="text/css" href="css/signup.css" />
+  <link rel="stylesheet" type="text/css" href="css/header.css" />
 </head>
 
 <body>
   <div class="limiter">
+    <?php
+    include "header.php";
+    ?>
     <div class="signupContainer">
       <div class="signupFormContainer">
         <form class="signupForm p-l-55 p-r-55 p-t-100" method="post" id="thisFORM">
