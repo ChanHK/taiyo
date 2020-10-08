@@ -522,12 +522,9 @@ if ($_SESSION['cartIDArray'] != null) {
       $goToCart = false;
       $reviewArray = [];
       foreach ($_POST['review'] as $review) {
-        // echo $review;
-        if ($productID != null) {
-          // //////////
-          $getSellerIDSQL = "SELECT enduser_id FROM enduser, product WHERE product.product_id = $productID AND product.enduser_id = enduser.enduser_id";
+        if ($productID !== null) {
+          $getSellerIDSQL = "SELECT enduser.enduser_id FROM enduser, product WHERE product.product_id = $productID AND product.enduser_id = enduser.enduser_id";
           $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
-          // print_r($getSellerIDResult);
           while ($m = mysqli_fetch_assoc($getSellerIDResult)) {
             $reviewSQL = "INSERT INTO review (review_message, reviewer_id, reviewee_id) VALUES ('$review', $userID, {$m['enduser_id']})";
             mysqli_query($conn, $reviewSQL);
@@ -548,14 +545,9 @@ if ($_SESSION['cartIDArray'] != null) {
           $getProductIDSQL = "SELECT product_id FROM cart WHERE cart_item_id = $n";
           $getProductIDResult = mysqli_query($conn, $getProductIDSQL);
           while ($p = mysqli_fetch_assoc($getProductIDResult)) {
-            print_r($p);
             $getSellerIDSQL = "SELECT enduser.enduser_id FROM enduser, product WHERE enduser.enduser_id = product.enduser_id AND product.product_id = {$p['product_id']}";
             $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
-            // print_r($getSellerIDResult);
-            // echo $reviewArray[$countReview];
-            // print_r($reviewArray);
             while ($m = mysqli_fetch_assoc($getSellerIDResult)) {
-              // print_r($m);
               $reviewSQL = "INSERT INTO review (review_message, reviewer_id, reviewee_id) VALUES ('$reviewArray[$countReview]', $userID, {$m['enduser_id']})";
               mysqli_query($conn, $reviewSQL);
             }
