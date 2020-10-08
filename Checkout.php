@@ -4,20 +4,19 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE); // remove notice
 session_start();
 $userID = $_SESSION["userID"]; // get user ID 
 $cartIDArray = [];
-$productID = $_SESSION["productID"]; //get from product page
-// $quantity = $_SESSION["quantity"]; // get from product page
-// $productID = 1;
-// $quantity = 2;
+// $productID = $_SESSION["productID"]; //get from product page
 // echo $userID;
 // echo "product $productID";
 // echo "quantity $quantity";
 // print_r($_SESSION['cartIDArray']);
 $quantity = $_GET['productQuantity'] ? $_GET['productQuantity'] : null;
-// echo $quantity;
+
 if ($_SESSION['cartIDArray'] != null) {
   foreach ($_SESSION['cartIDArray'] as $a) {
     array_push($cartIDArray, $a);
   }
+} else {
+  $productID = $_SESSION["productID"];
 }
 ?>
 
@@ -30,12 +29,17 @@ if ($_SESSION['cartIDArray'] != null) {
   <meta charset="UTF-8" />
   <link rel="stylesheet" type="text/css" href="css/util.css" />
   <link rel="stylesheet" type="text/css" href="css/checkout.css" />
+  <link rel="stylesheet" type="text/css" href="css/header.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 
 <body>
   <div class="limiter">
+    <?php
+    include "header.php";
+    ?>
     <div class="checkoutContainer">
+
       <div class="selectedProductsContainer">
         <?php
         if ($productID == null) {
@@ -57,7 +61,7 @@ if ($_SESSION['cartIDArray'] != null) {
                 // print_r($b);
                 echo "<div class='productInfoContainer'>";
                 echo "<div class='float-l p-t-5'>";
-                echo "<img class='pictureSize' src='{$b['product_image']}' alt='product' />";
+                echo "<img class='pictureSize' src='pictures/product/" . $b['product_image'] . "' alt='product' />";
                 echo "</div>";
               }
               $productNameSQL = "SELECT product_name, product_price FROM product WHERE product_id = $a[product_id]";
@@ -94,7 +98,7 @@ if ($_SESSION['cartIDArray'] != null) {
           while ($i = mysqli_fetch_assoc($imageResult)) {
             echo "<div class='productInfoContainer'>";
             echo "<div class='float-l p-t-5'>";
-            echo "<img class='pictureSize' src='{$i['product_image']}' alt='product'/>";
+            echo "<img class='pictureSize' src='pictures/product/" . $i['product_image'] . "' alt='product'/>";
             echo "</div>";
           }
           $productNameSQL = "SELECT product_name, product_price FROM product WHERE product_id = '$productID'";
@@ -134,7 +138,12 @@ if ($_SESSION['cartIDArray'] != null) {
             echo "<i class='fa fa-map-marker p-b-10'><a class='f-w-b p-l-18'>{$a['username']}</a></i>";
             echo "<br />";
             echo "<p class='p-l-27 fs-14'>";
-            echo "{$a['street_1']}, {$a['street_2']}, {$a['postcode']}  {$a['city']},  {$a['c_state']}"; // need to add address
+            echo "{$a['street_1']},";
+
+            if ($a['street_2'] !== "") {
+              echo "{$a['street_2']},";
+            }
+            echo "{$a['postcode']},  {$a['city']},  {$a['c_state']}";
             echo "</p>";
           }
           ?>
@@ -262,7 +271,7 @@ if ($_SESSION['cartIDArray'] != null) {
 
             echo "<a class='p-l-25 fs-14 p-b-5'>Street 2</a>";
             echo "<div class='m-b-16 m-l-20 m-r-20'>";
-            echo "<input class='formInput' type='text' name='streetTwo' placeholder='Insert your street name here' value='{$e['street_2']}' pattern='^\s*\S+(?:\s+\S+){2,}' required/>";
+            echo "<input class='formInput' type='text' name='streetTwo' placeholder='Insert your street name here (optional)' value='{$e['street_2']}' pattern='^\s*\S+(?:\s+\S+){2,}'/>";
             echo "</div>";
 
             echo "<a class='p-l-25 fs-14 p-b-5'>Postcode</a>";
@@ -296,20 +305,20 @@ if ($_SESSION['cartIDArray'] != null) {
         </form>
 
         <?php
-        $street_1= $street_2 = $postcode = $city = $c_state = $phone ="";
+        $street_1 = $street_2 = $postcode = $city = $c_state = $phone = "";
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $street_1 = test_input($_POST["streetOne"]);
-          echo $street_1;
           $street_2 = test_input($_POST["streetTwo"]);
           $postcode = intval(test_input($_POST["postcode"]));
           $city = test_input($_POST["city"]);
           $c_state = test_input($_POST["c_state"]);
           $phone = test_input(strval($_POST["phoneNumber"]));
         }
-        if ($street_1 !== "" and $street_2 !== "" and $postcode !== "" and $city !=="" and $c_state !== "" and $phone !== "") {
+        if ($street_1 !== "" and $postcode !== "" and $city !== "" and $c_state !== "" and $phone !== "") {
           $updateSQL = "UPDATE enduser SET street_1 = '$street_1', street_2 = '$street_2',  postcode = '$postcode', city = '$city', c_state = '$c_state', phone_number = '$phone' WHERE enduser_id = $userID";
           $updateResult = mysqli_query($conn, $updateSQL);
-          header("Refresh:0");
+          echo "<script type='text/javascript'>window.top.location='Checkout.php';</script>";
+          exit;
         }
 
         function test_input($data)
@@ -408,9 +417,7 @@ if ($_SESSION['cartIDArray'] != null) {
           }
         }
         if ($done) {
-          // header("Location: Wishlist.php",  true,  301 );
-          echo "<script type='text/javascript'>window.top.location='Wishlist.php';</script>";
-          // echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
+          echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
           exit;
         }
         ?>
@@ -515,17 +522,15 @@ if ($_SESSION['cartIDArray'] != null) {
       $goToCart = false;
       $reviewArray = [];
       foreach ($_POST['review'] as $review) {
-        // echo $review;
-        if ($productID != null) {
-          $getSellerIDSQL = "SELECT enduser_id FROM enduser, product WHERE product.product_id = $productID AND product.enduser_id = enduser.enduser_id";
+        if ($productID !== null) {
+          $getSellerIDSQL = "SELECT enduser.enduser_id FROM enduser, product WHERE product.product_id = $productID AND product.enduser_id = enduser.enduser_id";
           $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
-          // print_r($getSellerIDResult);
           while ($m = mysqli_fetch_assoc($getSellerIDResult)) {
             $reviewSQL = "INSERT INTO review (review_message, reviewer_id, reviewee_id) VALUES ('$review', $userID, {$m['enduser_id']})";
             mysqli_query($conn, $reviewSQL);
           }
 
-          $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, user_id) VALUES ('Buy', $quantity, $productID, $userID)";
+          $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, enduser_id) VALUES ('Buy', $quantity, $productID, $userID)";
           mysqli_query($conn, $storeTransSQL);
           echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
           exit;
@@ -540,14 +545,9 @@ if ($_SESSION['cartIDArray'] != null) {
           $getProductIDSQL = "SELECT product_id FROM cart WHERE cart_item_id = $n";
           $getProductIDResult = mysqli_query($conn, $getProductIDSQL);
           while ($p = mysqli_fetch_assoc($getProductIDResult)) {
-            print_r($p);
             $getSellerIDSQL = "SELECT enduser.enduser_id FROM enduser, product WHERE enduser.enduser_id = product.enduser_id AND product.product_id = {$p['product_id']}";
             $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
-            // print_r($getSellerIDResult);
-            // echo $reviewArray[$countReview];
-            // print_r($reviewArray);
             while ($m = mysqli_fetch_assoc($getSellerIDResult)) {
-              // print_r($m);
               $reviewSQL = "INSERT INTO review (review_message, reviewer_id, reviewee_id) VALUES ('$reviewArray[$countReview]', $userID, {$m['enduser_id']})";
               mysqli_query($conn, $reviewSQL);
             }

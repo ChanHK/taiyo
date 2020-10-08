@@ -1,16 +1,23 @@
+<?php
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+$userID = $_SESSION['userID'];
+?>
+
+
+
 <header class="w-full bggrey">
 	<div class="bgblack" style="text-align: right;">
 		<ul>
 			<?php
-				if($user_ID != null)
+				if($userID != null)
 				{
 					echo "<li style='flex: 0'><a href='Wishlist.php'>Wishlist</a></li>";
 					echo "<li style='flex: 0'><a href='Cart.php'>Cart</a></li>";
 				}
 			?>
-			<li style="flex: 1"><a href="Signup.php">Register</a></li>
+			<li style="flex: 1;"><a href="Signup.php">Register</a></li>
 			<?php
-				if($user_ID != null)
+				if($userID != null and $userResult != null)
 				{
 					$row = mysqli_fetch_array($userResult);
 					if($row['profile_photo'] == null)
@@ -36,7 +43,7 @@
 			<button class="searchbutton" type="submit" name="search" id="search"></button>
 		</form>
 		<?php
-			if(!isset($visitedUserID) || $user_ID != $visitedUserID)
+			if(!isset($visitedUserID) || $userID != $visitedUserID)
 			{
 				echo "<button class='sellbutton bgred' name='sell' id='sell'>Sell</button>";
 			}

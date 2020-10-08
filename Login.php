@@ -10,10 +10,14 @@ session_start();
   <meta charset="UTF-8" />
   <link rel="stylesheet" type="text/css" href="css/util.css" />
   <link rel="stylesheet" type="text/css" href="css/login.css" />
+  <link rel="stylesheet" type="text/css" href="css/header.css" />
 </head>
 
 <body>
   <div class="limiter">
+    <?php
+    include "header.php";
+    ?>
     <div class="loginContainer">
       <div class="loginFormContainer">
         <form class="loginForm p-l-55 p-r-55 p-t-100" method="post">

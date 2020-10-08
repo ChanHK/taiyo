@@ -13,13 +13,13 @@ $visitedUserID = 3;
 
 if(isset($_SESSION['userID']))
 {
-	$user_ID = $_SESSION['userID'];
-	$sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $user_ID";
+	$userID = $_SESSION['userID'];
+	$sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $userID";
 	$userResult = mysqli_query($conn, $sql);
 }
 else
 {
-	$user_ID = null;
+	$userID = null;
 }
 $sql = "SELECT * FROM enduser WHERE enduser_id = $visitedUserID";
 $visitedUserResult = mysqli_query($conn, $sql);
@@ -97,7 +97,7 @@ $transactionPictureResult = mysqli_query($conn, $sql);
 				echo "<div class='navigation bggrey'>";
 					echo "<button class='navbutton' name='listings' id='listings'>Listings</button>";
 					echo "<button class='navbutton' name='review' id='review'>Reviews</button>";
-				if($user_ID == $visitedUserID)
+				if($userID == $visitedUserID)
 				{
 					echo "<button class='active' name='transactions' id='transactions' disabled>Transactions</button>";
 					

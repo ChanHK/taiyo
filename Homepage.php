@@ -8,13 +8,13 @@ $userResult = null;
 
 if(isset($_SESSION['userID']))
 {
-	$user_ID = $_SESSION['userID'];
-	$sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $user_ID";
+	$userID = $_SESSION['userID'];
+	$sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $userID";
 	$userResult = mysqli_query($conn, $sql);
 }
 else
 {
-	$user_ID = null;
+	$userID = null;
 }
 
 if(isset($_SESSION['substring']))
