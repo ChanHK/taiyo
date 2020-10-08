@@ -54,9 +54,18 @@ $dotCount = 0; // slide dots count
       <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
       <a class="next" onclick="plusSlides(1)">&#10095;</a>
 
-      <a href="#" onclick="openQuantityCartModal()"><span class="cart"></span></a>
+      <?php
+      if ($userID !== null) {
+        $islogin = "true";
+      } else {
+        $islogin = "false";
+      }
+      echo "<a href='#' onclick='openQuantityCartModal($islogin)'><span class='cart'></span></a>";
+      echo "<a href='#' onclick='openWishlistModal($islogin)'><span class='wish'></span></a>";
+      ?>
+      <!-- <a href="#" onclick="openQuantityCartModal()"><span class="cart"></span></a> -->
 
-      <a href="#" onclick="openWishlistModal()"><span class="wish"></span></a>
+      <!-- <a href="#" onclick="openWishlistModal()"><span class="wish"></span></a> -->
     </div>
     <br />
 
@@ -295,7 +304,7 @@ $dotCount = 0; // slide dots count
         document.documentElement.style.overflow = "hidden";
         document.body.scroll = "no";
       } else {
-        window.top.location='Login.php';
+        window.top.location = 'Login.php';
       }
     }
 
@@ -305,10 +314,14 @@ $dotCount = 0; // slide dots count
       document.body.scroll = "yes";
     }
 
-    function openWishlistModal() {
-      wishlistNoticeModal.style.display = "block";
-      document.documentElement.style.overflow = "hidden";
-      document.body.scroll = "no";
+    function openWishlistModal(x) {
+      if (x) {
+        wishlistNoticeModal.style.display = "block";
+        document.documentElement.style.overflow = "hidden";
+        document.body.scroll = "no";
+      } else {
+        window.top.location = 'Login.php';
+      }
     }
 
     function closeWishlistModal() {
@@ -329,10 +342,14 @@ $dotCount = 0; // slide dots count
       document.body.scroll = "yes";
     }
 
-    function openQuantityCartModal() {
-      quantityCartModal.style.display = "block";
-      document.documentElement.style.overflow = "hidden";
-      document.body.scroll = "no";
+    function openQuantityCartModal(x) {
+      if (x) {
+        quantityCartModal.style.display = "block";
+        document.documentElement.style.overflow = "hidden";
+        document.body.scroll = "no";
+      } else {
+        window.top.location = 'Login.php';
+      }
     }
 
     function closeQuantityCartModal() {
