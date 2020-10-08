@@ -122,9 +122,16 @@ $dotCount = 0; // slide dots count
       }
 
       ?>
-      <button class="purchasebutton bgred" onclick="openModal()">
-        Purchase
-      </button>
+      <?php
+      if ($userID !== null) {
+        $checkLogin = "true";
+      } else {
+        $checkLogin = "false";
+      }
+      echo "<button class='purchasebutton bgred' onclick='openModal($checkLogin)'>";
+      echo "Purchase";
+      echo "</button>";
+      ?>
     </div>
   </section>
 
@@ -282,10 +289,14 @@ $dotCount = 0; // slide dots count
       dots[slideIndex - 1].className += " active";
     }
 
-    function openModal() {
-      quantityModal.style.display = "block";
-      document.documentElement.style.overflow = "hidden";
-      document.body.scroll = "no";
+    function openModal(x) {
+      if (x) {
+        quantityModal.style.display = "block";
+        document.documentElement.style.overflow = "hidden";
+        document.body.scroll = "no";
+      } else {
+        window.top.location='Login.php';
+      }
     }
 
     function closeModal() {
