@@ -1,6 +1,6 @@
 <?php
 	session_start();
 	unset($_SESSION['substring']);
-	header("Location: homepage.php");
+	header("Location: Homepage.php");
 	die();
 ?>

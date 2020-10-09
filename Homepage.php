@@ -355,7 +355,7 @@ else
 		?>
 		<section>
 			<div class= "filter">
-				<form method="post" action="homepage.php">
+				<form method="post" action="Homepage.php">
 					<div class="filterform bgred">
 						<label for="filter">Filter based on price: </label>
 						<select id="filter" name="filter">

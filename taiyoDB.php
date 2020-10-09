@@ -12,7 +12,7 @@ if ($conn) {
     //     echo "database creation fail";
     // } 
 
-    /*$sql = "CREATE TABLE EndUser (
+    /*$sql = "CREATE TABLE enduser (
 			enduser_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
 			user_email VARCHAR(50),
 			user_password VARCHAR(15),
@@ -33,17 +33,17 @@ if ($conn) {
     // profile_photo
     // stores the direction to get the picture in string   ("pictures/dummy_profile_pic.png")
 
-    //$sql = "CREATE TABLE Review (review_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, review_message VARCHAR(255), review_date DATE, reviewer_id INT(6) REFERENCES EndUser(enduser_id), reviewee_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (review_id))";
+    //$sql = "CREATE TABLE review (review_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, review_message VARCHAR(255), review_date DATE, reviewer_id INT(6) REFERENCES EndUser(enduser_id), reviewee_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (review_id))";
 
-    // $sql = "CREATE TABLE Product (product_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, product_name VARCHAR(30), product_price FLOAT(7,2), product_description VARCHAR(255), product_state VARCHAR(50), category VARCHAR(50), quantity INT(2), enduser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (product_id))";
+    // $sql = "CREATE TABLE product (product_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, product_name VARCHAR(30), product_price FLOAT(7,2), product_description VARCHAR(255), product_state VARCHAR(50), category VARCHAR(50), quantity INT(2), enduser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (product_id))";
 
-    // $sql = "CREATE TABLE Cart (cart_item_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, quantity INT(2), product_id INT(6) REFERENCES product(product_id), enduser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (cart_item_id))";
+    // $sql = "CREATE TABLE cart (cart_item_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, quantity INT(2), product_id INT(6) REFERENCES product(product_id), enduser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (cart_item_id))";
 
-    // $sql = "CREATE TABLE ProductImage (product_image_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, product_id INT(6) REFERENCES product(product_id), product_image VARCHAR(255), PRIMARY KEY (product_image_id))";
+    // $sql = "CREATE TABLE productimage (product_image_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, product_id INT(6) REFERENCES product(product_id), product_image VARCHAR(255), PRIMARY KEY (product_image_id))";
 
-    // $sql = "CREATE TABLE Wishlist (wishlist_item_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, product_id INT(6) REFERENCES product(product_id), enduser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (wishlist_item_id))";
+    // $sql = "CREATE TABLE wishlist (wishlist_item_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, product_id INT(6) REFERENCES product(product_id), enduser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (wishlist_item_id))";
 
-    // $sql = "CREATE TABLE TransactionHistory (transaction_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, transaction_type VARCHAR(10), quantity INT(2), product_id INT(6) REFERENCES product(product_id), belonginguser_id INT(6) REFERENCES EndUser(enduser_id), boughtuser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (transaction_id))";
+    // $sql = "CREATE TABLE transactionhistory (transaction_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, transaction_type VARCHAR(10), quantity INT(2), product_id INT(6) REFERENCES product(product_id), belonginguser_id INT(6) REFERENCES EndUser(enduser_id), boughtuser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (transaction_id))";
 
 
     //if (mysqli_query($conn, $sql)) {
@@ -69,9 +69,9 @@ if ($conn) {
 
 
     /********************************Users***************************************/
-    // $sql = "INSERT INTO EndUser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('starLightuser1@gmail.com', 'starlightuser1','starlightuser1','Likes to buy stuff','Male','012-3456789','No. 70, Jalan A', 'Lampu Merah', 'Batu Caves', 'Terengganu', '50000',21, 'profile1.png')";
-    // $sql = "INSERT INTO EndUser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('Hatiuser2@gmail.com', 'hatiuser1','hatiuser1','Likes to scam people','Female','017-1103490','No. 701, Jalan B', 'Kearny', 'George Town', 'Pinang', '90000',36, 'profile2.jpg')";
-    // $sql = "INSERT INTO EndUser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('Blakeuser3@gmail.com', 'blakeuser1','blakeuser1','You cant see me hehehe','Male','018-2312313','No. 34, Jalan C', 'Jupiter', 'Kuching', 'Sarawak', '54500', 28, 'profile3.png')";
+    // $sql = "INSERT INTO enduser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('starLightuser1@gmail.com', 'starlightuser1','starlightuser1','Likes to buy stuff','Male','012-3456789','No. 70, Jalan A', 'Lampu Merah', 'Batu Caves', 'Terengganu', '50000',21, 'profile1.png')";
+    // $sql = "INSERT INTO enduser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('Hatiuser2@gmail.com', 'hatiuser1','hatiuser1','Likes to scam people','Female','017-1103490','No. 701, Jalan B', 'Kearny', 'George Town', 'Pinang', '90000',36, 'profile2.jpg')";
+    // $sql = "INSERT INTO enduser (user_email, user_password, username, user_description, gender, phone_number, street_1, street_2, city, c_state, postcode, age, profile_photo) VALUES ('Blakeuser3@gmail.com', 'blakeuser1','blakeuser1','You cant see me hehehe','Male','018-2312313','No. 34, Jalan C', 'Jupiter', 'Kuching', 'Sarawak', '54500', 28, 'profile3.png')";
     /********************************Users***************************************/
 
     /********************************Product*************************************/
