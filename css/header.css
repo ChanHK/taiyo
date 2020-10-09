@@ -56,7 +56,8 @@ li a
 {
 	float: left;
 	padding: 1em;
-	width: 10em;
+	width: 190px;
+	box-sizing: content-box;
 }
 
 .aligni

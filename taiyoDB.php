@@ -3,7 +3,7 @@
 $conn = mysqli_connect("localhost", "root", "", "taiyodb");
 
 if ($conn) {
-    //$sql = "CREATE DATABASE taiyoDB";
+    //$sql = "CREATE DATABASE taiyodb";
 
      //if(mysqli_query($conn, $sql)) {
     //     echo "database created";

@@ -2,16 +2,22 @@
 $conn = mysqli_connect("localhost", "root", "", "taiyodb");
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 session_start();
-$userID = $_SESSION["userID"]; // get user ID 
+if (isset($_SESSION['userID'])) {
+  $user_ID = $_SESSION['userID'];
+  $sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $user_ID";
+  $userResult = mysqli_query($conn, $sql);
+} else {
+  $user_ID = null;
+}
 $noID = false;
 
-if ($userID == null) {
+if ($user_ID == null) {
   $noID = true;
   $sql = "SELECT * FROM wishlist WHERE enduser_id = '0'";
   $result = mysqli_query($conn, $sql);
 } else if ($conn) {
   $noID = false;
-  $sql = "SELECT * FROM wishlist WHERE enduser_id = $userID";
+  $sql = "SELECT * FROM wishlist WHERE enduser_id = $user_ID";
   $result = mysqli_query($conn, $sql);
 }
 ?>
@@ -24,11 +30,16 @@ if ($userID == null) {
   <meta charset="UTF-8" />
   <link rel="stylesheet" type="text/css" href="css/util.css" />
   <link rel="stylesheet" type="text/css" href="css/cart.css" />
+  <link rel="stylesheet" type="text/css" href="css/header.css" />
+
 </head>
 
 <body>
   <div class="limiter">
     <div class="cartContainer">
+      <?php
+      include "header.php";
+      ?>
       <div class="cartButtonContainer">
         <label class="selectAllCheckBoxContainer">
           <input class="checkBox" type="checkbox" onclick="toggle(this)" />
@@ -89,7 +100,7 @@ if ($userID == null) {
               $image = mysqli_query($conn, $imageSQL);
               echo "<div class='imageContainer'>";
               while ($a = mysqli_fetch_assoc($image)) {
-                echo "<img src='{$a['product_image']}' alt='product' />";
+                echo "<img src='pictures/product/" . $a['product_image'] . "' alt='product' />";
               }
               echo "</div>";
               ?>
@@ -133,7 +144,7 @@ if ($userID == null) {
             array_push($wishlistID, $check);
           }
           $productID = [];
-          $userID = [];
+          $user_ID = [];
           foreach ($wishlistID as $wl) {
             $productSQL = "SELECT product_id FROM wishlist WHERE wishlist_item_id = $wl";
             $product = mysqli_query($conn, $productSQL);
@@ -144,13 +155,13 @@ if ($userID == null) {
             $userSQL = "SELECT enduser_id FROM wishlist WHERE wishlist_item_id = $wl";
             $user = mysqli_query($conn, $userSQL);
             while ($a = mysqli_fetch_assoc($user)) {
-              array_push($userID, $a['enduser_id']);
+              array_push($user_ID, $a['enduser_id']);
             }
           }
 
           $i = 0;
           while ($i < count($productID)) {
-            $addToCartSQL = "INSERT INTO cart (quantity, product_id, enduser_id) VALUES (1,$productID[$i], $userID[$i])";
+            $addToCartSQL = "INSERT INTO cart (quantity, product_id, enduser_id) VALUES (1,$productID[$i], $user_ID[$i])";
             if (mysqli_query($conn, $addToCartSQL)) {
               $deleteWishListSQL = "DELETE FROM wishlist WHERE wishlist_item_id = $wishlistID[$i]";
               if (mysqli_query($conn, $deleteWishListSQL)) {

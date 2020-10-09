@@ -17,7 +17,8 @@
 					echo "<li style='flex: 0'><a href='Cart.php'>Cart</a></li>";
 				}
 			?>
-			<li style="flex: 1"><a href="Signup.php">Register</a></li>
+			
+			<li style="flex: 1;"><a href="Signup.php">Register</a></li>
 			<?php
 				if($user_ID != null)
 				{
