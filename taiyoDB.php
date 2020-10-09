@@ -33,7 +33,7 @@ if ($conn) {
     // profile_photo
     // stores the direction to get the picture in string   ("pictures/dummy_profile_pic.png")
 
-    //$sql = "CREATE TABLE Review (review_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, review_message VARCHAR(255), reviewer_id INT(6) REFERENCES EndUser(enduser_id), reviewee_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (review_id))";
+    //$sql = "CREATE TABLE Review (review_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, review_message VARCHAR(255), review_date DATE, reviewer_id INT(6) REFERENCES EndUser(enduser_id), reviewee_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (review_id))";
 
     // $sql = "CREATE TABLE Product (product_id INT(6) UNSIGNED AUTO_INCREMENT NOT NULL, product_name VARCHAR(30), product_price FLOAT(7,2), product_description VARCHAR(255), product_state VARCHAR(50), category VARCHAR(50), quantity INT(2), enduser_id INT(6) REFERENCES EndUser(enduser_id), PRIMARY KEY (product_id))";
 
@@ -89,6 +89,12 @@ if ($conn) {
     // $sql = "INSERT INTO product (product_name, product_price, product_description, product_state, category, quantity, enduser_id) VALUES ('Applce MacBook Pro 2019', 10000.00, 'Apple MacBook Pro is a macOS laptop with a 13.30-inch display that has a resolution of 2560x1600 pixels. It is powered by a Core i5 processor and it comes with 12GB of RAM. The Apple MacBook Pro packs 512GB of SSD storage.', 'new','Computers',6,3)";
     /********************************Product*************************************/
 
+	/********************************Review**************************************/
+	// $sql = INSERT INTO review (review_id, review_message, review_date, reviewer_id, reviewee_id) VALUES (NULL, 'My product is working fine, thanks!', '2020-08-21', '1', '3');
+	// $sql = INSERT INTO review (review_id, review_message, review_date, reviewer_id, reviewee_id) VALUES (NULL, 'I hate this product so much!', '2020-10-01', '2', '3');
+	// $sql = INSERT INTO review (review_id, review_message, review_date, reviewer_id, reviewee_id) VALUES (NULL, 'This person is a scammer! Don\'t believe her!', '2020-10-08', '3', '2');
+	/********************************Review**************************************/
+	
 	/*************************Transaction History********************************/
 	// $sql = INSERT INTO transactionhistory (transaction_id, transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES (NULL, 'Bought', '2', '1', '1', NULL);
 	// $sql = INSERT INTO transactionhistory (transaction_id, transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES(NULL, 'Sold', '2', '4', '2', '1');

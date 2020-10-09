@@ -2,36 +2,40 @@
 $conn = mysqli_connect("localhost", "root", "", "taiyodb");
 // error_reporting(E_ERROR | E_WARNING | E_PARSE); // remove notice
 session_start();
-if (isset($_SESSION['userID'])) {
-  $userID = $_SESSION['userID'];
-  $sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $userID";
-  $userResult = mysqli_query($conn, $sql);
-} else {
-  $userID = null;
+if(isset($_SESSION['userID']))
+{
+	$user_ID = $_SESSION['userID'];
+	$sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $user_ID";
+	$userResult = mysqli_query($conn, $sql);
+}
+else
+{
+	$user_ID = null;
 }
 // $productID = $_SESSION['productID']; //get from home page (1)
 $_SESSION['cartIDArray'] = null;
 $productID = $_GET['product_id']; //get from home page (2)
-$_SESSION['productID'] = $productID;
 $dotCount = 0; // slide dots count
 ?>
 
 <html>
 
-<head lang="en">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
-  <link rel="stylesheet" type="text/css" href="css/reset.css" />
-  <link rel="stylesheet" type="text/css" href="css/product.css" />
-  <link rel="stylesheet" type="text/css" href="css/util.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-</head>
+	<head lang="en">
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
+	  <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+	  <link rel="stylesheet" type="text/css" href="css/product.css"/>
+	  <link rel="stylesheet" type="text/css" href="css/header.css"/>
+	  <link rel="stylesheet" type="text/css" href="css/util.css" />
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	</head>
 
 <body onLoad="showSlides(1)">
 
-  <?php
-  include "header.php";
-  ?>
+<?php
+
+	include "header.php";
+?>
 
   <section>
     <!-- Slideshow container -->
@@ -54,18 +58,22 @@ $dotCount = 0; // slide dots count
       <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
       <a class="next" onclick="plusSlides(1)">&#10095;</a>
 
-      <?php
-      if ($userID !== null) {
-        $islogin = "true";
-      } else {
-        $islogin = "false";
-      }
-      echo "<a href='#' onclick='openQuantityCartModal($islogin)'><span class='cart'></span></a>";
-      echo "<a href='#' onclick='openWishlistModal($islogin)'><span class='wish'></span></a>";
-      ?>
-      <!-- <a href="#" onclick="openQuantityCartModal()"><span class="cart"></span></a> -->
+	<?php
+	
+		if($user_ID == null)
+		{
+			echo <a href="Login.php"><span class="cart"></span></a>
 
-      <!-- <a href="#" onclick="openWishlistModal()"><span class="wish"></span></a> -->
+			echo <a href="Login.php"><span class="wish"></span></a>
+		}
+		else
+		{
+			
+		  echo <a href='#' onclick="openQuantityCartModal()"><span class="cart"></span></a>
+
+		  echo <a href= '#' onclick="openWishlistModal()"><span class="wish"></span></a>
+		}
+	?>
     </div>
     <br />
 
@@ -89,8 +97,15 @@ $dotCount = 0; // slide dots count
       $getProfilePicResult = mysqli_query($conn, $getProfilePicSQL);
       while ($b = mysqli_fetch_assoc($getProfilePicResult)) {
         echo "<a href='#'>";
-        echo "<img class='profile' src='pictures/profile/" . $b['profile_photo'] . "' alt='Profile Pic' title='Profile Pic' />";
-        echo "</a>";
+		if($b['profile_photo'] != null)
+        {
+			echo "<img class='profile' src='pictures/profile/". $b['profile_photo'] . "' alt='Profile Pic' title='Profile Pic' />";
+        }
+		else
+		{
+			echo "<img class='profile' src='pictures/profile/anonymous.png' alt='Profile Pic' title='Profile Pic' />";
+		}
+		echo "</a>";
         echo "<p class='text-center'><b>{$b['username']}</b></p>";
         echo "<br />";
       }
@@ -108,7 +123,7 @@ $dotCount = 0; // slide dots count
         echo "</p>";
         echo "</div>";
       }
-
+      
       ?>
     </div>
   </aside>
@@ -131,16 +146,9 @@ $dotCount = 0; // slide dots count
       }
 
       ?>
-      <?php
-      if ($userID !== null) {
-        $checkLogin = "true";
-      } else {
-        $checkLogin = "false";
-      }
-      echo "<button class='purchasebutton bgred' onclick='openModal($checkLogin)'>";
-      echo "Purchase";
-      echo "</button>";
-      ?>
+      <button class="purchasebutton bgred" onclick="openModal()">
+        Purchase
+      </button>
     </div>
   </section>
 
@@ -205,7 +213,7 @@ $dotCount = 0; // slide dots count
         <?php
         if (isset($_POST['addToCart'])) {
           $quantity = $_POST['productQuantityCart'];
-          $insertCartSQL = "INSERT INTO cart (quantity, product_id, enduser_id) VALUES ($quantity, $productID, $userID)";
+          $insertCartSQL = "INSERT INTO cart (quantity, product_id, user_id) VALUES ($quantity, $productID, $userID)";
           mysqli_query($conn, $insertCartSQL);
         }
 
@@ -226,19 +234,15 @@ $dotCount = 0; // slide dots count
         <button class="formButton m-l-auto m-r-30 m-b-20" type="submit" name="wishlist">
           view wishlist
         </button>
-        <button class="formButton m-r-20 m-b-20" type="submit" name="continueShopwishlist" onclick="closeWishlistModal()">
+        <button class="formButton m-r-20 m-b-20" onclick="closeWishlistModal()">
           continue shopping
         </button>
         <?php
         if (isset($_POST['wishlist'])) {
-          $insertWishlistSQL = "INSERT INTO wishlist (product_id, enduser_id) VALUES ($productID, $userID)";
+          $insertWishlistSQL = "INSERT INTO wishlist (product_id, user_id) VALUES ($productID, $userID)";
           mysqli_query($conn, $insertWishlistSQL);
           echo "<script type='text/javascript'>window.top.location='Wishlist.php';</script>";
           exit;
-        }
-        if (isset($_POST['continueShopwishlist'])) {
-          $insertWishlistSQL = "INSERT INTO wishlist (product_id, enduser_id) VALUES ($productID, $userID)";
-          mysqli_query($conn, $insertWishlistSQL);
         }
         ?>
       </form>
@@ -298,14 +302,10 @@ $dotCount = 0; // slide dots count
       dots[slideIndex - 1].className += " active";
     }
 
-    function openModal(x) {
-      if (x) {
-        quantityModal.style.display = "block";
-        document.documentElement.style.overflow = "hidden";
-        document.body.scroll = "no";
-      } else {
-        window.top.location = 'Login.php';
-      }
+    function openModal() {
+      quantityModal.style.display = "block";
+      document.documentElement.style.overflow = "hidden";
+      document.body.scroll = "no";
     }
 
     function closeModal() {
@@ -314,14 +314,10 @@ $dotCount = 0; // slide dots count
       document.body.scroll = "yes";
     }
 
-    function openWishlistModal(x) {
-      if (x) {
-        wishlistNoticeModal.style.display = "block";
-        document.documentElement.style.overflow = "hidden";
-        document.body.scroll = "no";
-      } else {
-        window.top.location = 'Login.php';
-      }
+    function openWishlistModal() {
+      wishlistNoticeModal.style.display = "block";
+      document.documentElement.style.overflow = "hidden";
+      document.body.scroll = "no";
     }
 
     function closeWishlistModal() {
@@ -342,14 +338,10 @@ $dotCount = 0; // slide dots count
       document.body.scroll = "yes";
     }
 
-    function openQuantityCartModal(x) {
-      if (x) {
-        quantityCartModal.style.display = "block";
-        document.documentElement.style.overflow = "hidden";
-        document.body.scroll = "no";
-      } else {
-        window.top.location = 'Login.php';
-      }
+    function openQuantityCartModal() {
+      quantityCartModal.style.display = "block";
+      document.documentElement.style.overflow = "hidden";
+      document.body.scroll = "no";
     }
 
     function closeQuantityCartModal() {
@@ -362,6 +354,7 @@ $dotCount = 0; // slide dots count
       window.top.location = 'Cart.php';
     }
   </script>
+  <script src="js/profileModal.js"></script>
 </body>
 
 </html>

@@ -28,10 +28,10 @@ html {
 
 .loginContainer {
   width: 100%;
-  min-height: 83.2vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: 15px;
   background-color: #e0e0e0;
 }
@@ -41,7 +41,6 @@ html {
   background: white;
   border-radius: 20px;
   box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
-  margin: 40px;
 }
 
 .loginForm {

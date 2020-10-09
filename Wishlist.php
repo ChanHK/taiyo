@@ -24,16 +24,11 @@ if ($userID == null) {
   <meta charset="UTF-8" />
   <link rel="stylesheet" type="text/css" href="css/util.css" />
   <link rel="stylesheet" type="text/css" href="css/cart.css" />
-  <link rel="stylesheet" type="text/css" href="css/header.css" />
-
 </head>
 
 <body>
   <div class="limiter">
     <div class="cartContainer">
-      <?php
-      include "header.php";
-      ?>
       <div class="cartButtonContainer">
         <label class="selectAllCheckBoxContainer">
           <input class="checkBox" type="checkbox" onclick="toggle(this)" />
@@ -94,7 +89,7 @@ if ($userID == null) {
               $image = mysqli_query($conn, $imageSQL);
               echo "<div class='imageContainer'>";
               while ($a = mysqli_fetch_assoc($image)) {
-                echo "<img src='pictures/product/" . $a['product_image'] . "' alt='product' />";
+                echo "<img src='{$a['product_image']}' alt='product' />";
               }
               echo "</div>";
               ?>
