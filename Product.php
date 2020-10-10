@@ -27,13 +27,12 @@ $dotCount = 0; // slide dots count
   <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
   <link rel="stylesheet" type="text/css" href="css/reset.css" />
   <link rel="stylesheet" type="text/css" href="css/product.css" />
-  <link rel="stylesheet" type="text/css" href="css/header.css"/>
+  <link rel="stylesheet" type="text/css" href="css/header.css" />
   <link rel="stylesheet" type="text/css" href="css/util.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 
 <body onLoad="showSlides(1)">
-
   <?php
   include "header.php";
   ?>
@@ -54,7 +53,6 @@ $dotCount = 0; // slide dots count
       }
       ?>
 
-
       <!-- Next and previous buttons -->
       <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
       <a class="next" onclick="plusSlides(1)">&#10095;</a>
@@ -65,15 +63,34 @@ $dotCount = 0; // slide dots count
       } else {
         $islogin = "false";
       }
-	  if($product['enduser_id'] != $user_ID)
-	  {
-		  echo "<a href='#' onclick='openQuantityCartModal($islogin)'><span class='cart'></span></a>";
-		  echo "<a href='#' onclick='openWishlistModal($islogin)'><span class='wish'></span></a>";
-	  }
-      ?>
-      <!-- <a href="#" onclick="openQuantityCartModal()"><span class="cart"></span></a> -->
+      $cartExists = false;
+      $wishExists = false;
 
-      <!-- <a href="#" onclick="openWishlistModal()"><span class="wish"></span></a> -->
+      $checkProductIsInCartSQL = "SELECT count(*) FROM cart WHERE product_id = $productID AND enduser_id = $user_ID";
+      $checkProductIsInCartResult = mysqli_query($conn, $checkProductIsInCartSQL);
+      while ($cpCount = mysqli_fetch_assoc($checkProductIsInCartResult)) {
+        if ($cpCount['count(*)'] == 0) {
+          $cartExists = true;
+        }
+      }
+
+      $checkProductIsInWishlistSQL = "SELECT count(*) FROM wishlist WHERE product_id = $productID AND enduser_id = $user_ID";
+      $checkProductIsInWishlistResult = mysqli_query($conn, $checkProductIsInWishlistSQL);
+      while ($wpCount = mysqli_fetch_assoc($checkProductIsInWishlistResult)) {
+        if ($wpCount['count(*)'] == 0) {
+          $wishExists = true;
+        }
+      }
+
+      if ($product['enduser_id'] != $user_ID) {
+        if ($cartExists == 1) {
+          echo "<a href='#' onclick='openQuantityCartModal($islogin)'><span class='cart'></span></a>";
+        }
+        if ($wishExists == 1) {
+          echo "<a href='#' onclick='openWishlistModal($islogin)'><span class='wish'></span></a>";
+        }
+      }
+      ?>
     </div>
     <br />
 
@@ -85,9 +102,7 @@ $dotCount = 0; // slide dots count
       }
       ?>
     </div>
-
   </section>
-
 
   <hr class="m-l-20 m-r-20" />
   <aside class="m-b-40">
@@ -145,12 +160,11 @@ $dotCount = 0; // slide dots count
       } else {
         $checkLogin = "false";
       }
-	  if($product['enduser_id'] != $user_ID)
-	  {
-		  echo "<button class='purchasebutton bgred' onclick='openModal($checkLogin)'>";
-		  echo "Purchase";
-		  echo "</button>";
-	  }
+      if ($product['enduser_id'] != $user_ID) {
+        echo "<button class='purchasebutton bgred' onclick='openModal($checkLogin)'>";
+        echo "Purchase";
+        echo "</button>";
+      }
       ?>
     </div>
   </section>
@@ -193,8 +207,8 @@ $dotCount = 0; // slide dots count
       </h3>
       <br />
       <hr class="m-l-20 m-r-20" />
-      <iframe name="votar" style="display:none;"></iframe>
-      <form class="editShippingForm m-r-40" method="post" target="votar">
+      <!-- <iframe name="votar" style="display:none;"></iframe> -->
+      <form class="editShippingForm m-r-40" method="post">
         <?php
         $getQuantitySQL = "SELECT quantity FROM product WHERE product_id = $productID";
         $getQuantityResult = mysqli_query($conn, $getQuantitySQL);
@@ -209,7 +223,7 @@ $dotCount = 0; // slide dots count
           <button class="formButton m-l-auto m-r-30" onclick="closeQuantityCartModal()">
             Cancel
           </button>
-          <button class="formButton m-r-40" type="submit" name="addToCart" onclick="openCartModal(),closeQuantityCartModal()">
+          <button class="formButton m-r-40" type="submit" name="addToCart" onclick="closeQuantityCartModal()">
             Add to cart
           </button>
         </div>
@@ -218,8 +232,10 @@ $dotCount = 0; // slide dots count
           $quantity = $_POST['productQuantityCart'];
           $insertCartSQL = "INSERT INTO cart (quantity, product_id, enduser_id) VALUES ($quantity, $productID, $user_ID)";
           mysqli_query($conn, $insertCartSQL);
-        }
+          // target="votar"
+          echo "<meta http-equiv='refresh' content='0'>";
 
+        }
         ?>
       </form>
     </div>
@@ -232,46 +248,22 @@ $dotCount = 0; // slide dots count
       </h3>
       <br />
       <hr class="m-l-20 m-r-20" />
-      <a class="m-l-20">Added to wishlist</a>
+      <a class="m-l-20">Do you want to add this product into your wishlist?</a>
       <form class="buttonContainer" method="post">
-        <button class="formButton m-l-auto m-r-30 m-b-20" type="submit" name="wishlist">
-          view wishlist
+        <button class="formButton m-l-auto m-r-30 m-b-20" onclick="closeWishlistModal()">
+          No
         </button>
-        <button class="formButton m-r-20 m-b-20" type="submit" name="continueShopwishlist" onclick="closeWishlistModal()">
-          continue shopping
+        <button class="formButton m-r-20 m-b-20" type="submit" name="addToWish" onclick="closeWishlistModal()">
+          Yes
         </button>
         <?php
-        if (isset($_POST['wishlist'])) {
+        if (isset($_POST['addToWish'])) {
           $insertWishlistSQL = "INSERT INTO wishlist (product_id, enduser_id) VALUES ($productID, $user_ID)";
           mysqli_query($conn, $insertWishlistSQL);
-          echo "<script type='text/javascript'>window.top.location='Wishlist.php';</script>";
-          exit;
-        }
-        if (isset($_POST['continueShopwishlist'])) {
-          $insertWishlistSQL = "INSERT INTO wishlist (product_id, enduser_id) VALUES ($productID, $user_ID)";
-          mysqli_query($conn, $insertWishlistSQL);
+          echo "<meta http-equiv='refresh' content='0'>";
         }
         ?>
       </form>
-    </div>
-  </div>
-
-  <div id="cartNoticeModal" class="modalContainer">
-    <div class="modalContentContainer">
-      <h3 class="p-t-20 p-l-20 p-r-20">
-        Notice
-      </h3>
-      <br />
-      <hr class="m-l-20 m-r-20" />
-      <a class="m-l-20">Added to cart</a>
-      <div class="buttonContainer">
-        <button class="formButton m-l-auto m-r-30 m-b-20" name="openCart" onclick="openCart()">
-          view cart
-        </button>
-        <button class="formButton m-r-20 m-b-20" onclick="closeCartModal()">
-          continue shopping
-        </button>
-      </div>
     </div>
   </div>
 
@@ -341,18 +333,6 @@ $dotCount = 0; // slide dots count
       document.body.scroll = "yes";
     }
 
-    function openCartModal() {
-      cartNoticeModal.style.display = "block";
-      document.documentElement.style.overflow = "hidden";
-      document.body.scroll = "no";
-    }
-
-    function closeCartModal() {
-      cartNoticeModal.style.display = "none";
-      document.documentElement.style.overflow = "scroll";
-      document.body.scroll = "yes";
-    }
-
     function openQuantityCartModal(x) {
       if (x) {
         quantityCartModal.style.display = "block";
@@ -373,7 +353,7 @@ $dotCount = 0; // slide dots count
       window.top.location = 'Cart.php';
     }
   </script>
-	<script src="js/profileModal.js"></script>
+  <script src="js/profileModal.js"></script>
 </body>
 
 </html>

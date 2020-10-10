@@ -1,6 +1,7 @@
 <?php
 session_start();
 // session_destroy();
+$usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerified = $ageVerified = $streetOneVerified = $streetTwoVerified = $postcodeVerified = $cityVerified = $stateVerified = false;
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +28,7 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please fill in your username";
                 echo "</a>";
+                $usernameVerified = false;
               } else if (preg_match("/^(?=.{8,20})(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])/", $username) == 0) {
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Error, should have 8-20 characters, no special";
@@ -39,6 +41,9 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "Example: Krispy_Honey, Clumsy.Jack99";
                 echo "</a>";
+                $usernameVerified = false;
+              } else {
+                $usernameVerified = true;
               }
             }
             ?>
@@ -53,11 +58,15 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please fill in your email";
                 echo "</a>";
+                $emailVerified = false;
               } else if (preg_match("/^[\w\.]+@([\w]+\.)+[\w]{2,4}/", $email) == 0) {
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please enter valid email, example: Clumsy@gmail.com";
                 echo "<br />";
                 echo "</a>";
+                $emailVerified = false;
+              } else {
+                $emailVerified = true;
               }
             }
             ?>
@@ -72,18 +81,20 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please fill in your password";
                 echo "</a>";
+                $passVerified = false;
               } else if (strlen($password) < 8) {
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please enter password of length between 8-15";
                 echo "</a>";
+                $passVerified = false;
+              } else {
+                $passVerified = true;
               }
               echo "<br />";
             }
             ?>
             <input type="checkbox" onclick="showOrHidePassword()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Show Password </input>
           </div>
-
-
 
           <div class="m-b-16">
             <select name="gender" id="GENDER" class="formInput">
@@ -101,6 +112,9 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please select your gender";
                 echo "</a>";
+                $genderVerified = false;
+              } else {
+                $genderVerified = true;
               }
             }
             ?>
@@ -116,6 +130,7 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please fill in your mobile number";
                 echo "</a>";
+                $phVerified = false;
               } else if (preg_match("/^(\+?6?01)[0-46-9]-*[0-9]{7,8}/", $mobile) == 0) {
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please enter valid mobile number, example: ";
@@ -124,6 +139,9 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "01x-xxxxxxx";
                 echo "</a>";
+                $phVerified = false;
+              } else {
+                $phVerified = true;
               }
             }
             ?>
@@ -138,10 +156,14 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please fill in your age";
                 echo "</a>";
+                $ageVerified = false;
               } else if ($age < 0 || $age > 110) {
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please enter valid age";
                 echo "</a>";
+                $ageVerified = false;
+              } else {
+                $ageVerified = true;
               }
             }
             ?>
@@ -156,10 +178,14 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please fill in street address";
                 echo "</a>";
-              } else if (preg_match("/^\s*\S+(?:\s+\S+){2,}/", $street_1) == 0) {
+                $streetOneVerified = false;
+              } else if (preg_match("/^.{3,30}$/", $street_1) == 0) {
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
-                echo "*Please enter valid street address";
+                echo "*Please enter valid street address, Eg: 'Jalan Ampang'";
                 echo "</a>";
+                $streetOneVerified = false;
+              } else {
+                $streetOneVerified = true;
               }
             }
             ?>
@@ -174,10 +200,14 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please fill in street address";
                 echo "</a>";
-              } else if (preg_match("/^\s*\S+(?:\s+\S+){2,}/", $street_2) == 0) {
+                $streetTwoVerified = false;
+              } else if (preg_match("/^.{3,30}$/", $street_2) == 0) {
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
-                echo "*Please enter valid street address";
+                echo "*Please enter valid street address, Eg: 'Jalan Ampang' ";
                 echo "</a>";
+                $streetTwoVerified = false;
+              } else {
+                $streetTwoVerified = true;
               }
             }
             ?>
@@ -192,10 +222,14 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please fill in postcode";
                 echo "</a>";
+                $postcodeVerified = false;
               } else if (preg_match("/\b\d{5}\b/", $postcode) == 0) {
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please enter valid postcode";
                 echo "</a>";
+                $postcodeVerified = false;
+              } else {
+                $postcodeVerified = true;
               }
             }
             ?>
@@ -210,28 +244,48 @@ session_start();
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please fill in city name";
                 echo "</a>";
+                $cityVerified = false;
               } else if (preg_match("/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/", $city) == 0) {
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
                 echo "*Please enter valid city name";
                 echo "</a>";
+                $cityVerified = false;
+              } else {
+                $cityVerified = true;
               }
             }
             ?>
           </div>
 
           <div class="p-b-50">
-            <input class="formInput" type="text" name="state" id="STATE" placeholder="State" onkeyup="saveValue(this)" />
+            <select name="state" id="STATE" class="formInput">
+              <option id="defaultOption" value="0" selected='selected' hidden>
+                State
+              </option>
+              <option id="state1" value="Sabah">Sabah</option>
+              <option id="state2" value="Sarawak">Sarawak</option>
+              <option id="state3" value="Selangor">Selangor</option>
+              <option id="state4" value="Perak">Perak</option>
+              <option id="state5" value="Johor">Johor</option>
+              <option id="state6" value="Kelantan">Kelantan</option>
+              <option id="state7" value="Pahang">Pahang</option>
+              <option id="state8" value="Negeri Sembilan">Negeri Sembilan</option>
+              <option id="state9" value="Kedah">Kedah</option>
+              <option id="state10" value="Terengganu">Terengganu</option>
+              <option id="state11" value="Penang">Penang</option>
+              <option id="state12" value="Peris">Peris</option>
+              <option id="state13" value="Malacca">Malacca</option>
+            </select>
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-              $state = $_POST['state'];
-              if ($state == "") {
+              $option = isset($_POST['state']) ? $_POST['state'] : false;
+              if (!$option) {
                 echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
-                echo "*Please fill in state name";
+                echo "*Please select a state";
                 echo "</a>";
-              } else if (preg_match("/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/", $state) == 0) {
-                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
-                echo "*Please enter valid state name";
-                echo "</a>";
+                $stateVerified = false;
+              } else {
+                $stateVerified = true;
               }
             }
             ?>
@@ -244,7 +298,7 @@ session_start();
 
         <?php
         $conn = mysqli_connect("localhost", "root", "", "taiyodb");
-        $username = $email = $password = $gender = $mobile = $street_1 = $street_2 = $postcode = $city = $state = "";
+        $username = $email = $password = $gender = $mobile = $age = $street_1 = $street_2 = $postcode = $city = $state = "";
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $username = test_input($_POST["username"]);
@@ -258,18 +312,16 @@ session_start();
           $street_2 = test_input($_POST["streetTwo"]);
           $postcode = test_input($_POST["postcode"]);
           $city = test_input($_POST["city"]);
-          $state = test_input($_POST["state"]);
+          $state = $_POST["state"];
         }
 
-        if ($username !== "" and $email !== "" and $password !== "" and $gender !== "" and $mobile !== "" and $age !== "" and $street_1 !== "" and $street_2 !== "" and $postcode !== "" and $city !== "" and $state !== "") {
+        if ($usernameVerified == 1 and $emailVerified == 1 and $passVerified == 1 and $genderVerified == 1 and $phVerified == 1 and $ageVerified == 1 and $streetOneVerified == 1 and $streetTwoVerified == 1 and $postcodeVerified == 1 and $cityVerified == 1 and $stateVerified == 1) {
           if ($conn) {
             $usernameCheckSQL = "SELECT username FROM enduser WHERE username = '$username'";
             $emailCheckSQL = "SELECT user_email FROM enduser WHERE user_email = '$email'";
             $sql = "INSERT INTO enduser (user_email, user_password, username, gender, phone_number, age, street_1, street_2, postcode, city, c_state) VALUES ('$email', '$password', '$username', '$gender', '$mobile', '$age', '$street_1', '$street_2', '$postcode', '$city', '$state')";
             $usernameResult = mysqli_query($conn, $usernameCheckSQL);
             $emailResult = mysqli_query($conn, $emailCheckSQL);
-            // print_r($usernameResult);
-            // print_r($emailResult);
 
             $booluser = $boolemail = false;
             $num = mysqli_num_rows($usernameResult);
@@ -297,7 +349,6 @@ session_start();
                 print_r($userIDResult);
                 while ($a = mysqli_fetch_assoc($userIDResult)) {
                   $_SESSION["userID"] = intval($a['enduser_id']);; // store userID to session so all page can use this user ID
-                  // header("Location: Cart.php");
                   echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
                   exit;
                 }
@@ -320,26 +371,55 @@ session_start();
     </div>
   </div>
   <script>
-    // localStorage.clear();
-    // sessionStorage.clear();
-
     if (localStorage.getItem("item") === null) {
-      console.log(document.getElementById("GENDER").value);
       localStorage.setItem("item", document.getElementById("GENDER").value);
+    }
+
+    if (localStorage.getItem("states") === null) {
+      localStorage.setItem("states", document.getElementById("STATE").value);
     }
 
     if (localStorage["item"] === "0") {
       document.getElementById("GENDER").style.color = "#848484";
     }
 
+    if (localStorage["states"] === "0") {
+      document.getElementById("STATE").style.color = "#848484";
+    }
+
     document.getElementById("genderOption1").style.color = "black";
     document.getElementById("genderOption2").style.color = "black";
     document.getElementById("genderOption3").style.color = "black";
+
+
+    document.getElementById("state1").style.color = "black";
+    document.getElementById("state2").style.color = "black";
+    document.getElementById("state3").style.color = "black";
+    document.getElementById("state4").style.color = "black";
+    document.getElementById("state5").style.color = "black";
+    document.getElementById("state6").style.color = "black";
+    document.getElementById("state7").style.color = "black";
+    document.getElementById("state8").style.color = "black";
+    document.getElementById("state9").style.color = "black";
+    document.getElementById("state10").style.color = "black";
+    document.getElementById("state11").style.color = "black";
+    document.getElementById("state12").style.color = "black";
+    document.getElementById("state13").style.color = "black";
+
+
+
+
     document.getElementById("GENDER").onchange = function() {
       document.getElementById("GENDER").style.color = "black";
       if (document.getElementById("GENDER").value) {
-        // console.log("thisss" + document.getElementById("GENDER").value);
         localStorage["item"] = document.getElementById("GENDER").value;
+      }
+    }
+
+    document.getElementById("STATE").onchange = function() {
+      document.getElementById("STATE").style.color = "black";
+      if (document.getElementById("STATE").value) {
+        localStorage["states"] = document.getElementById("STATE").value;
       }
     }
 
@@ -362,7 +442,7 @@ session_start();
     document.getElementById("STREETTWO").value = getSavedValue("STREETTWO");
     document.getElementById("POSTCODE").value = getSavedValue("POSTCODE");
     document.getElementById("CITY").value = getSavedValue("CITY");
-    document.getElementById("STATE").value = getSavedValue("STATE");
+    document.getElementById("STATE").value = getSavedValue("states");
 
 
 

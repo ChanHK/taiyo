@@ -20,6 +20,7 @@ if ($user_ID == null) {
   $sql = "SELECT * FROM cart WHERE enduser_id = $user_ID";
   $result = mysqli_query($conn, $sql);
 }
+$usernameCount = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -90,11 +91,13 @@ if ($user_ID == null) {
               ?>
 
               <?php
-              $imageSQL = "SELECT product_image FROM productimage, product, cart WHERE productimage.product_id=product.product_id AND {$rows['product_id']}=product.product_id limit 1";
+              $imageSQL = "SELECT product_image, product.product_id FROM productimage, product, cart WHERE productimage.product_id=product.product_id AND {$rows['product_id']}=product.product_id limit 1";
               $image = mysqli_query($conn, $imageSQL);
               echo "<div class='imageContainer'>";
               while ($a = mysqli_fetch_assoc($image)) {
-                echo "<img src='pictures/product/" . $a['product_image'] . "' alt='product' />";
+                echo "<a href='Product.php?product_id={$a['product_id']}'>";
+                echo "<img src='pictures/product/" . $a['product_image'] . "' alt='product'/>";
+                echo "</a>";
               }
               echo "</div>";
               ?>
@@ -107,11 +110,17 @@ if ($user_ID == null) {
                   while ($a = mysqli_fetch_assoc($productName)) {
                     echo "<h3>{$a['product_name']}</h3>";
                   }
-                  $productSellerSQL = "SELECT username FROM enduser WHERE enduser_id = {$rows['enduser_id']}";
+                  $productSellerSQL = "SELECT enduser.username FROM enduser, product, cart WHERE cart.enduser_id = {$rows['enduser_id']} AND cart.product_id = product.product_id AND enduser.enduser_id = product.enduser_id";
                   $productSeller = mysqli_query($conn, $productSellerSQL);
+                  $unCount = 0;
                   while ($b = mysqli_fetch_assoc($productSeller)) {
-                    echo "<h4>Seller: {$b['username']}</h4>";
+                    if ($unCount == $usernameCount) {
+                      echo "<h4>Seller: {$b['username']}</h4>";
+                      break;
+                    }
+                    $unCount++;
                   }
+
                   $productPriceSQL = "SELECT product_price FROM product WHERE product.product_id = {$rows['product_id']}";
                   $productPrice = mysqli_query($conn, $productPriceSQL);
                   while ($c = mysqli_fetch_assoc($productPrice)) {
@@ -122,6 +131,7 @@ if ($user_ID == null) {
                   while ($d = mysqli_fetch_assoc($productQty)) {
                     echo "<h4>Quantity: {$d['quantity']}</h4>";
                   }
+                  $usernameCount++;
                   ?>
                 </div>
               </div>
@@ -167,6 +177,11 @@ if ($user_ID == null) {
 
     if (window.history.replaceState) {
       window.history.replaceState(null, null, window.location.href);
+    }
+
+    function directToProduct() {
+      window.top.location = 'Product.php';
+      exit;
     }
   </script>
 </body>

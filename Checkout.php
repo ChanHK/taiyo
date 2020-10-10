@@ -41,9 +41,9 @@ if ($_SESSION['cartIDArray'] != null) {
 </head>
 
 <body>
-	<?php
-	include "header.php";
-	?>
+  <?php
+  include "header.php";
+  ?>
   <div class="limiter">
     <div class="checkoutContainer">
 
@@ -408,9 +408,15 @@ if ($_SESSION['cartIDArray'] != null) {
             foreach ($cartIDArray as $x) {
               $dataSQL = "SELECT quantity, product_id, enduser_id FROM cart WHERE cart_item_id = $x";
               $dataResult = mysqli_query($conn, $dataSQL);
-              while ($y = mysqli_fetch_assoc($dataResult)) {
-                $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, enduser_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$y['enduser_id']}' )";
-                mysqli_query($conn, $storeTransSQL);
+              $getSellerIDSQL = "SELECT product.enduser_id FROM product, cart WHERE cart.product_id = product.product_id";
+              $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
+              while ($g = mysqli_fetch_assoc($getSellerIDResult)) {
+                while ($y = mysqli_fetch_assoc($dataResult)) {
+                  $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$g['enduser_id']}', '{$y['enduser_id']}' )";
+                  mysqli_query($conn, $storeTransSQL);
+                  $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Sell', '{$y['quantity']}', '{$y['product_id']}', '{$g['enduser_id']}', '{$y['enduser_id']}' )";
+                  mysqli_query($conn, $storeTransSQL);
+                }
               }
               $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $x";
               mysqli_query($conn, $deleteSQL);
@@ -418,8 +424,14 @@ if ($_SESSION['cartIDArray'] != null) {
             unset($_SESSION['cartIDArray']);
             $done = true;
           } else {
-            $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, enduser_id) VALUES ('Buy', $quantity, $productID, $user_ID)";
-            mysqli_query($conn, $storeTransSQL);
+            $getUserIDSQL = "SELECT enduser_id FROM product WHERE product_id = $productID";
+            $dataResult = mysqli_query($conn, $getUserIDSQL);
+            while ($g = mysqli_fetch_assoc($dataResult)) {
+              $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Buy', $quantity, $productID, '{$g['enduser_id']}', $user_ID)";
+              mysqli_query($conn, $storeTransSQL);
+              $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Sell', $quantity, $productID, '{$g['enduser_id']}', $user_ID)";
+              mysqli_query($conn, $storeTransSQL);
+            }
             $done = true;
           }
         }
@@ -533,12 +545,16 @@ if ($_SESSION['cartIDArray'] != null) {
           $getSellerIDSQL = "SELECT enduser.enduser_id FROM enduser, product WHERE product.product_id = $productID AND product.enduser_id = enduser.enduser_id";
           $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
           while ($m = mysqli_fetch_assoc($getSellerIDResult)) {
-            $reviewSQL = "INSERT INTO review (review_message, reviewer_id, reviewee_id) VALUES ('$review', CURDATE(), $user_ID, {$m['enduser_id']})";
+            $reviewSQL = "INSERT INTO review (review_message, review_date, reviewer_id, reviewee_id) VALUES ('$review', CURDATE(), $user_ID, {$m['enduser_id']})";
             mysqli_query($conn, $reviewSQL);
           }
 
-          $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, enduser_id) VALUES ('Buy', $quantity, $productID, $user_ID)";
-          mysqli_query($conn, $storeTransSQL);
+          $getUserIDSQL = "SELECT enduser_id FROM product WHERE product_id = $productID";
+          $dataResult = mysqli_query($conn, $getUserIDSQL);
+          while ($g = mysqli_fetch_assoc($dataResult)) {
+            $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Buy', $quantity, $productID, {$m['enduser_id']}, $user_ID)";
+            mysqli_query($conn, $storeTransSQL);
+          }
           echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
           exit;
         } else {
@@ -562,11 +578,23 @@ if ($_SESSION['cartIDArray'] != null) {
           $countReview++;
         }
         foreach ($cartIDArray as $x) {
+          // $dataSQL = "SELECT quantity, product_id, enduser_id FROM cart WHERE cart_item_id = $x";
+          // $dataResult = mysqli_query($conn, $dataSQL);
+          // while ($y = mysqli_fetch_assoc($dataResult)) {
+          //   $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, enduser_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$y['enduser_id']}' )";
+          //   mysqli_query($conn, $storeTransSQL);
+          // }
           $dataSQL = "SELECT quantity, product_id, enduser_id FROM cart WHERE cart_item_id = $x";
           $dataResult = mysqli_query($conn, $dataSQL);
-          while ($y = mysqli_fetch_assoc($dataResult)) {
-            $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, enduser_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$y['enduser_id']}' )";
-            mysqli_query($conn, $storeTransSQL);
+          $getSellerIDSQL = "SELECT product.enduser_id FROM product, cart WHERE cart.product_id = product.product_id";
+          $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
+          while ($g = mysqli_fetch_assoc($getSellerIDResult)) {
+            while ($y = mysqli_fetch_assoc($dataResult)) {
+              $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$g['enduser_id']}', '{$y['enduser_id']}' )";
+              mysqli_query($conn, $storeTransSQL);
+              $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Sell', '{$y['quantity']}', '{$y['product_id']}', '{$g['enduser_id']}', '{$y['enduser_id']}' )";
+              mysqli_query($conn, $storeTransSQL);
+            }
           }
           $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $x";
           mysqli_query($conn, $deleteSQL);
@@ -685,7 +713,7 @@ if ($_SESSION['cartIDArray'] != null) {
       }
     }
   </script>
-	<script src="js/profileModal.js"></script>
+  <script src="js/profileModal.js"></script>
 </body>
 
 </html>

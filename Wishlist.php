@@ -20,6 +20,7 @@ if ($user_ID == null) {
   $sql = "SELECT * FROM wishlist WHERE enduser_id = $user_ID";
   $result = mysqli_query($conn, $sql);
 }
+$usernameCount = 0;
 ?>
 
 <!DOCTYPE html>
@@ -96,11 +97,13 @@ if ($user_ID == null) {
               ?>
 
               <?php
-              $imageSQL = "SELECT product_image FROM productimage, product, wishlist WHERE productimage.product_id=product.product_id AND {$rows['product_id']}=product.product_id limit 1";
+              $imageSQL = "SELECT product_image, product.product_id FROM productimage, product, wishlist WHERE productimage.product_id=product.product_id AND {$rows['product_id']}=product.product_id limit 1";
               $image = mysqli_query($conn, $imageSQL);
               echo "<div class='imageContainer'>";
               while ($a = mysqli_fetch_assoc($image)) {
+                echo "<a href='Product.php?product_id={$a['product_id']}'>";
                 echo "<img src='pictures/product/" . $a['product_image'] . "' alt='product' />";
+                echo "</a>";
               }
               echo "</div>";
               ?>
@@ -113,11 +116,15 @@ if ($user_ID == null) {
                   while ($a = mysqli_fetch_assoc($productName)) {
                     echo "<h3>{$a['product_name']}</h3>";
                   }
-
-                  $productSellerSQL = "SELECT username FROM enduser WHERE enduser.enduser_id = {$rows['enduser_id']}";
+                  $unCount = 0;
+                  $productSellerSQL = "SELECT enduser.username FROM enduser, product, wishlist WHERE wishlist.enduser_id = {$rows['enduser_id']} AND wishlist.product_id = product.product_id AND enduser.enduser_id = product.enduser_id";
                   $productSeller = mysqli_query($conn, $productSellerSQL);
                   while ($b = mysqli_fetch_assoc($productSeller)) {
-                    echo "<h4>Seller: {$b['username']}</h4>";
+                    if ($unCount == $usernameCount) {
+                      echo "<h4>Seller: {$b['username']}</h4>";
+                      break;
+                    }
+                    $unCount++;
                   }
 
                   $productPriceSQL = "SELECT product_price FROM product WHERE product.product_id = {$rows['product_id']}";
@@ -125,6 +132,7 @@ if ($user_ID == null) {
                   while ($c = mysqli_fetch_assoc($productPrice)) {
                     echo "<h4>Price: RM{$c['product_price']}</h4>";
                   }
+                  $usernameCount++;
                   ?>
                 </div>
               </div>

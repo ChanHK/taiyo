@@ -265,7 +265,7 @@ div.mySlides img {
   padding: 0 20px;
   width: 20%;
   height: 40px;
-  background-color: #57b846;
+  background-color:#c75d5d;
   /* border-radius: 25px; */
 
   font-family: Ubuntu-Regular;
@@ -281,7 +281,7 @@ div.mySlides img {
 }
 
 .formButton:hover {
-  background-color: #1b3815;
+  background-color: #d61919;
   cursor: pointer;
 }
 

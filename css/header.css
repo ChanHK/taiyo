@@ -1,20 +1,17 @@
-@font-face
-{
+@font-face {
 	font-family: "JosefinSans-Regular";
 	src: url(../fonts/JosefinSans/JosefinSans-Regular.ttf);
-}
-
-form
-{
+  }
+  
+  form {
 	margin-bottom: 0;
-}
-
-body
-{
+  }
+  
+  body {
 	font-family: JosefinSans-Regular;
-}
-
-.flex-row {
+  }
+  
+  .flex-row {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -moz-box;
@@ -25,57 +22,56 @@ body
 	-ms-flex-direction: row;
 	-o-flex-direction: row;
 	flex-direction: row;
-}
-
-.bgblack{background-color: black}
-.bggrey {background-color: #8c9191;}
-.bgred {background-color: #c75d5d;}
-
-ul
-{
-	display:flex;
+  }
+  
+  .bgblack {
+	background-color: black;
+  }
+  .bggrey {
+	background-color: #8c9191;
+  }
+  .bgred {
+	background-color: #c75d5d;
+  }
+  
+  ul {
+	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
 	padding: 0.5em;
-}
-
-li
-{
+  }
+  
+  li {
 	display: inline;
 	padding: 1em;
-}
-
-li a
-{
+  }
+  
+  li a {
 	color: #c75d5d;
 	text-decoration: initial;
-}
-
-.taiyou
-{
+  }
+  
+  .taiyou {
 	float: left;
 	padding: 1em;
 	width: 190px;
 	box-sizing: content-box;
-}
-
-.aligni
-{
+  }
+  
+  .aligni {
 	align-items: center;
-}
-
-.searchbar
-{
+  }
+  
+  .searchbar {
 	float: left;
 	width: 40em;
 	height: 4em;
 	border-radius: 5px 0 0 5px;
 	border: 0;
-}
-
-.searchbutton
-{
+  }
+  
+  .searchbutton {
 	float: left;
 	cursor: pointer;
 	width: 4em;
@@ -84,19 +80,17 @@ li a
 	background-image: url(../pictures/main/Mag.png);
 	background-repeat: no-repeat;
 	background-position: center;
-	border-radius: 0 5px 5px 0;	
+	border-radius: 0 5px 5px 0;
 	border: 0;
-}
-
-.loginprofile
-{
+  }
+  
+  .loginprofile {
 	width: 30px;
 	height: 30px;
-	border-radius:50%;
-}
-
-.sellbutton
-{
+	border-radius: 50%;
+  }
+  
+  .sellbutton {
 	cursor: pointer;
 	font-family: JosefinSans-Regular;
 	color: white;
@@ -107,10 +101,9 @@ li a
 	border: 0;
 	border-radius: 5px;
 	transition: 0.6s background-color;
-}
-
-.profilemodal
-{
+  }
+  
+  .profilemodal {
 	display: none;
 	position: fixed;
 	z-index: 1;
@@ -119,32 +112,32 @@ li a
 	top: 0;
 	left: 0;
 	overflow: auto;
-}
-
-.profilemodalcontent
-{
+  }
+  
+  .profilemodalcontent {
 	display: flex;
 	background-color: white;
 	flex-direction: column;
 	padding: 1em;
 	position: absolute;
 	top: 5%;
-	left:89%;
+	left: 89%;
 	width: 100px;
 	border-radius: 5px;
-}
-
-.profilemodalcontent a
-{
+  }
+  
+  .profilemodalcontent a {
 	text-decoration: none;
-}
-
-.profilemodalcontent a:link
-{
+  }
+  
+  .profilemodalcontent a:link {
 	color: black;
-}
-
-.logout
-{
+  }
+  
+  .logout {
 	color: #c75d5d;
-}
+	border: none;
+	outline: none;
+	background-color: white;
+  }
+  
