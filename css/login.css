@@ -28,10 +28,10 @@ html {
 
 .loginContainer {
   width: 100%;
-  min-height: 83.2vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: 15px;
   background-color: #e0e0e0;
 }
@@ -41,7 +41,6 @@ html {
   background: white;
   border-radius: 20px;
   box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
-  margin: 40px;
 }
 
 .loginForm {
@@ -88,7 +87,8 @@ button {
   padding: 0 20px;
   width: 100%;
   height: 50px;
-  background-color: #57b846;
+  /* background-color: #57b846; */
+  background-color:#c75d5d;
 
   font-family: Ubuntu-Bold;
   font-size: 15px;
@@ -103,5 +103,7 @@ button {
 }
 
 .loginFormButton:hover {
-  background-color: #1b3815;
+  /* background-color: #1b3815; */
+  background-color: #d61919;
+
 }

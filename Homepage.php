@@ -8,13 +8,13 @@ $userResult = null;
 
 if(isset($_SESSION['userID']))
 {
-	$userID = $_SESSION['userID'];
-	$sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $userID";
+	$user_ID = $_SESSION['userID'];
+	$sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $user_ID";
 	$userResult = mysqli_query($conn, $sql);
 }
 else
 {
-	$userID = null;
+	$user_ID = null;
 }
 
 if(isset($_SESSION['substring']))
@@ -346,6 +346,7 @@ else
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
 		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="css/header.css"/>
 		<link rel="stylesheet" type="text/css" href="css/homepage.css"/>
 	</head>
 	<body>
@@ -354,7 +355,7 @@ else
 		?>
 		<section>
 			<div class= "filter">
-				<form method="post" action="homepage.php">
+				<form method="post" action="Homepage.php">
 					<div class="filterform bgred">
 						<label for="filter">Filter based on price: </label>
 						<select id="filter" name="filter">
@@ -452,7 +453,14 @@ else
 									echo "</br>";
 									echo "<p class='productdesc'><strong>".$row['product_name']."</strong></p>";
 									echo "<p class='productdesc'>" . "RM" . $row["product_price"]. "</p>";
-									echo "<p class='productdesc flex-row aligni' style='margin-top: 0.5em'><img class='profileicon' src='pictures/profile/" . $row["profile_photo"] . "' alt = " . $row["profile_photo"] . "title = " . $row["profile_photo"]. "/>" . "&nbsp;". $row["username"] . "</p>";
+									if($row['profile_photo'] != null)
+									{
+										echo "<p class='productdesc flex-row aligni' style='margin-top: 0.5em'><img class='profileicon' src='pictures/profile/" . $row["profile_photo"] . "' alt = '" . $row["profile_photo"] . "' title = '" . $row["profile_photo"]. "'/>" . "&nbsp;". $row["username"] . "</p>";
+									}
+									else
+									{
+										echo "<p class='productdesc flex-row aligni' style='margin-top: 0.5em'><img class='profileicon' src='pictures/profile/anonymous.png' alt='no-picture' title='no-picture'/>" . "&nbsp;". $row["username"] . "</p>";
+									}
 									echo "<a href='Product.php?product_id=" . $row["product_id"] . "' class='linkspanner'><span></span></a>";
 								echo "</div>";
 							}
@@ -463,3 +471,5 @@ else
 			</div>
 		</section>
 	</body>
+	<script src="js/profileModal.js"></script>
+</html>

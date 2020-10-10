@@ -1,94 +1,6 @@
-@font-face
-{
-	font-family: "JosefinSans-Regular";
-	src: url(JosefinSans-Regular.ttf);
-}
-
-form
-{
-	margin-bottom: 0;
-}
-
-body
-{
-	font-family: JosefinSans-Regular;
-}
-
-.flex-row {
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-flex-direction: row;
-	-moz-flex-direction: row;
-	-ms-flex-direction: row;
-	-o-flex-direction: row;
-	flex-direction: row;
-}
-
-.bgblack{background-color: black}
-.bggrey {background-color: #8c9191;}
-.bgred {background-color: #c75d5d;}
-
-ul
-{
-	display:flex;
-	flex-direction: row;
-	justify-content: flex-end;
-	align-items: center;
-	padding: 0.5em;
-}
-
-li
-{
-	display: inline;
-	padding: 1em;
-}
-
-li a
-{
-	color: #c75d5d;
-	text-decoration: initial;
-}
-
 hr
 {
 	color: black;
-}
-
-.taiyou
-{
-	float: left;
-	padding: 1em;
-	width: 10em;
-}
-
-.aligni
-{
-	align-items: center;
-}
-
-.searchbar
-{
-	float: left;
-	width: 40em;
-	height: 4em;
-	border-radius: 5px 0 0 5px;
-	border: 0;
-}
-
-.searchbutton
-{
-	float: left;
-	cursor: pointer;
-	width: 4em;
-	height: 4em;
-	background-image: url(Mag.png);
-	background-repeat: no-repeat;
-	background-position: center;
-	border-radius: 0 5px 5px 0;	
-	border: 0;
 }
 
 .asidediv
@@ -99,7 +11,7 @@ hr
 	overflow-wrap: break-word;
 }
 
-.sellbutton
+.editbutton
 {
 	cursor: pointer;
 	font-family: JosefinSans-Regular;
@@ -112,13 +24,6 @@ hr
 	border: 0;
 	border-radius: 5px;
 	transition: 0.6s background-color;
-}
-
-.loginprofile
-{
-	width: 30px;
-	height: 30px;
-	border-radius:50%;
 }
 
 .profile
@@ -163,6 +68,7 @@ section
 {
 	display:flex;
 	flex-direction:row;
+	align-items: center;
 	
 }
 
@@ -171,6 +77,8 @@ section
 	cursor: pointer;
 	background-color: Transparent;
 	font-family: JosefinSans-Regular;
+	width: 7em;
+	height: 3em;
 	font-size: 1em;
 	margin: 1em 0 1em 2em;
 	border: 0;
@@ -194,7 +102,7 @@ section
 	width: 100%;
 	height: 200px;
 	overflow:hidden;
-	background-image: url(Taiyou-repeat.png);
+	background-image: url(../pictures/main/Taiyou-repeat.png);
 	background-repeat: repeat;
 }
 
@@ -256,6 +164,13 @@ section
 	margin-left: 1em;
 }
 
+.reviewitem p
+{
+	font-style: italic;
+	font-size: 0.75em;
+	color: gray;
+}
+
 .revprofile
 {
 	width: 50px;
@@ -285,6 +200,58 @@ section
 .sellbutton:hover
 {
 	background-color: #a05050;
+}
+
+a:link
+{
+	color: #c75d5d;
+	text-decoration: none;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+	position: fixed;
+	top: 40%;
+	left: 50%;
+	margin-left: -40%;
+	padding: 1em;
+	background-color: #fefefe;
+	border: 1px solid #888;
+	width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.okbuttonlink
+{
+	display: flex;
+	flex-direction: column;
+}
+
+.okbutton
+{
+	cursor: pointer;
+	font-family: JosefinSans-Regular;
+	color: white;
+	width: 8em;
+	height: 4em;
+	border: 0;
+	border-radius: 5px;
+	margin-top: 1em;
+	align-self: flex-end;
+	transition: 0.6s background-color;
 }
 
 @media only screen and (max-width: 935px)
@@ -320,6 +287,7 @@ section
 		height: 3em;
 	}
 }
+
 
 @media only screen and (max-width: 840px)
 {
