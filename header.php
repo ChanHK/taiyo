@@ -1,7 +1,9 @@
 <header class="w-full bggrey">
 	<div id="profilemodaldiv" class="profilemodal">
 		<div class="profilemodalcontent">
-			<a href="#">Profile</a>
+			<?php
+				echo "<a href='Listing.php?user_id=".$user_ID."'>Profile</a>";
+			?>
 			</br>
 			<hr style="margin: 0;">
 			</br>
@@ -10,7 +12,7 @@
 				<?php
 				if (isset($_POST['logout'])) {
 					unset($_SESSION['userID']);
-					header("Refresh:0");
+					header("Location: Homepage.php");
 				}
 				?>
 			</form>
@@ -47,7 +49,14 @@
 			<button class="searchbutton" type="submit" name="search" id="search"></button>
 		</form>
 		<?php
-		echo "<button class='sellbutton bgred' name='sell' id='sell'>Sell</button>";
+			if($user_ID != null)
+			{
+				echo "<a href='Sell.php' class='selllink'><button class='sellbutton bgred' name='sell' id='sell'>Sell</button></a>";
+			}
+			else
+			{
+				echo "<a href='Login.php' class='selllink'><button class='sellbutton bgred' name='sell' id='sell'>Sell</button></a>";
+			}
 		?>
 	</div>
 </header>

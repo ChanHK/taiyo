@@ -7,7 +7,16 @@ $conn = mysqli_connect("localhost", "root", "", "taiyodb");
 $reviewResult = null;
 $visitedUserResult = null;
 
-$visitedUserID = 1;
+if(isset($_GET['user_id']))
+{
+	$visitedUserID = $_GET['user_id'];
+}
+else
+{
+	header("Location: Homepage.php");
+	exit();
+
+}
 
 if(isset($_SESSION['userID']))
 {
@@ -29,6 +38,8 @@ if(isset($_POST['reviewtext']))
 {
 	$sql = "INSERT INTO review (review_message, review_date, reviewer_id, reviewee_id) VALUES ('". $_POST['reviewtext'] . "' , CURDATE(), ". $user_ID . ", " . $visitedUserID . ");";
 	mysqli_query($conn, $sql);
+	header("Location: Review.php?user_id=".$visitedUserID."&reviewbutton=1");
+	exit();
 }
 
 ?>
@@ -58,11 +69,11 @@ if(isset($_POST['reviewtext']))
 			$row = mysqli_fetch_array($visitedUserResult);
 			if($row['profile_photo'] != null)
 			{
-				echo "<a href='#'><img src='pictures/profile/" . $row['profile_photo'] . "' class='profile'". "alt='" .$row['profile_photo']. "' title=' " . $row['profile_photo'] . "'/></a>";
+				echo "<a href='Listing.php?user_id=".$visitedUserID."'><img src='pictures/profile/" . $row['profile_photo'] . "' class='profile'". "alt='" .$row['profile_photo']. "' title=' " . $row['profile_photo'] . "'/></a>";
 			}
 			else
 			{
-				echo "<a href='#'><img src='pictures/profile/anonymous.png' class='profile'". "alt='no-picture' title='no-picture'/></a>";
+				echo "<a href='Listing.php?user_id=".$visitedUserID."'><img src='pictures/profile/anonymous.png' class='profile'". "alt='no-picture' title='no-picture'/></a>";
 			}
 			echo "<div class='asidediv'>";
 				echo "<p style='text-align:center'>".$row['username']."</p>";
@@ -94,13 +105,12 @@ if(isset($_POST['reviewtext']))
 					echo "Gender: ". $row['gender'];
 				echo "</p>";
 				echo "</br>";
-				echo "My Transaction Method:</br>";
-				echo "</br>";
-				echo "<a href='#'><img src='pictures/main/paypal1.jpg' class='payment' alt='payment' title='payment'/></a>";
-				echo "</br>";
 				echo "<hr>";
 				echo $row['user_description']. "</br>";
-				echo "<button class='editbutton bgred' name='edit' id='edit'>Edit</button>";
+				if($user_ID == $visitedUserID)
+				{
+					echo "<a href='ProfileEdit.php'><button class='editbutton bgred' name='edit' id='edit'>Edit</button></a>";
+				}
 			?>
 			</div>
 		</aside>
@@ -110,11 +120,11 @@ if(isset($_POST['reviewtext']))
 			<div class="navigation bggrey">
 			<?php
 				echo "<div class='navigation bggrey'>";
-					echo "<button class='navbutton' name='listings' id='listings'>Listings</button>";
+					echo "<a href='Listing.php?user_id=".$visitedUserID."'><button class='navbutton' name='listings' id='listings'>Listings</button></a>";
 					echo "<button class='active' name='review' id='review' disabled>Reviews</button>";
 				if($user_ID == $visitedUserID)
 				{
-					echo "<a href='Transactions.php'><button class='navbutton' name='transactions' id='transactions'>Transactions</button></a>";
+					echo "<a href='Transactions.php?user_id=".$visitedUserID."'><button class='navbutton' name='transactions' id='transactions'>Transactions</button></a>";
 					
 				}
 				echo "</div>";
@@ -130,7 +140,7 @@ if(isset($_POST['reviewtext']))
 							{
 								echo "<div class='reviewitem'>";
 								echo "<div class='flex-row aligni'>";
-								echo "<a href='#'><img class='revprofile' src='pictures/profile/".$row['reviewer_profile']."' alt='".$row['reviewer_profile']."' title='". $row['reviewer_profile'] . "'/></a>&nbsp;<a href='#'>".$row['reviewer_username']."</a>";
+								echo "<a href='Listing.php?user_id=".$row['reviewer_id']."'><img class='revprofile' src='pictures/profile/".$row['reviewer_profile']."' alt='".$row['reviewer_profile']."' title='". $row['reviewer_profile'] . "'/></a>&nbsp;<a href='Listing.php?user_id=".$row['reviewer_id']."'>".$row['reviewer_username']."</a>";
 								echo "<p>&nbsp; &nbsp; Posted on <time>".$row['review_date']."</time></p>";
 								echo "</div>";
 								echo "</br>";
@@ -150,8 +160,10 @@ if(isset($_POST['reviewtext']))
 				{
 				?>
 				<div class = "newreview">
-					<form method="post" action="Review.php" class="nospace reviewform">
-						<textarea id="reviewtext" name="reviewtext" rows="10" cols="25" maxlength="255"></textarea>
+					<?php
+					echo "<form method='post' action='Review.php?user_id=".$visitedUserID."' class='nospace reviewform'>"
+					?>
+						<textarea class="reviewtext" id="reviewtext" name="reviewtext" rows="10" cols="25" maxlength="255"></textarea>
 						<input type="submit" class="reviewbutton bgred" name="reviewbutton" id="reviewbutton" value = "Review"/>
 						<!-- <button type = "button" class="reviewbutton bgred" name="reviewbutton" id="reviewbutton" onclick="openModal()">Review</button> -->
 					</form>
@@ -161,7 +173,9 @@ if(isset($_POST['reviewtext']))
 							</br>
 							<p>Review has been submitted.</p>
 							</br>
-							<form class="okbuttonlink" action="Review.php">								
+							<?php
+								echo "<form class='okbuttonlink' method='post' action='Review.php?user_id=".$visitedUserID."'>"
+							?>					
 								<button type="submit" class="okbutton bgred" name="okButton">OK</button>
 							</form>
 						</div>
@@ -180,11 +194,7 @@ if(isset($_POST['reviewtext']))
 		reviewButton.addEventListener('click', function(e)
 		{
 			var textbox = document.getElementById("reviewtext");
-			if(textbox.value.length > 0)
-			{
-				e.submit();
-			}
-			else
+			if(textbox.value.length <= 0)
 			{
 				e.preventDefault();
 				var errorBox = document.getElementById("error");
@@ -209,7 +219,7 @@ if(isset($_POST['reviewtext']))
 		}
 		
 		
-		<?php if(isset($_POST['reviewbutton'])) { ?> /* Your (php) way of checking that the form has been submitted */
+		<?php if(isset($_GET['reviewbutton'])) { ?> /* Your (php) way of checking that the form has been submitted */
 
 			openModal();
 

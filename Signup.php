@@ -1,6 +1,14 @@
 <?php
 session_start();
+$conn = mysqli_connect("localhost", "root", "", "taiyodb");
 // session_destroy();
+if (isset($_SESSION['userID'])) {
+	  $user_ID = $_SESSION['userID'];
+	  $sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $user_ID";
+	  $userResult = mysqli_query($conn, $sql);
+	} else {
+	  $user_ID = null;
+}
 $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerified = $ageVerified = $streetOneVerified = $streetTwoVerified = $postcodeVerified = $cityVerified = $stateVerified = false;
 ?>
 
@@ -12,15 +20,17 @@ $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerifi
   <meta charset="UTF-8" />
   <link rel="stylesheet" type="text/css" href="css/util.css" />
   <link rel="stylesheet" type="text/css" href="css/signup.css" />
+	<link rel="stylesheet" type="text/css" href="css/header.css"/>
 </head>
 
 <body>
   <div class="limiter">
+  	<?php include "header.php" ?>
     <div class="signupContainer">
       <div class="signupFormContainer">
         <form class="signupForm p-l-55 p-r-55 p-t-100" method="post" id="thisFORM">
           <div class="m-b-16">
-            <input class="formInput" type="text" name="username" id="USERNAME" placeholder="Username" onkeyup="saveValue(this)" />
+            <input class="formInput" type="text" name="username" id="USERNAME" placeholder="Username" onkeyup="saveValue(this)" maxlength="30" />
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $username = $_POST['username'];
@@ -50,7 +60,7 @@ $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerifi
           </div>
 
           <div class="m-b-16">
-            <input class="formInput" type="text" name="email" id="EMAIL" placeholder="Email" onkeyup="saveValue(this)" />
+            <input class="formInput" type="text" name="email" id="EMAIL" placeholder="Email" onkeyup="saveValue(this)" maxlength="50"/>
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $email = $_POST['email'];
@@ -73,7 +83,7 @@ $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerifi
           </div>
 
           <div class="m-b-16">
-            <input class="formInput" type="password" name="password" id="PASSWORD" placeholder="Password" onkeyup="saveValue(this)" />
+            <input class="formInput" type="password" name="password" id="PASSWORD" placeholder="Password" onkeyup="saveValue(this)" maxlength="15"/>
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $password = $_POST['password'];
@@ -122,7 +132,7 @@ $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerifi
 
 
           <div class="p-b-16">
-            <input class="formInput" type="text" name="phonenumber" id="PHONENUMBER" placeholder="Mobile Number" onkeyup="saveValue(this)" />
+            <input class="formInput" type="text" name="phonenumber" id="PHONENUMBER" placeholder="Mobile Number" onkeyup="saveValue(this)" maxlength="15"/>
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $mobile = $_POST['phonenumber'];
@@ -148,7 +158,7 @@ $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerifi
           </div>
 
           <div class="p-b-16">
-            <input class="formInput" type="number" min='1' max='110' name="age" id="AGE" placeholder="Age" onkeyup="saveValue(this)" />
+            <input class="formInput" type="number" min='1' max='110' name="age" id="AGE" placeholder="Age" onkeyup="saveValue(this)" onkeydown="return isNumberKey(event)" />
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $age = $_POST['age'];
@@ -170,7 +180,7 @@ $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerifi
           </div>
 
           <div class="p-b-16">
-            <input class="formInput" type="text" name="streetOne" id="STREETONE" placeholder="Street Address 1" onkeyup="saveValue(this)" />
+            <input class="formInput" type="text" name="streetOne" id="STREETONE" placeholder="Street Address 1" onkeyup="saveValue(this)" maxlength="255"/>
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $street_1 = $_POST['streetOne'];
@@ -192,7 +202,7 @@ $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerifi
           </div>
 
           <div class="p-b-16">
-            <input class="formInput" type="text" name="streetTwo" id="STREETTWO" placeholder="Street Address 2" onkeyup="saveValue(this)" />
+            <input class="formInput" type="text" name="streetTwo" id="STREETTWO" placeholder="Street Address 2" onkeyup="saveValue(this)" maxlength="255"/>
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $street_2 = $_POST['streetTwo'];
@@ -214,7 +224,7 @@ $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerifi
           </div>
 
           <div class="p-b-16">
-            <input class="formInput" type="text" name="postcode" id="POSTCODE" placeholder="Postcode" onkeyup="saveValue(this)" />
+            <input class="formInput" type="text" name="postcode" id="POSTCODE" placeholder="Postcode" onkeyup="saveValue(this)" maxlength="5" onkeydown = "return isNumberKey(event)"/>
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $postcode = $_POST['postcode'];
@@ -236,7 +246,7 @@ $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerifi
           </div>
 
           <div class="p-b-16">
-            <input class="formInput" type="text" name="city" id="CITY" placeholder="City" onkeyup="saveValue(this)" />
+            <input class="formInput" type="text" name="city" id="CITY" placeholder="City" onkeyup="saveValue(this)" maxlength="120"/>
             <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $city = $_POST['city'];
@@ -371,6 +381,15 @@ $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerifi
     </div>
   </div>
   <script>
+  
+	function isNumberKey(evt)
+	{
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+		if (charCode > 31 && (charCode < 48 || charCode > 57))
+		 return false;
+
+		return true;
+	}
     if (localStorage.getItem("item") === null) {
       localStorage.setItem("item", document.getElementById("GENDER").value);
     }
@@ -463,6 +482,7 @@ $usernameVerified = $emailVerified = $passVerified = $genderVerified = $phVerifi
       document.getElementById("thisFORM").submit();
     }
   </script>
+  <script src="js/profileModal.js"></script>
 </body>
 
 </html>

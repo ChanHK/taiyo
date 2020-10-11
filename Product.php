@@ -11,7 +11,15 @@ if (isset($_SESSION['userID'])) {
 }
 // $productID = $_SESSION['productID']; //get from home page (1)
 $_SESSION['cartIDArray'] = null;
-$productID = $_GET['product_id']; //get from home page (2)
+if(isset($_GET['product_id']))
+{
+	$productID = $_GET['product_id'];
+}
+else
+{
+	header("Location: Homepage.php");
+	exit();
+}
 $_SESSION['productID'] = $productID;
 
 $sql = "SELECT * FROM product WHERE product_id = $productID";
@@ -51,6 +59,9 @@ $dotCount = 0; // slide dots count
         echo "</div>";
         $dotCount++;
       }
+	  
+	  $getQuantity = "SELECT quantity FROM product WHERE product_id = $productID";
+	  $getQuantityResult = mysqli_query($conn, $getQuantity);
       ?>
 
       <!-- Next and previous buttons -->
@@ -58,30 +69,54 @@ $dotCount = 0; // slide dots count
       <a class="next" onclick="plusSlides(1)">&#10095;</a>
 
       <?php
+	  $getQuantity = "SELECT quantity FROM product WHERE product_id = $productID";
+	  $getQuantityResult = mysqli_query($conn, $getQuantity);
+	  $quantityRow = mysqli_fetch_array($getQuantityResult);
+	  
+	  
       if ($user_ID !== null) {
         $islogin = "true";
+		$cartExists = false;
+		$wishExists = false;
+
       } else {
         $islogin = "false";
-      }
-      $cartExists = false;
-      $wishExists = false;
+		$cartExists = true;
+		$wishExists = true;
 
-      $checkProductIsInCartSQL = "SELECT count(*) FROM cart WHERE product_id = $productID AND enduser_id = $user_ID";
-      $checkProductIsInCartResult = mysqli_query($conn, $checkProductIsInCartSQL);
-      while ($cpCount = mysqli_fetch_assoc($checkProductIsInCartResult)) {
-        if ($cpCount['count(*)'] == 0) {
-          $cartExists = true;
-        }
       }
+      
 
-      $checkProductIsInWishlistSQL = "SELECT count(*) FROM wishlist WHERE product_id = $productID AND enduser_id = $user_ID";
-      $checkProductIsInWishlistResult = mysqli_query($conn, $checkProductIsInWishlistSQL);
-      while ($wpCount = mysqli_fetch_assoc($checkProductIsInWishlistResult)) {
-        if ($wpCount['count(*)'] == 0) {
-          $wishExists = true;
-        }
-      }
+		if($islogin == "true")
+		{
+		  $checkProductIsInCartSQL = "SELECT count(*) FROM cart WHERE product_id = $productID AND enduser_id = $user_ID";
+		  $checkProductIsInCartResult = mysqli_query($conn, $checkProductIsInCartSQL);
+		  while ($cpCount = mysqli_fetch_assoc($checkProductIsInCartResult)) {
+			if ($cpCount['count(*)'] == 0) {
+			  $cartExists = true;
+			}
+		  }
 
+		  $checkProductIsInWishlistSQL = "SELECT count(*) FROM wishlist WHERE product_id = $productID AND enduser_id = $user_ID";
+		  $checkProductIsInWishlistResult = mysqli_query($conn, $checkProductIsInWishlistSQL);
+		  while ($wpCount = mysqli_fetch_assoc($checkProductIsInWishlistResult)) {
+			if ($wpCount['count(*)'] == 0) {
+			  $wishExists = true;
+			}
+		  }
+		  
+		  if($quantityRow['quantity'] <= 0)
+		  {
+			  $cartExists = false;
+			  $wishExists = false;
+		  }
+		  
+		  if($cartExists == false || $wishExists == false)
+		  {
+			  $cartExists = false;
+			  $wishExists = false;
+		  }
+		}
       if ($product['enduser_id'] != $user_ID) {
         if ($cartExists == 1) {
           echo "<a href='#' onclick='openQuantityCartModal($islogin)'><span class='cart'></span></a>";
@@ -90,6 +125,10 @@ $dotCount = 0; // slide dots count
           echo "<a href='#' onclick='openWishlistModal($islogin)'><span class='wish'></span></a>";
         }
       }
+	  else
+	  {
+		  echo "<a href='ProductEdit.php?product_id=".$productID."'><span class='edit'></span></a>";
+	  }
       ?>
     </div>
     <br />
@@ -108,13 +147,15 @@ $dotCount = 0; // slide dots count
   <aside class="m-b-40">
     <div>
       <?php
-      $getProfilePicSQL = "SELECT profile_photo, username FROM product LEFT JOIN enduser ON product.enduser_id = enduser.enduser_id WHERE product_id = $productID";
+      $getProfilePicSQL = "SELECT profile_photo, product.enduser_id, username FROM product LEFT JOIN enduser ON product.enduser_id = enduser.enduser_id WHERE product_id = $productID";
       $getProfilePicResult = mysqli_query($conn, $getProfilePicSQL);
       while ($b = mysqli_fetch_assoc($getProfilePicResult)) {
-        echo "<a href='#'>";
-        echo "<img class='profile' src='pictures/profile/" . $b['profile_photo'] . "' alt='Profile Pic' title='Profile Pic' />";
+        echo "<a href='Listing.php?user_id=".$b['enduser_id']."'>";
+        echo "<img class='profile' src='pictures/profile/" . $b['profile_photo'] . "' alt='" . $b['profile_photo'] . "' title='".$b['profile_photo']."' />";
         echo "</a>";
+		echo "<a href='Listing.php?user_id=" . $b['enduser_id'] . "' class='userlink'>";
         echo "<p class='text-center'><b>{$b['username']}</b></p>";
+		echo "</a>";
         echo "<br />";
       }
 
@@ -145,8 +186,14 @@ $dotCount = 0; // slide dots count
         echo "<p class='desc titleDesc'>{$c['product_name']}</p>";
         echo "<p class='desc'>Price: RM {$c['product_price']}</p>";
         echo "<p class='desc'>State: {$c['product_state']}</p>";
-        echo "<p class='desc'>Quantity: {$c['quantity']}</p>";
-
+		if($c['quantity'] > 0)
+		{
+			echo "<p class='desc'>Quantity: {$c['quantity']}</p>";
+		}
+		else
+		{
+			echo "<p class='desc'>Out of Stock</p>";
+		}
         echo "<hr /> <br />";
         echo "<p class='desc'>";
         echo $c['product_description'];
@@ -160,7 +207,7 @@ $dotCount = 0; // slide dots count
       } else {
         $checkLogin = "false";
       }
-      if ($product['enduser_id'] != $user_ID) {
+      if ($product['enduser_id'] != $user_ID && $quantityRow['quantity'] > 0) {
         echo "<button class='purchasebutton bgred' onclick='openModal($checkLogin)'>";
         echo "Purchase";
         echo "</button>";
@@ -178,7 +225,7 @@ $dotCount = 0; // slide dots count
       <br />
       <hr class="m-l-20 m-r-20" />
 
-      <form class="editShippingForm m-r-40" method="get" action="Checkout.php">
+      <form class="editShippingForm m-r-40" method="get" action="Checkout.php" id="purchaseModal">
         <?php
         $getQuantitySQL = "SELECT quantity FROM product WHERE product_id = $productID";
         $getQuantityResult = mysqli_query($conn, $getQuantitySQL);
@@ -190,7 +237,7 @@ $dotCount = 0; // slide dots count
         }
         ?>
         <div class="buttonContainer">
-          <button class="formButton m-l-auto m-r-30" onclick="closeModal()">
+          <button class="formButton m-l-auto m-r-30" type="button" onclick="closeModal()">
             Cancel
           </button>
           <button class="formButton m-r-40" type="submit" name="checkOut">check out</button>
@@ -267,6 +314,7 @@ $dotCount = 0; // slide dots count
     </div>
   </div>
 
+
   <script>
     var slideIndex = 1;
     showSlides(slideIndex);
@@ -311,10 +359,13 @@ $dotCount = 0; // slide dots count
       }
     }
 
-    function closeModal() {
+     function closeModal() {
       quantityModal.style.display = "none";
       document.documentElement.style.overflow = "scroll";
       document.body.scroll = "yes";
+      // document.getElementById("purchaseModal").onsubmit = function() {
+      //   return isValidForm();
+      // };
     }
 
     function openWishlistModal(x) {

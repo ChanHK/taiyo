@@ -1,9 +1,29 @@
+hr
+{
+	color: black;
+}
+
 .asidediv
 {
 	padding: 1em;
 	position: relative;
 	flex-grow: 1;
 	overflow-wrap: break-word;
+}
+
+.editbutton
+{
+	cursor: pointer;
+	font-family: JosefinSans-Regular;
+	color: white;
+	position: absolute;
+	left: 30%;
+	bottom: 20px;
+	width: 8em;
+	height: 4em;
+	border: 0;
+	border-radius: 5px;
+	transition: 0.6s background-color;
 }
 
 .profile
@@ -43,36 +63,6 @@ section
 	flex-direction:column;
 	overflow:hidden;
 }
-
-.sellbutton {
-  cursor: pointer;
-  font-family: JosefinSans-Regular;
-  color: white;
-  margin-right: 2em;
-  margin-left: auto;
-  width: 8em;
-  height: 4em;
-  border: 0;
-  border-radius: 5px;
-  transition: 0.6s background-color;
-}
-
-
-.editbutton
-{
-	cursor: pointer;
-	font-family: JosefinSans-Regular;
-	color: white;
-	position: absolute;
-	left: 30%;
-	bottom: 20px;
-	width: 8em;
-	height: 4em;
-	border: 0;
-	border-radius: 5px;
-	transition: 0.6s background-color;
-}
-
 
 .navigation
 {
@@ -116,27 +106,10 @@ section
 	background-repeat: repeat;
 }
 
-.soldboughtdiv
-{
-	flex: 1;
-}
-
 .nospace
 {
 	margin: 0;
 
-}
-
-.soldbought
-{
-	float: left;
-	display:flex;
-	text-align: center;
-	flex-direction:column;
-	justify-content:center;
-	width:20%;
-	height:50%;
-	border-right: black 1px solid;
 }
 
 .scroll
@@ -150,27 +123,55 @@ section
 	clear: right;
 }
 
-.transitem
+.listingtitle
 {
-	flex-shrink: 0;
-	display: flex;
-	position: relative;
-	flex-direction: column;
-	justify-content: center;
-	border: black 1px solid;
-	border-radius: 5px;
-	text-align: center;
-	width: 30%;
-	height: 90%;
-	margin-left: 1em;
+	padding: 1em;
+	text-decoration: underline
 }
 
-.itempic
+.listscroll
 {
-	margin-left: auto;
-	margin-right: auto;
-	width:100px;
-	height:50px;
+	display: flex;
+	height: 60%;
+	flex-direction: row;
+	flex-wrap: wrap;
+	overflow-y: scroll;	
+}
+
+.productimg
+{
+	width:200px;
+	height:100px;
+}
+
+.productdesc
+{
+	text-align:left;
+	color: black;
+}
+
+.productitem
+{
+	margin-top: 1em;
+	padding: 1em;
+	background-color: white;
+	border-radius: 5px;
+	position: relative;
+	margin-left:1em;
+	display: flex;
+	flex-direction: column;
+	height: 40%;
+	justify-content: center;
+	align-items: flex-start;
+	border-radius: 5px;
+	border: 1px black solid;
+}
+
+.profileicon
+{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
 }
 
 .linkspanner
@@ -182,25 +183,61 @@ section
 	left:0;
 }
 
-.userlink
+.sellbutton:hover
 {
-	z-index: 1;
+	background-color: #a05050;
 }
 
-.userlink:link
+a:link
 {
 	color: #c75d5d;
 	text-decoration: none;
 }
 
-.userlink:visited
-{
-	text-decoration: none;
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-.sellbutton:hover
+/* Modal Content/Box */
+.modal-content {
+	position: fixed;
+	top: 40%;
+	left: 50%;
+	margin-left: -40%;
+	padding: 1em;
+	background-color: #fefefe;
+	border: 1px solid #888;
+	width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.okbuttonlink
 {
-	background-color: #a05050;
+	display: flex;
+	flex-direction: column;
+}
+
+.okbutton
+{
+	cursor: pointer;
+	font-family: JosefinSans-Regular;
+	color: white;
+	width: 8em;
+	height: 4em;
+	border: 0;
+	border-radius: 5px;
+	margin-top: 1em;
+	align-self: flex-end;
+	transition: 0.6s background-color;
 }
 
 @media only screen and (max-width: 935px)
@@ -236,6 +273,7 @@ section
 		height: 3em;
 	}
 }
+
 
 @media only screen and (max-width: 840px)
 {

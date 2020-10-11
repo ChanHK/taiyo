@@ -21,6 +21,17 @@ if ($user_ID == null) {
   $result = mysqli_query($conn, $sql);
 }
 $usernameCount = 0;
+
+$getWishlistDataSQL = "SELECT product.product_id, product.quantity FROM product,wishlist WHERE wishlist.product_id = product.product_id AND wishlist.enduser_id = $user_ID";
+$getWishlistDataResult = mysqli_query($conn, $getWishlistDataSQL);
+while ($pd = mysqli_fetch_assoc($getWishlistDataResult)) {
+  if ($pd['quantity'] <= 0) {
+    $deleteSQL = "DELETE FROM wishlist WHERE product_id = '{$pd['product_id']}'";
+    mysqli_query($conn, $deleteSQL);
+    echo "<meta http-equiv='refresh' content='0'>";
+  }
+}
+
 ?>
 
 <!DOCTYPE html>

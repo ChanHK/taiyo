@@ -10,20 +10,18 @@ if (isset($_SESSION['userID'])) {
   $user_ID = null;
 }
 $cartIDArray = [];
-// $productID = $_SESSION["productID"]; //get from product page
-// echo $userID;
-// echo "product $productID";
-// echo "quantity $quantity";
-// print_r($_SESSION['cartIDArray']);
 $quantity = $_GET['productQuantity'] ? $_GET['productQuantity'] : null;
 
 if ($_SESSION['cartIDArray'] != null) {
   foreach ($_SESSION['cartIDArray'] as $a) {
     array_push($cartIDArray, $a);
   }
+  $_SESSION["productID"] = null;
 } else {
   $productID = $_SESSION["productID"];
 }
+$isReviewExist = $_SESSION['review'];
+$productIDStorage = [];
 ?>
 
 
@@ -148,7 +146,7 @@ if ($_SESSION['cartIDArray'] != null) {
             echo "{$a['street_1']},";
 
             if ($a['street_2'] !== "") {
-              echo "{$a['street_2']},";
+              echo " {$a['street_2']},";
             }
             echo "{$a['postcode']},  {$a['city']},  {$a['c_state']}";
             echo "</p>";
@@ -273,12 +271,12 @@ if ($_SESSION['cartIDArray'] != null) {
             echo "<br />";
             echo "<a class='p-l-25 fs-14 p-b-5'>Street 1</a>";
             echo "<div class='m-b-16 m-l-20 m-r-20'>";
-            echo "<input class='formInput' type='text' name='streetOne' placeholder='Insert your street name here' value='{$e['street_1']}' pattern='^\s*\S+(?:\s+\S+){2,}' required/>";
+            echo "<input class='formInput' type='text' name='streetOne' placeholder='Insert your street name here' value='{$e['street_1']}' pattern='^.{3,30}$' required/>";
             echo "</div>";
 
             echo "<a class='p-l-25 fs-14 p-b-5'>Street 2</a>";
             echo "<div class='m-b-16 m-l-20 m-r-20'>";
-            echo "<input class='formInput' type='text' name='streetTwo' placeholder='Insert your street name here (optional)' value='{$e['street_2']}' pattern='^\s*\S+(?:\s+\S+){2,}'/>";
+            echo "<input class='formInput' type='text' name='streetTwo' placeholder='Insert your street name here (optional)' value='{$e['street_2']}' pattern='^.{3,30}$'/>";
             echo "</div>";
 
             echo "<a class='p-l-25 fs-14 p-b-5'>Postcode</a>";
@@ -293,7 +291,38 @@ if ($_SESSION['cartIDArray'] != null) {
 
             echo "<a class='p-l-25 fs-14 p-b-5'>State</a>";
             echo "<div class='m-b-16 m-l-20 m-r-20'>";
-            echo "<input class='formInput' type='text' name='c_state' placeholder='Insert your state here' value='{$e['c_state']}' pattern='^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$' required/>";
+            // echo "<input class='formInput' type='text' name='c_state' placeholder='Insert your state here' value='{$e['c_state']}' pattern='^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$' required/>";
+            echo "<select name='c_state' id='STATE' class='formInput'>";
+            echo "<option id='defaultOption' value='{$e['c_state']}' selected='selected' hidden>";
+            echo "{$e['c_state']}";
+            echo "</option>";
+            echo "<option id='state1' value='Sabah'>Sabah</option>";
+            echo "<option id='state2' value='Sarawak'>Sarawak</option>";
+            echo "<option id='state3' value='Selangor'>Selangor</option>";
+            echo "<option id='state4' value='Perak'>Perak</option>";
+            echo "<option id='state5' value='Johor'>Johor</option>";
+            echo "<option id='state6' value='Kelantan'>Kelantan</option>";
+            echo "<option id='state7' value='Pahang'>Pahang</option>";
+            echo "<option id='state8' value='Negeri Sembilan'>Negeri Sembilan</option>";
+            echo "<option id='state9' value='Kedah'>Kedah</option>";
+            echo "<option id='state10' value='Terengganu'>Terengganu</option>";
+            echo "<option id='state11' value='Penang'>Penang</option>";
+            echo "<option id='state12' value='Peris'>Peris</option>";
+            echo "<option id='state13' value='Malacca'>Malacca</option>";
+            echo "</select>";
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+              $option = isset($_POST['c_state']) ? $_POST['c_state'] : false;
+              if (!$option) {
+                echo "<a style='padding: 0 35px 0 35px; color: rgb(226, 37, 37); font-size: 14px; font-weight: bold;'>";
+                echo "*Please select a state";
+                echo "</a>";
+                $stateVerified = false;
+              } else {
+                $stateVerified = true;
+              }
+            }
+
             echo "</div>";
 
             echo "<i class='fa fa-phone p-b-10'><a class='p-l-13 fs-18 f-w-b'>Phone Number</a></i>";
@@ -370,78 +399,100 @@ if ($_SESSION['cartIDArray'] != null) {
           Confirm to purchase this/these product(s)?
         </h3>
         <br /><br /><br /><br /><br /><br />
-        <div class="buttonContainer">
+        <form class="buttonContainer" method="post">
           <button class="formButton m-l-auto m-r-15 m-b-20" onclick="closeConfirmationModal()">
             No
           </button>
-          <button class="formButton m-r-20 m-b-20" onclick="openNoticeModal(),closeConfirmationModal()">
+          <button class="formButton m-r-20 m-b-20" type="submit" name="intoTrans">
             Yes
           </button>
-        </div>
+          <?php
+          $done = false;
+          if (isset($_POST['intoTrans'])) {
+            if ($productID == null) {
+              foreach ($cartIDArray as $x) {
+                $dataSQL = "SELECT quantity, product_id, enduser_id FROM cart WHERE cart_item_id = $x";
+                $dataResult = mysqli_query($conn, $dataSQL);
+                $getSellerIDSQL = "SELECT product.enduser_id FROM product, cart WHERE cart.product_id = product.product_id";
+                $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
+                while ($g = mysqli_fetch_assoc($getSellerIDResult)) {
+                  while ($y = mysqli_fetch_assoc($dataResult)) {
+                    $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id) VALUES ('Bought', '{$y['quantity']}', '{$y['product_id']}', '{$y['enduser_id']}' )";
+                    mysqli_query($conn, $storeTransSQL);
+                    $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Sold', '{$y['quantity']}', '{$y['product_id']}', '{$g['enduser_id']}', '{$y['enduser_id']}' )";
+                    mysqli_query($conn, $storeTransSQL);
+                    array_push($productIDStorage, $y['product_id']);
+
+                    $getRealProductQuantitySQL = "SELECT quantity FROM product WHERE product_id = '{$y['product_id']}'";
+                    $getRealProductQuantityResult = mysqli_query($conn, $getRealProductQuantitySQL);
+
+                    while ($abc = mysqli_fetch_assoc($getRealProductQuantityResult)) {
+                      // echo "<script type='text/javascript'> alert('".json_encode($abc)."') </script>";
+                      $updateQuantityDSQL = "UPDATE product SET quantity = '{$abc['quantity']}' - '{$y['quantity']}' WHERE product_id = '{$y['product_id']}'";
+                      mysqli_query($conn, $updateQuantityDSQL);
+                    }
+                  }
+                }
+                $_SESSION["productIDStorage"] = $productIDStorage;
+                $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $x";
+                mysqli_query($conn, $deleteSQL);
+              }
+              unset($_SESSION['cartIDArray']);
+              $done = true;
+            } else {
+              $getUserIDSQL = "SELECT enduser_id, quantity FROM product WHERE product_id = $productID";
+              $dataResult = mysqli_query($conn, $getUserIDSQL);
+              while ($g = mysqli_fetch_assoc($dataResult)) {
+                $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id) VALUES ('Bought', $quantity, $productID, $user_ID)";
+                mysqli_query($conn, $storeTransSQL);
+                $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Sold', $quantity, $productID, '{$g['enduser_id']}', $user_ID)";
+                mysqli_query($conn, $storeTransSQL);
+                $updateQuantity = "UPDATE product SET quantity = '{$g['quantity']}'- $quantity WHERE product_id = $productID";
+                mysqli_query($conn, $updateQuantity);
+              }
+              $done = true;
+            }
+          }
+          if ($done) {
+            $_SESSION['review'] = '1';
+            echo "<meta http-equiv='refresh' content='0'>";
+          }
+          ?>
+        </form>
       </div>
     </div>
 
-    <div id="checkOutNoticeModal" class="modalContainer">
-      <div class="modalContentContainer">
-        <h3 class="p-t-20 p-l-20 p-r-20">
-          Notice
-        </h3>
-        <br />
-        <hr class="m-l-20 m-r-20" />
-        <br />
-        <h3 class="p-t-20 p-l-20 p-r-20">
-          Your order is confirmed! It is on its way.
-        </h3>
-        <br /><br />
-        <img src="https://media.giphy.com/media/8mpR0LykCqObF8t7Y5/giphy.gif" alt="delivery incoming !!!" width=250 class="m-l-290" />
-        <br /><br />
-        <form class="buttonContainer" method="post">
-          <button type="button" class="formButton m-l-auto m-r-15 m-b-20" onclick="closeNoticeModal(),openReviewModal()">
-            Review Seller
-          </button>
-          <button class="formButton m-r-20 m-b-20" type="submit" name="shop">Continue Shopping</button>
-        </form>
-        <?php
-        $done = false;
-        if (isset($_POST['shop'])) {
-          if ($productID == null) {
-            foreach ($cartIDArray as $x) {
-              $dataSQL = "SELECT quantity, product_id, enduser_id FROM cart WHERE cart_item_id = $x";
-              $dataResult = mysqli_query($conn, $dataSQL);
-              $getSellerIDSQL = "SELECT product.enduser_id FROM product, cart WHERE cart.product_id = product.product_id";
-              $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
-              while ($g = mysqli_fetch_assoc($getSellerIDResult)) {
-                while ($y = mysqli_fetch_assoc($dataResult)) {
-                  $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$g['enduser_id']}', '{$y['enduser_id']}' )";
-                  mysqli_query($conn, $storeTransSQL);
-                  $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Sell', '{$y['quantity']}', '{$y['product_id']}', '{$g['enduser_id']}', '{$y['enduser_id']}' )";
-                  mysqli_query($conn, $storeTransSQL);
-                }
-              }
-              $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $x";
-              mysqli_query($conn, $deleteSQL);
-            }
-            unset($_SESSION['cartIDArray']);
-            $done = true;
-          } else {
-            $getUserIDSQL = "SELECT enduser_id FROM product WHERE product_id = $productID";
-            $dataResult = mysqli_query($conn, $getUserIDSQL);
-            while ($g = mysqli_fetch_assoc($dataResult)) {
-              $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Buy', $quantity, $productID, '{$g['enduser_id']}', $user_ID)";
-              mysqli_query($conn, $storeTransSQL);
-              $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Sell', $quantity, $productID, '{$g['enduser_id']}', $user_ID)";
-              mysqli_query($conn, $storeTransSQL);
-            }
-            $done = true;
-          }
-        }
-        if ($done) {
-          echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
-          exit;
-        }
-        ?>
-      </div>
-    </div>
+    <?php
+    if ($isReviewExist == '1') {
+      echo "<div id='checkOutNoticeModal' class='modalContainer display-b'>";
+      echo "<div class='modalContentContainer'>";
+      echo "<h3 class='p-t-20 p-l-20 p-r-20'>";
+      echo "Notice";
+      echo "</h3>";
+      echo "<br />";
+      echo "<hr class='m-l-20 m-r-20' />";
+      echo "<br />";
+      echo "<h3 class='p-t-20 p-l-20 p-r-20'>";
+      echo "Your order is confirmed! It is on its way.";
+      echo "</h3>";
+      echo "<br /><br />";
+      echo "<div class='carImage'>";
+      echo "<img src='https://media.giphy.com/media/8mpR0LykCqObF8t7Y5/giphy.gif' alt='delivery incoming !!!' width=250 >";
+      echo "</div>";
+      echo "<br /><br />";
+      echo "<form class='buttonContainer' method='post'>";
+      echo "<button type='button' class='formButton m-l-auto m-r-15 m-b-20' onclick='openReviewModal()'>";
+      echo "Review Seller";
+      echo "</button>";
+      echo "<button class='formButton m-r-20 m-b-20' type='button' onclick='closeNoticeModal()'>Continue Shopping</button>";
+      echo "</form>";
+
+      echo "</div>";
+      echo "</div>";
+
+      $_SESSION['review'] = null;
+    }
+    ?>
 
     <div id="reviewSellerModal" class="modalContainer">
       <div class="modalContentContainerTheSec">
@@ -487,8 +538,9 @@ if ($_SESSION['cartIDArray'] != null) {
           echo "</div>";
           echo "</form>";
         } else {
-          foreach ($cartIDArray as $h) {
-            $getUsernameSQL = "SELECT username FROM enduser, cart WHERE enduser.enduser_id = cart.enduser_id AND cart_item_id = $h";
+          print_r($_SESSION["productIDStorage"]);
+          foreach ($_SESSION["productIDStorage"] as $h) {
+            $getUsernameSQL = "SELECT username FROM enduser, product WHERE enduser.enduser_id = product.enduser_id AND product_id = $h";
             $getUsernameResult = mysqli_query($conn, $getUsernameSQL);
             while ($k = mysqli_fetch_assoc($getUsernameResult)) {
               echo "<form class='editShippingForm' method='post'>";
@@ -501,16 +553,14 @@ if ($_SESSION['cartIDArray'] != null) {
               echo "<div class='m-b-16 m-l-20 m-r-20'>";
               echo "<h4>Seller name: {$k['username']}</h4>";
             }
-            $getProductIDSQL = "SELECT product_id FROM cart where cart_item_id = $h";
-            $getProductIDResult = mysqli_query($conn, $getProductIDSQL);
-            while ($u = mysqli_fetch_assoc($getProductIDResult)) {
-              $sellerDataSQL = "SELECT product_name, product_price FROM product WHERE product_id = {$u['product_id']}";
-              $sellerDataResult = mysqli_query($conn, $sellerDataSQL);
-              while ($k = mysqli_fetch_assoc($sellerDataResult)) {
-                echo "<h4>Sold: {$k['product_name']}</h4>";
-                echo "<h4>Price: RM {$k['product_price']}</h4></div>";
-              }
+
+            $sellerDataSQL = "SELECT product_name, product_price FROM product WHERE product_id = $h";
+            $sellerDataResult = mysqli_query($conn, $sellerDataSQL);
+            while ($k = mysqli_fetch_assoc($sellerDataResult)) {
+              echo "<h4>Sold: {$k['product_name']}</h4>";
+              echo "<h4>Price: RM {$k['product_price']}</h4></div>";
             }
+
             echo "<i class='fa fa-certificate p-b-10'><a class='p-l-13 fs-18 f-w-b'>Review</a></i>";
             echo "<div class='m-b-50 m-l-20 m-r-20'>";
             echo "<input class='formInput' type='text' name='review[]' placeholder='Enter your review here' />";
@@ -530,7 +580,6 @@ if ($_SESSION['cartIDArray'] != null) {
     </div>
   </div>
   <?php
-  $conn = mysqli_connect("localhost", "root", "", "taiyodb");
   if (isset($_POST['cancelReview'])) {
     echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
     exit;
@@ -548,13 +597,6 @@ if ($_SESSION['cartIDArray'] != null) {
             $reviewSQL = "INSERT INTO review (review_message, review_date, reviewer_id, reviewee_id) VALUES ('$review', CURDATE(), $user_ID, {$m['enduser_id']})";
             mysqli_query($conn, $reviewSQL);
           }
-
-          $getUserIDSQL = "SELECT enduser_id FROM product WHERE product_id = $productID";
-          $dataResult = mysqli_query($conn, $getUserIDSQL);
-          while ($g = mysqli_fetch_assoc($dataResult)) {
-            $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Buy', $quantity, $productID, {$m['enduser_id']}, $user_ID)";
-            mysqli_query($conn, $storeTransSQL);
-          }
           echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
           exit;
         } else {
@@ -564,40 +606,16 @@ if ($_SESSION['cartIDArray'] != null) {
       }
       if ($goToCart) {
         $countReview = 0;
-        foreach ($cartIDArray as $n) {
-          $getProductIDSQL = "SELECT product_id FROM cart WHERE cart_item_id = $n";
-          $getProductIDResult = mysqli_query($conn, $getProductIDSQL);
-          while ($p = mysqli_fetch_assoc($getProductIDResult)) {
-            $getSellerIDSQL = "SELECT enduser.enduser_id FROM enduser, product WHERE enduser.enduser_id = product.enduser_id AND product.product_id = {$p['product_id']}";
-            $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
-            while ($m = mysqli_fetch_assoc($getSellerIDResult)) {
-              $reviewSQL = "INSERT INTO review (review_message, review_date, reviewer_id, reviewee_id) VALUES ('$reviewArray[$countReview]', CURDATE(), $user_ID, {$m['enduser_id']})";
-              mysqli_query($conn, $reviewSQL);
-            }
-          }
-          $countReview++;
-        }
-        foreach ($cartIDArray as $x) {
-          // $dataSQL = "SELECT quantity, product_id, enduser_id FROM cart WHERE cart_item_id = $x";
-          // $dataResult = mysqli_query($conn, $dataSQL);
-          // while ($y = mysqli_fetch_assoc($dataResult)) {
-          //   $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, enduser_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$y['enduser_id']}' )";
-          //   mysqli_query($conn, $storeTransSQL);
-          // }
-          $dataSQL = "SELECT quantity, product_id, enduser_id FROM cart WHERE cart_item_id = $x";
-          $dataResult = mysqli_query($conn, $dataSQL);
-          $getSellerIDSQL = "SELECT product.enduser_id FROM product, cart WHERE cart.product_id = product.product_id";
+        foreach ($_SESSION["productIDStorage"] as $n) {
+
+          $getSellerIDSQL = "SELECT enduser.enduser_id FROM enduser, product WHERE enduser.enduser_id = product.enduser_id AND product.product_id = $n";
           $getSellerIDResult = mysqli_query($conn, $getSellerIDSQL);
-          while ($g = mysqli_fetch_assoc($getSellerIDResult)) {
-            while ($y = mysqli_fetch_assoc($dataResult)) {
-              $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Buy', '{$y['quantity']}', '{$y['product_id']}', '{$g['enduser_id']}', '{$y['enduser_id']}' )";
-              mysqli_query($conn, $storeTransSQL);
-              $storeTransSQL = "INSERT INTO TransactionHistory (transaction_type, quantity, product_id, belonginguser_id, boughtuser_id) VALUES ('Sell', '{$y['quantity']}', '{$y['product_id']}', '{$g['enduser_id']}', '{$y['enduser_id']}' )";
-              mysqli_query($conn, $storeTransSQL);
-            }
+          while ($m = mysqli_fetch_assoc($getSellerIDResult)) {
+            $reviewSQL = "INSERT INTO review (review_message, review_date, reviewer_id, reviewee_id) VALUES ('$reviewArray[$countReview]', CURDATE(), $user_ID, {$m['enduser_id']})";
+            mysqli_query($conn, $reviewSQL);
           }
-          $deleteSQL = "DELETE FROM cart WHERE cart_item_id = $x";
-          mysqli_query($conn, $deleteSQL);
+
+          $countReview++;
         }
         unset($_SESSION['cartIDArray']);
         echo "<script type='text/javascript'>window.top.location='Homepage.php';</script>";
@@ -607,8 +625,6 @@ if ($_SESSION['cartIDArray'] != null) {
   }
   ?>
   <script>
-    // window.onbeforeunload = function () {return false;} 
-
     var shippingInfoModal = document.getElementById("shippingInfoModal");
     var paymentMethodModal = document.getElementById("paymentMethodModal");
     var checkOutConfirmationModal = document.getElementById(
@@ -658,9 +674,7 @@ if ($_SESSION['cartIDArray'] != null) {
     }
 
     function closeNoticeModal() {
-      checkOutNoticeModal.style.display = "none";
-      document.documentElement.style.overflow = "scroll";
-      document.body.scroll = "yes";
+      window.top.location = 'Homepage.php';
     }
 
     function openReviewModal() {
@@ -668,17 +682,13 @@ if ($_SESSION['cartIDArray'] != null) {
       document.documentElement.style.overflow = "hidden";
       document.body.scroll = "no";
     }
-    // window.onclick = function(event) {
-    //   if (event.target == shippingInfoModal) {
-    //     shippingInfoModal.style.display = "none";
-    //   }
-    //   if (event.target == paymentMethodModal) {
-    //     paymentMethodModal.style.display = "none";
-    //   }
-    //   if (event.target == checkOutConfirmationModal) {
-    //     checkOutConfirmationModal.style.display = "none";
-    //   }
-    // };
+
+    function closeReviewModal() {
+      reviewSellerModal.style.display = "none";
+      document.documentElement.style.overflow = "scroll";
+      document.body.scroll = "yes";
+    }
+
 
     function selectMastercard() {
       paymentMethodModal.style.display = "none";
