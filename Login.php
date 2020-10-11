@@ -1,5 +1,13 @@
 <?php
 session_start();
+$conn = mysqli_connect("localhost", "root", "", "taiyodb");
+if (isset($_SESSION['userID'])) {
+	  $user_ID = $_SESSION['userID'];
+	  $sql = "SELECT profile_photo FROM enduser WHERE enduser_id = $user_ID";
+	  $userResult = mysqli_query($conn, $sql);
+	} else {
+	  $user_ID = null;
+}
 ?>
 
 <!DOCTYPE html>
@@ -10,10 +18,12 @@ session_start();
   <meta charset="UTF-8" />
   <link rel="stylesheet" type="text/css" href="css/util.css" />
   <link rel="stylesheet" type="text/css" href="css/login.css" />
+  <link rel="stylesheet" type="text/css" href="css/header.css"/>
 </head>
 
 <body>
   <div class="limiter">
+	<?php include "header.php" ?>
     <div class="loginContainer">
       <div class="loginFormContainer">
         <form class="loginForm p-l-55 p-r-55 p-t-100" method="post">
@@ -115,7 +125,7 @@ session_start();
       }
     }
   </script>
-
+	<script src="js/profileModal.js"></script>
 </body>
 
 </html>

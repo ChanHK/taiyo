@@ -1,0 +1,267 @@
+
+.flex-column{
+	display: flex;
+	flex-direction: column;
+}
+
+h1
+{
+	font-size: 3em;
+	text-align: center;
+	margin-top: 1em;
+}
+
+.inputprice
+{
+	font-family: JosefinSans-Regular;
+	padding: 1em;
+	width: 10em;
+	height: 4em;
+	border-radius: 5px;
+}
+
+.inputpricepoint
+{
+	font-family: JosefinSans-Regular;
+	padding: 1em;
+	width: 4em;
+	height: 4em;
+	border-radius: 5px;
+}
+
+.inputquantity
+{
+	font-family: JosefinSans-Regular;
+	padding: 1em;
+	width: 5em;
+	height: 4em;
+	border-radius: 5px;
+}
+
+.inputproduct
+{
+	font-family: JosefinSans-Regular;
+	padding: 1em;
+	width: 20em;
+	height: 4em;
+	border-radius: 5px;
+}
+
+select
+{
+	padding: 1em;
+	border-radius: 5px;
+	font-family: JosefinSans-Regular;
+}
+
+#fileerror1, #fileerror2, #fileerror3, #fileerror4, #inputerror, #inputerror2, #inputerror3, #nameerror, #texterror
+{
+	margin-top: 1em;
+	color: red;
+	display: none;
+}
+
+.submitbutton
+{
+	cursor: pointer;
+	font-family: JosefinSans-Regular;
+	color: white;
+	margin-right: 2em;
+	margin-left: auto;
+	width: 8em;
+	height: 4em;
+	border: 0;
+	border-radius: 5px;
+	transition: 0.6s background-color;
+}
+
+.taiyou
+{
+	float: left;
+	padding: 1em;
+	width: 10em;
+}
+
+.aligni
+{
+	align-items: center;
+}
+
+.searchbar
+{
+	float: left;
+	width: 40em;
+	height: 4em;
+	border-radius: 5px 0 0 5px;
+	border: 0;
+}
+
+.searchbutton
+{
+	float: left;
+	cursor: pointer;
+	width: 4em;
+	height: 4em;
+	background-image: url(../pictures/main/Mag.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 0 5px 5px 0;	
+	border: 0;
+}
+
+.marginup
+{
+	margin-top:1em;
+}
+
+.marginleft
+{
+	margin-left:1em;
+}
+
+.productdetails
+{
+	background-color: white;
+	box-shadow: 5px 10px 5px #888888;
+	margin: auto;
+	margin-top: 3em;
+	margin-bottom: 3em;
+	border-radius: 5px;
+	width: 70%;
+}
+
+.description
+{
+	font-family: JosefinSans-Regular;
+	padding: 1em;
+}
+
+
+.productform
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
+}
+
+.loginprofile
+{
+	width: 30px;
+	height: 30px;
+	border-radius:50%;
+}
+
+
+.submitbutton:hover
+{
+	background-color: #a05050;
+}
+
+.previewimg
+{
+	width: 100px;
+	height: 100px;
+	margin-right: 0.5em;
+}
+
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+	position: fixed;
+	top: 40%;
+	left: 50%;
+	margin-left: -40%;
+	padding: 1em;
+	background-color: #fefefe;
+	border: 1px solid #888;
+	width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.yesnobuttons
+{
+	cursor: pointer;
+	font-family: JosefinSans-Regular;
+	color: white;
+	margin-right: 2em;
+	width: 8em;
+	height: 4em;
+	border: 0;
+	border-radius: 5px;
+	transition: 0.6s background-color;
+}
+
+.yesnobuttons:hover
+{
+	background-color: #a05050;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
+@media only screen and (max-width: 935px)
+{
+	.searchbar
+	{
+		width: 10em;
+	}
+	
+
+	
+}
+
+@media only screen and (max-width: 1260px)
+{
+	.asidediv
+	{
+		font-size: 10px;
+	}
+	
+	.profile
+	{
+		width: 50px;
+		height: 50px;
+	}
+	
+	.payment
+	{
+		width: 100px;
+	}
+	
+}
+
+@media only screen and (max-width: 1100px)
+{
+	.description
+	{
+		width:50%;
+		height: 50%;
+	}
+}
+

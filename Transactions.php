@@ -9,7 +9,16 @@ $transactionPictureResult = null;
 $userResult = null;
 $visitedUserResult = null;
 
-$visitedUserID = 3;
+if(isset($_GET['user_id']))
+{
+	$visitedUserID = $_GET['user_id'];
+}
+else
+{
+	header("Location: Homepage.php");
+	exit();
+
+}
 
 if(isset($_SESSION['userID']))
 {
@@ -24,10 +33,10 @@ else
 $sql = "SELECT * FROM enduser WHERE enduser_id = $visitedUserID";
 $visitedUserResult = mysqli_query($conn, $sql);
 
-$sql = "SELECT * FROM transactionhistory LEFT JOIN product ON product.product_id = transactionhistory.product_id LEFT JOIN enduser ON transactionhistory.boughtuser_id = enduser.enduser_id WHERE belonginguser_id =" . $visitedUserID . " AND transaction_type = 'Sold'";
+$sql = "SELECT transaction_type, transactionhistory.quantity AS transquantity, transactionhistory.product_id, product_name, belonginguser_id, boughtuser_id, username, profile_photo FROM transactionhistory LEFT JOIN product ON product.product_id = transactionhistory.product_id LEFT JOIN enduser ON transactionhistory.boughtuser_id = enduser.enduser_id WHERE belonginguser_id =" . $visitedUserID . " AND transaction_type = 'Sold'";
 $soldTransactionResult = mysqli_query($conn, $sql);
 
-$sql = "SELECT * FROM transactionhistory, product, enduser WHERE transactionhistory.product_id = product.product_id AND product.enduser_id = enduser.enduser_id WHERE belonginguser_id =" . $visitedUserID . "AND transaction_type = 'Bought'";
+$sql = "SELECT transaction_type, transactionhistory.quantity AS transquantity, transactionhistory.product_id, product_name, product.enduser_id, username, profile_photo, belonginguser_id FROM transactionhistory, product, enduser WHERE transactionhistory.product_id = product.product_id AND product.enduser_id = enduser.enduser_id AND belonginguser_id =" . $visitedUserID . " AND transaction_type = 'Bought'";
 $boughtTransactionResult = mysqli_query($conn, $sql);
 
 $sql = "SELECT * FROM productimage";
@@ -52,11 +61,11 @@ $transactionPictureResult = mysqli_query($conn, $sql);
 			$row = mysqli_fetch_array($visitedUserResult);
 			if($row['profile_photo'] != null)
 			{
-				echo "<a href='#'><img src='pictures/profile/" . $row['profile_photo'] . "' class='profile'". "alt='" .$row['profile_photo']. "' title=' " . $row['profile_photo'] . "'/></a>";
+				echo "<a href='Listing.php?user_id=".$visitedUserID."'><img src='pictures/profile/" . $row['profile_photo'] . "' class='profile'". "alt='" .$row['profile_photo']. "' title=' " . $row['profile_photo'] . "'/></a>";
 			}
 			else
 			{
-				echo "<a href='#'><img src='pictures/profile/anonymous.png' class='profile'". "alt='no-picture' title='no-picture'/></a>";
+				echo "<a href='Listing.php?user_id=".$visitedUserID."'><img src='pictures/profile/anonymous.png' class='profile'". "alt='no-picture' title='no-picture'/></a>";
 			}
 			echo "<div class='asidediv'>";
 				echo "<p style='text-align:center'>".$row['username']."</p>";
@@ -88,13 +97,12 @@ $transactionPictureResult = mysqli_query($conn, $sql);
 					echo "Gender: ". $row['gender'];
 				echo "</p>";
 				echo "</br>";
-				echo "My Transaction Method:</br>";
-				echo "</br>";
-				echo "<a href='#'><img src='pictures/main/paypal1.jpg' class='payment' alt='payment' title='payment'/></a>";
-				echo "</br>";
 				echo "<hr>";
 				echo $row['user_description']. "</br>";
-				echo "<button class='editbutton bgred' name='edit' id='edit'>Edit</button>";
+				if($user_ID == $visitedUserID)
+				{
+					echo "<a href='ProfileEdit.php'><button class='editbutton bgred' name='edit' id='edit'>Edit</button></a>";
+				}
 			?>
 			</div>
 		</aside>
@@ -103,8 +111,8 @@ $transactionPictureResult = mysqli_query($conn, $sql);
 			</div>
 			<?php
 				echo "<div class='navigation bggrey'>";
-					echo "<button class='navbutton' name='listings' id='listings'>Listings</button>";
-					echo "<a href='Review.php'><button class='navbutton' name='review' id='review'>Reviews</button></a>";
+					echo "<a href='Listing.php?user_id=".$visitedUserID."'><button class='navbutton' name='listings' id='listings'>Listings</button></a>";
+					echo "<a href='Review.php?user_id=".$visitedUserID."'><button class='navbutton' name='review' id='review'>Reviews</button></a>";
 				if($user_ID == $visitedUserID)
 				{
 					echo "<button class='active' name='transactions' id='transactions' disabled>Transactions</button>";
@@ -127,7 +135,7 @@ $transactionPictureResult = mysqli_query($conn, $sql);
 								{
 									if($row2['product_id'] == $row['product_id'])
 									{
-										echo "<img class='itempic' src='pictures/product/" . $row2['product_image'] . "' alt= '" . $row2['product_image'] . "' title= ".  $row2['product_image'] ."'/>";
+										echo "<img class='itempic' src='pictures/product/" . $row2['product_image'] . "' alt= '" . $row2['product_image'] . "' title= '".  $row2['product_image'] ."'/>";
 										mysqli_data_seek($transactionPictureResult, 0);
 										break;
 									}
@@ -135,13 +143,15 @@ $transactionPictureResult = mysqli_query($conn, $sql);
 								echo "</br>";
 								echo "<p>".$row['product_name']."</p>";
 								echo "</br>";
+								echo "<p>Quantity: ".$row['transquantity']."</p>";
+								echo "</br>";
 								if($row['profile_photo'] != null)
 								{
-									echo "<p style='display:flex; flex-direction: row; align-items:center; justify-content: center'>User Bought: &nbsp;" . "<img class = 'loginprofile' src='pictures/profile/" . $row['profile_photo']. "' alt = '". $row['profile_photo']. "' title = '".$row['profile_photo']."'/> &nbsp;". $row['username']. "</p>";
+									echo "<p style='display:flex; flex-direction: row; align-items:center; justify-content: center; position:relative;'>User Bought: &nbsp;" . "<a href='Listing.php?user_id=".$row['boughtuser_id']."' class='userlink'><img class = 'loginprofile' src='pictures/profile/" . $row['profile_photo']. "' alt = '". $row['profile_photo']. "' title = '".$row['profile_photo']."'/></a> &nbsp; <a href='Listing.php?user_id=".$row['boughtuser_id']."' class='userlink'>". $row['username']. "</a></p>";
 								}
 								else
 								{
-									echo "<p style='display:flex; flex-direction: row; align-items:center; justify-content: center'>User Bought: &nbsp;" . "<img class = 'loginprofile' src='pictures/profile/anonymous.png' alt = 'no-picture' title = 'no-picture'/> &nbsp;". $row['username']. "</p>";
+									echo "<p style='display:flex; flex-direction: row; align-items:center; justify-content: center; position:relative;'>User Bought: &nbsp;" . "<a href='Listing.php?user_id=".$row['boughtuser_id']."' class='userlink'><img class = 'loginprofile' src='pictures/profile/anonymous.png' alt = 'no-picture' title = 'no-picture'/></a> &nbsp;<a href='Listing.php?user_id=".$row['boughtuser_id']."' class ='userlink' >". $row['username']. "</a></p>";
 								}
 								echo "<a href='Product.php?product_id=". $row['product_id']. "'><span class='linkspanner'></span></a>";
 							echo "</div>";
@@ -168,7 +178,7 @@ $transactionPictureResult = mysqli_query($conn, $sql);
 								{
 									if($row2['product_id'] == $row['product_id'])
 									{
-										echo "<img class='itempic' src='pictures/product/" . $row2['product_image'] . "' alt= '" . $row2['product_image'] . "' title= ".  $row2['product_image'] ."'/>";
+										echo "<img class='itempic' src='pictures/product/" . $row2['product_image'] . "' alt= '" . $row2['product_image'] . "' title= '".  $row2['product_image'] ."'/>";
 										mysqli_data_seek($transactionPictureResult, 0);
 										break;
 									}
@@ -176,13 +186,15 @@ $transactionPictureResult = mysqli_query($conn, $sql);
 								echo "</br>";
 								echo "<p>".$row['product_name']."</p>";
 								echo "</br>";
+								echo "<p>Quantity: ".$row['transquantity']."</p>";
+								echo "</br>";
 								if($row['profile_photo'] != null)
 								{
-									echo "<p style='display:flex; flex-direction: row; align-items:center; justify-content: center'>User Sold: &nbsp;" . "<img class = 'loginprofile' src='pictures/profile/" . $row['profile_photo']. "'alt = '". $row['profile_photo']. "' title = '".$row['profile_photo']."'/> &nbsp;". $row['username']. "</p>";
+									echo "<p style='display:flex; flex-direction: row; align-items:center; justify-content: center'>User Sold: &nbsp;" . "<a href='Listing.php?user_id=".$row['enduser_id']."' class='userlink'><img class = 'loginprofile' src='pictures/profile/" . $row['profile_photo']. "'alt = '". $row['profile_photo']. "' title = '".$row['profile_photo']."'/></a> &nbsp;<a href='Listing.php?user_id=".$row['enduser_id']."' class='userlink'>". $row['username']. "</a></p>";
 								}
 								else
 								{
-									echo "<p style='display:flex; flex-direction: row; align-items:center; justify-content: center'>User Sold: &nbsp;" . "<img class = 'loginprofile' src='pictures/profile/anonymous.png' alt = 'no-picture' title = 'no-picture'/> &nbsp;". $row['username']. "</p>";
+									echo "<p style='display:flex; flex-direction: row; align-items:center; justify-content: center'>User Sold: &nbsp;" . "<a href='Listing.php?user_id=".$row['enduser_id']."' class='userlink'><img class = 'loginprofile' src='pictures/profile/anonymous.png' alt = 'no-picture' title = 'no-picture'/></a> &nbsp;<a href='Listing.php?user_id=".$row['boughtuser_id']."' class='userlink'>". $row['username']. "</a></p>";
 								}
 								echo "<a href='Product.php?product_id=". $row['product_id']. "'><span class='linkspanner'></span></a>";
 							echo "</div>";

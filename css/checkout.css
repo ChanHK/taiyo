@@ -121,7 +121,7 @@ button {
 }
 
 .placeOrderButton:hover {
-  background-color: #1b3815;
+  background-color: #a05050;
 }
 
 .productRowBackgroundContainer {
@@ -281,7 +281,7 @@ input {
 
 .formButton:hover {
   /* background-color: #1b3815; */
-  background-color: #d61919;
+  background-color: #a05050;
   cursor: pointer;
 }
 
@@ -299,8 +299,8 @@ input {
 }
 
 .paymentMethodImg {
-  width: 200px;
-  height: 120px;
+  width: 20%;
+  height: 30%;
 
   -khtml-user-select: none;
   -o-user-select: none;
@@ -324,4 +324,14 @@ img {
   height: 50vh;
   box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
   overflow: scroll;
+}
+
+.display-b {
+  display: block;
+}
+
+.carImage {
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }

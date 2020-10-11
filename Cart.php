@@ -21,6 +21,22 @@ if ($user_ID == null) {
   $result = mysqli_query($conn, $sql);
 }
 $usernameCount = 0;
+
+$getProductDataSQL = "SELECT product.product_id, product.quantity FROM product,cart WHERE cart.product_id = product.product_id AND cart.enduser_id = $user_ID";
+$getProductDataResult = mysqli_query($conn, $getProductDataSQL);
+while ($pd = mysqli_fetch_assoc($getProductDataResult)) {
+  // print_r($pd);
+  $getCartProductDataSQL = "SELECT quantity FROM cart WHERE product_id = '{$pd['product_id']}'";
+  $getCartProductDataResult = mysqli_query($conn, $getCartProductDataSQL);
+  while ($cd = mysqli_fetch_assoc($getCartProductDataResult)) {
+    // print_r($cd);
+    if ($cd['quantity'] > $pd['quantity']) {
+      $deleteSQL = "DELETE FROM cart WHERE product_id = '{$pd['product_id']}'";
+      mysqli_query($conn, $deleteSQL);
+      echo "<meta http-equiv='refresh' content='0'>";
+    }
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

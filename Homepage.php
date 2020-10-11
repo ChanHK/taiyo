@@ -446,7 +446,8 @@ else
 						$prevProduct = 0;
 						while($row = mysqli_fetch_array($productResult))
 						{
-							if($row["product_id"] != $prevProduct)
+							
+							if($row["product_id"] != $prevProduct && $row['quantity'] > 0 )
 							{			
 								echo "<div class='productitem'>";
 									echo "<img src='pictures/product/" . $row["product_image"] . "' class='productimg' alt=" . $row["product_image"] . "title= " . $row["product_image"]. "/>";
@@ -455,11 +456,11 @@ else
 									echo "<p class='productdesc'>" . "RM" . $row["product_price"]. "</p>";
 									if($row['profile_photo'] != null)
 									{
-										echo "<p class='productdesc flex-row aligni' style='margin-top: 0.5em'><img class='profileicon' src='pictures/profile/" . $row["profile_photo"] . "' alt = '" . $row["profile_photo"] . "' title = '" . $row["profile_photo"]. "'/>" . "&nbsp;". $row["username"] . "</p>";
+										echo "<p class='productdesc flex-row aligni' style='margin-top: 0.5em'><a href='Listing.php?user_id=".$row['enduser_id']."' class='userlink'><img class='profileicon' src='pictures/profile/" . $row["profile_photo"] . "' alt = '" . $row["profile_photo"] . "' title = '" . $row["profile_photo"]. "'/></a>" . "&nbsp; <a href='Listing.php?user_id=".$row['enduser_id']."' class='userlink'>". $row["username"] . "</a></p>";
 									}
 									else
 									{
-										echo "<p class='productdesc flex-row aligni' style='margin-top: 0.5em'><img class='profileicon' src='pictures/profile/anonymous.png' alt='no-picture' title='no-picture'/>" . "&nbsp;". $row["username"] . "</p>";
+										echo "<p class='productdesc flex-row aligni' style='margin-top: 0.5em'><a href='Listing.php?user_id=".$row['enduser_id']."' class='userlink'><img class='profileicon' src='pictures/profile/anonymous.png' alt='no-picture' title='no-picture'/></a>" . "&nbsp; <a href='Listing.php?user_id=".$row['enduser_id']."' class='userlink'>". $row["username"] . "</a></p>";
 									}
 									echo "<a href='Product.php?product_id=" . $row["product_id"] . "' class='linkspanner'><span></span></a>";
 								echo "</div>";

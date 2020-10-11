@@ -87,7 +87,7 @@ button {
   height: 40px;
   /* background-color: #57b846; */
   background-color:#c75d5d;
-
+  color: white;
   font-family: Ubuntu-Bold;
   border-radius: 10px;
   font-size: 13px;
@@ -103,7 +103,7 @@ button {
 }
 
 .removeCheckOutButton:hover {
-  background-color: #d61919;
+  background-color: #a05050;
 }
 
 .cartRowContainer {

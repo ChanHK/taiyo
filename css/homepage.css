@@ -119,6 +119,7 @@
 
 .productdesc
 {
+	position: relative;
 	text-align:left;
 	color: black;
 }
@@ -152,6 +153,23 @@
 	top:0;
 	left:0;
 }
+
+.userlink
+{
+	z-index: 1;
+}
+
+.userlink:link
+{
+	color: #c75d5d;
+	text-decoration: none;
+}
+
+.userlink:visited
+{
+	text-decoration: none;
+}
+
 
 .sellbutton:hover
 {

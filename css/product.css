@@ -24,6 +24,17 @@ aside div {
   position: relative;
 }
 
+.userlink:link
+{
+	color: #c75d5d;
+	text-decoration: none;
+}
+
+.userlink:visited
+{
+	text-decoration: none;
+}
+
 section.sectiondesc div {
   padding: 1em;
 }
@@ -64,6 +75,19 @@ section.sectiondesc div {
   border-radius: 50%;
   bottom: -5em;
   left: 75%;
+  transition: 0.6s background-color;
+}
+
+.edit {
+  background-color: #c75d5d;
+  background-image: url(../pictures/main/Edit.png);
+  background-repeat: no-repeat;
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  bottom: -5em;
+  left: 87%;
   transition: 0.6s background-color;
 }
 
@@ -120,7 +144,8 @@ section.sectiondesc div {
 .cart:hover,
 .wish:hover,
 .sellbutton:hover,
-.purchasebutton:hover {
+.purchasebutton:hover,
+.edit:hover {
   background-color: #a05050;
 }
 
